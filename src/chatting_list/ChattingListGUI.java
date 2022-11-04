@@ -14,6 +14,9 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JList;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -24,7 +27,7 @@ import javax.swing.JSplitPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.ImageIcon;
 
-public class ChattingListGUI {
+public class ChattingListGUI{
 
 	private JFrame frame;
 	
@@ -61,13 +64,13 @@ public class ChattingListGUI {
 	private void initialize() {
 		ArrayList<JButton> chattingButtonList = new ArrayList<JButton>();
 		
-		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(255, 255, 255));
 		frame.setBounds(100, 100, 400, 690);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-	
+		
+		
 		JPanel chattingListPanel = new JPanel();
 		chattingListPanel.setBackground(new Color(255, 255, 255));
 		chattingListPanel.setBounds(67, 50, 317, 71);
@@ -147,13 +150,23 @@ public class ChattingListGUI {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(chattingListIndex < 6) {
-					JButton newChatting = new JButton("new Chatting");
+					JButton newChatting = new JButton("new Chatting "+ (chattingListIndex+2));
 					newChatting.setBackground(new Color(255,255,255));
-					newChatting.setBorderPainted(false);
 					chattingButtonList.add(newChatting);
 					chattingListHeight += 71;
 					chattingListPanel.setBounds(67, 50, 317, chattingListHeight);
 					chattingListPanel.add(chattingButtonList.get(++chattingListIndex));
+					
+					for(JButton jb : chattingButtonList) {
+						jb.addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseClicked(MouseEvent e) {
+								System.out.println("clicked ["+jb.getText()+"]");
+								Chatting chatting = new Chatting(jb.getText(),e.getX(),e.getY());
+							}
+						});
+					}
+					
 					chattingListPanel.revalidate();
 					chattingListPanel.repaint();
 				}else {
@@ -164,9 +177,9 @@ public class ChattingListGUI {
 		creatChatting.setBounds(279, 24, 25, 23);
 		topBar.add(creatChatting);
 		
-
 		
 
 
 	}
+
 }
