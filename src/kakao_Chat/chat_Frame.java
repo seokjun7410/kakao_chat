@@ -10,9 +10,13 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 	private JPanel Panel_1;
 	private JButton btn_exit;
 	private Point comPoint;
+	private int chat_number;
+	private String user_names;
 	
 	public chat_Frame()
 	{
+		chat_number = 1;
+		user_names = "유저 명";
 		setResizable(false);
 		setUndecorated(true);		
 //		setTitle("");
@@ -43,13 +47,56 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		
 		//상단 프로필 패널
 		JPanel Profile_panel = new JPanel();
-		Profile_panel.setPreferredSize(new Dimension(380,70));
+		Profile_panel.setPreferredSize(new Dimension(380,50));
+		Profile_panel.setLayout(new BorderLayout());
+		Profile_panel.setBackground(new Color(186,206,224));
+			//유저 이미지
+		ImageIcon user_icon = new ImageIcon("C:\\Users\\khaer\\Documents\\GitHub\\kakao_chat\\src\\kakao_Chat\\user2.png");
+		Image user = user_icon.getImage().getScaledInstance(45,45,Image.SCALE_DEFAULT);
+		ImageIcon user_icon2 = new ImageIcon(user);
+		JLabel img = new JLabel(user_icon2);
+		Profile_panel.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
+		Profile_panel.add(img,BorderLayout.WEST);
+			//유저 이름, 채팅 명수 표시 패널
+		JPanel user_info = new JPanel();
+		user_info.setPreferredSize(new Dimension(380,50));
+		user_info.setLayout(new BorderLayout());
+		user_info.setBorder(BorderFactory.createEmptyBorder(0,15,0,0));
+		Profile_panel.add(user_info,BorderLayout.CENTER);
+				//유저 이름 패널
+		JPanel user_name = new JPanel();
+		user_name.setPreferredSize(new Dimension(380,20));
+		user_name.setBackground(new Color(186,206,224));
+		user_name.setLayout(new BorderLayout());
+		JLabel name = new JLabel(user_names);
+		user_name.add(name,BorderLayout.WEST);
+		
+				//인원 수 패널
+		JPanel user_num = new JPanel();
+		user_num.setPreferredSize(new Dimension(380,20));
+		user_num.setBackground(new Color(186,206,224));
+		user_num.setLayout(new BorderLayout());
+		JLabel num = new JLabel(String.valueOf(chat_number));
+		num.setBorder(BorderFactory.createEmptyBorder(0,3,0,0));
+		user_num.add(num,BorderLayout.CENTER);
+		ImageIcon user_icon_s = new ImageIcon("C:\\Users\\khaer\\Documents\\GitHub\\kakao_chat\\src\\kakao_Chat\\user_s.png");
+		Image user_s = user_icon_s.getImage().getScaledInstance(10,10,Image.SCALE_DEFAULT);
+		ImageIcon user_icon_s2 = new ImageIcon(user_s);
+		JLabel img_2 = new JLabel(user_icon_s2);
+		user_num.add(img_2,BorderLayout.WEST);
+		
+		user_info.setBackground(new Color(186,206,224));
+		user_info.add(user_name,BorderLayout.NORTH);
+		user_info.add(user_num,BorderLayout.CENTER);
+		
+		
 		Panel_1.add(Profile_panel,BorderLayout.NORTH);
 		
 		//중간 채팅창 패널
 		JPanel chat_panel = new JPanel();
 		chat_panel.setPreferredSize(new Dimension(380,70));
 		chat_panel.setBackground(new Color(186,206,224));
+		
 		Panel_1.add(chat_panel,BorderLayout.CENTER);
 		
 		//하단 텍스트 패널
@@ -62,15 +109,24 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		Panel_1.add(text_panel,BorderLayout.SOUTH);
 		
 		//최하단 전송, 이모티콘 패널
+			//채팅 내용 입력 패널
 		JPanel send_panel = new JPanel();
 		send_panel.setPreferredSize(new Dimension(380,50));
-		send_panel.setBackground(new Color(186,206,224));
+		send_panel.setLayout(new BorderLayout());
+		ImageIcon send_img = new ImageIcon("C:\\Users\\khaer\\Documents\\GitHub\\kakao_chat\\src\\kakao_Chat\\btn_send.png");
+		Image send_img2 = send_img.getImage().getScaledInstance(50,30,Image.SCALE_DEFAULT);
+		ImageIcon send_img3 = new ImageIcon(send_img2);
+		JButton btn_send = new JButton(send_img3);
+		btn_send.setBorderPainted(false); 
+		btn_send.setPreferredSize(new Dimension(50, 30)); 
+		send_panel.add(btn_send,BorderLayout.EAST);		
 		text_panel.add(send_panel,BorderLayout.SOUTH);
 		
+
 		add(title_bar,BorderLayout.NORTH);
 		add(Panel_1,BorderLayout.CENTER);
 		
-		setBounds(100, 100, 380, 650);
+		setBounds(100, 100, 380, 635);
 		setVisible(true);
 
 	}
