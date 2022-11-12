@@ -1,11 +1,11 @@
 package kakao_Chat;
-import java.awt.*;
-import javax.swing.*;
+
+
 public class chatApplication {
 
-    public static void main(String args[]){
-    	chat_Frame chatframe = new chat_Frame();
-
-     }
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.println("hello world");
+	}
 
 }
