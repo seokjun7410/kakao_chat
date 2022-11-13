@@ -1,4 +1,4 @@
-package chatting_list;
+package kakao_Chat;
 
 import java.awt.EventQueue;
 

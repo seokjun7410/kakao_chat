@@ -1,4 +1,4 @@
-package chatting_list;
+package kakao_Chat;
 
 import java.awt.EventQueue;
 
@@ -162,7 +162,7 @@ public class ChattingListGUI{
 							@Override
 							public void mouseClicked(MouseEvent e) {
 								System.out.println("clicked ["+jb.getText()+"]");
-								Chatting chatting = new Chatting(jb.getText(),e.getX(),e.getY());
+								chat_Frame chatting = new chat_Frame();
 							}
 						});
 					}
