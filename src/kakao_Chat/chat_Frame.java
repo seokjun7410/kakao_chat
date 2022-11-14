@@ -1,22 +1,27 @@
 package kakao_Chat;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*; 
+import java.awt.event.*;
+import java.awt.geom.Area;
+import java.awt.geom.RoundRectangle2D; 
 
-public class chat_Frame extends JFrame implements MouseListener, MouseMotionListener,ActionListener
+public class chat_Frame extends JFrame implements MouseListener, MouseMotionListener,ActionListener, KeyListener
 {	
 	private Point initialClick;
 	private JPanel title_bar;
 	private JPanel Panel_1;
-	private JButton btn_exit;
+	private JLabel chat_text;
+	private JButton btn_exit,btn_send;
 	private Point comPoint;
 	private int chat_number;
 	private String user_names;
+	private JTextArea text_area;
+	private JPanel chat_panel;
 	
 	public chat_Frame()
 	{
 		chat_number = 1;
-		user_names = "유저 명";
+		user_names = "대화 상대";
 		setResizable(false);
 		setUndecorated(true);		
 //		setTitle("");
@@ -69,6 +74,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		user_name.setBackground(new Color(186,206,224));
 		user_name.setLayout(new BorderLayout());
 		JLabel name = new JLabel(user_names);
+		name.setFont(new Font("맑은 고딕",Font.BOLD,14));
 		user_name.add(name,BorderLayout.WEST);
 		
 				//인원 수 패널
@@ -93,9 +99,22 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		Panel_1.add(Profile_panel,BorderLayout.NORTH);
 		
 		//중간 채팅창 패널
-		JPanel chat_panel = new JPanel();
+		chat_panel = new JPanel();
 		chat_panel.setPreferredSize(new Dimension(380,70));
 		chat_panel.setBackground(new Color(186,206,224));
+		chat_panel.setLayout(new FlowLayout());
+		chat_panel.setBorder(BorderFactory.createEmptyBorder(20,20,20,10));
+	
+
+		//JScrollPane scrollPane = new JScrollPane(chat_view, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+		//scrollPane.setBounds(12, 10, 352, 340);
+		//chat_panel.add(scrollPane,BorderLayout.SOUTH);
+//		chat_text = new JLabel("test");
+//		chat_text.setPreferredSize(new Dimension(100,300));
+//		chat_text.setBackground(new Color(255,235,51));
+//		chat_text.setOpaque(true);
+//		chat_panel.add(chat_text);
 		
 		Panel_1.add(chat_panel,BorderLayout.CENTER);
 		
@@ -103,8 +122,10 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		JPanel text_panel = new JPanel();
 		text_panel.setPreferredSize(new Dimension(380,150));
 		text_panel.setLayout(new BorderLayout());
-		JTextArea text_area = new JTextArea(7,13);
+		text_area = new JTextArea(7,13);
+		text_area.addKeyListener(this);
 		text_area.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		text_area.setLineWrap(true);
 		text_panel.add(text_area,BorderLayout.CENTER);
 		Panel_1.add(text_panel,BorderLayout.SOUTH);
 		
@@ -116,9 +137,10 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		ImageIcon send_img = new ImageIcon("img/btn_send.png");
 		Image send_img2 = send_img.getImage().getScaledInstance(50,30,Image.SCALE_DEFAULT);
 		ImageIcon send_img3 = new ImageIcon(send_img2);
-		JButton btn_send = new JButton(send_img3);
+		btn_send = new JButton(send_img3);
 		btn_send.setBorderPainted(false); 
 		btn_send.setPreferredSize(new Dimension(50, 30)); 
+		btn_send.addActionListener(this);
 		send_panel.add(btn_send,BorderLayout.EAST);		
 		text_panel.add(send_panel,BorderLayout.SOUTH);
 		
@@ -130,8 +152,60 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		setVisible(true);
 
 	}
-	
+		
+		public void makeRightBubble (String value) {
+			if(!value.equals("")) {
+				JPanel chat_view = new JPanel();
+				chat_view.setLayout(new FlowLayout(FlowLayout.RIGHT));
+				chat_view.setBackground(new Color(186,206,224));
+				chat_view.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
+				JLabel label = new JLabel(value);
+				label.setFont(new Font("나눔고딕", Font.PLAIN, 12));
+				label.setBorder(BorderFactory.createEmptyBorder(0,0,0,10));
+				RightArrowBubble RightArrowBubble = new RightArrowBubble();
+				int width =(int) label.getPreferredSize().getWidth()+15;		
+				int height = 27;
+				if(width > 208) {
+					width = 208;
+					height = (int)((width /208) +1)*27;
+				}
+				chat_view.setPreferredSize(new Dimension(380,height+5));
+				RightArrowBubble.setPreferredSize(new Dimension(width,height));
+				RightArrowBubble.setBackground(new Color(255,235,51));	
+				System.out.print(label.getPreferredSize()+""+height);
+				RightArrowBubble.add(label);
+				chat_view.add(RightArrowBubble);
+				chat_panel.add(chat_view);
+				revalidate();
+			}
+		}
 
+		public class RightArrowBubble extends JPanel {
+			   private static final long serialVersionUID = -5389178141802153305L;
+			   private int strokeThickness = 3;
+			   private int radius = 10;
+			   private int arrowSize = 6;
+			   private int padding = strokeThickness / 2;
+			   @Override
+			   protected void paintComponent(final Graphics g) {
+			      final Graphics2D g2d = (Graphics2D) g;
+			      g2d.setColor(new Color(255,235,51));
+			      int bottomLineY = getHeight() - strokeThickness;
+			      int width = getWidth() - arrowSize - (strokeThickness * 2);
+			      g2d.fillRect(padding, padding, width, bottomLineY);
+			      RoundRectangle2D.Double rect = new RoundRectangle2D.Double(padding, padding, width, bottomLineY,  radius, radius);
+			      Polygon arrow = new Polygon();
+			      arrow.addPoint(width, 8);
+			      arrow.addPoint(width + arrowSize, 10);
+			      arrow.addPoint(width, 12);
+			      Area area = new Area(rect);
+			      area.add(new Area(arrow));
+			      g2d.setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
+			      g2d.setStroke(new BasicStroke(strokeThickness));
+			      g2d.draw(area);
+			   }
+			}
+		
 
 		public void mousePressed(MouseEvent e) 
 		{ 
@@ -191,6 +265,37 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			if(e.getSource().equals(btn_exit)) {
 				this.dispose();
 			}
+			else if(e.getSource().equals(btn_send)) {
+				String value = text_area.getText();
+				text_area.setText(""); // �޼����� ������ ���� �޼��� ����â�� ����.
+				text_area.requestFocus(); // �޼����� ������ Ŀ���� �ٽ� �ؽ�Ʈ �ʵ�� ��ġ��Ų��
+				makeRightBubble(value);
+				 // same value as
+//				text_area.setCaretPosition(len); // place caret at the end (with no selection)
+//		 		textArea.replaceSelection(msg + "\n");
+			}
+			
+		}
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			// TODO 자동 생성된 메소드 스텁
+			
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			  if(e.getKeyCode() == KeyEvent.VK_ENTER){
+				    e.consume();
+				    btn_send.doClick();
+			  }
+			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// TODO 자동 생성된 메소드 스텁
+			
 			
 		}
 
