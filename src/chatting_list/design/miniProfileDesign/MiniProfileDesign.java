@@ -9,8 +9,9 @@ import javax.swing.JPanel;
 public interface MiniProfileDesign {
 	
 	
-	default void ProfileDesign(JPanel chattingPanel,int chattingListHeight, int chattingListIndex) {
-		JLabel userNameLabel = new JLabel("User"+(chattingListIndex+2));
+	default String ProfileDesign(JPanel chattingPanel,int chattingListHeight, int chattingListIndex) {
+		String chattingName = "User"+(chattingListIndex+2);
+		JLabel userNameLabel = new JLabel(chattingName);
 		userNameLabel.setBounds(86, 16, 93, 15);
 		chattingPanel.add(userNameLabel);
 		
@@ -19,6 +20,8 @@ public interface MiniProfileDesign {
 		chattingPanel.add(lastMassageLabel);
 		
 		miniProfileMakeByNumber(chattingPanel);
+		
+		return chattingName;
 	}
 	
 	abstract void miniProfileMakeByNumber(JPanel chattingPanel);

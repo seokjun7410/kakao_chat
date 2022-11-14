@@ -206,40 +206,41 @@ public class ChattingListGUI{
 		JPanel chattingPanel = new JPanel();
 		chattingPanel.setBounds(67, 50, 317, chattingListHeight);
 		frame.getContentPane().add(chattingPanel);
+		chattingPanel.setBackground(Color.white);
 		chattingPanel.setLayout(null);
 		
-		JLabel userNameLabel = new JLabel("User"+(chattingListIndex+2));
-		userNameLabel.setBounds(86, 16, 93, 15);
-		chattingPanel.add(userNameLabel);
-		
-		JLabel lastMassageLabel = new JLabel("last message left");
-		lastMassageLabel.setBounds(86, 42, 199, 15);
-		chattingPanel.add(lastMassageLabel);
-		
-		/* profile 버튼 생성 */
-		
-		/***************/
-		int random = (int) ((Math.random() * (5 - 2)) + 2); //Random한 DummyData 생성
+		/**** 채팅방 생성 ****/
+		int random = (int) ((Math.random() * (6 - 2)) + 2); //Random한 DummyData 생성
 		int DUMMY_NumberOfPeople = random;
-		/***************/
 		
 		miniProfileManager = MiniProfileManager.getInstance();
 		miniProfileManager.setMiniProfileDesign( DUMMY_NumberOfPeople );
-		miniProfileManager.makeMiniProfile(chattingPanel,chattingListHeight, chattingListIndex);
+		String chatName = miniProfileManager.makeMiniProfile(chattingPanel,chattingListHeight, chattingListIndex);
+		/*******************/
+		
 		
 		chattingButtonList.add(chattingPanel);
 		chattingListPanel.setBounds(67, 50, 317, chattingListHeight);
 		chattingListPanel.add(chattingButtonList.get(++chattingListIndex));
 		chattingListHeight += 71;
+		
 		chattingPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("clicked ["+userNameLabel.getText()+"]");
-				Chatting chatting = new Chatting(userNameLabel.getText(),e.getX(),e.getY());
+				System.out.println("clicked ["+chatName+"]");
+				Chatting chatting = new Chatting(chatName,e.getX(),e.getY());
 				}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				JPanel b = (JPanel)e.getSource();
+		        b.setBackground(new Color(245,245,245));
+			}
+			@Override//마우스가 버튼 밖으로 나가면 노란색으로 바뀜
+		    public void mouseExited(MouseEvent e) {
+				JPanel b = (JPanel)e.getSource();
+		        b.setBackground(Color.white);
+		    }
 			});
-		
-		
 	}
 	
 }

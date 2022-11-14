@@ -28,8 +28,9 @@ public class MiniProfileManager {
 		}
 	}
 	
-	public void makeMiniProfile(JPanel chattingPanel, int chattingListHeight, int chattingListIndex) {
-		miniProfileDesign.ProfileDesign(chattingPanel,chattingListHeight,chattingListIndex);
+	public String makeMiniProfile(JPanel chattingPanel, int chattingListHeight, int chattingListIndex) {
+		String chattingName = miniProfileDesign.ProfileDesign(chattingPanel,chattingListHeight,chattingListIndex);
+		return chattingName;
 	}
 
 }
