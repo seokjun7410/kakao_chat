@@ -18,10 +18,11 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 	private JTextArea text_area;
 	private JPanel chat_panel;
 	
-	public chat_Frame()
+	public chat_Frame(int chat_num, String user_Name)
 	{
-		chat_number = 1;
-		user_names = "대화 상대";
+		
+		chat_number = chat_num;
+		user_names = user_Name;
 		setResizable(false);
 		setUndecorated(true);		
 //		setTitle("");

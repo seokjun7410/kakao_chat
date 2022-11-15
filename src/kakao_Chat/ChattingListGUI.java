@@ -42,6 +42,7 @@ public class ChattingListGUI{
 				try {
 					ChattingListGUI window = new ChattingListGUI();
 					window.frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -226,7 +227,7 @@ public class ChattingListGUI{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("clicked ["+chatName+"]");
-				chat_Frame chatting = new chat_Frame();
+				chat_Frame chatting = new chat_Frame(DUMMY_NumberOfPeople,chatName);
 				}
 			@Override
 			public void mouseEntered(MouseEvent e) {
