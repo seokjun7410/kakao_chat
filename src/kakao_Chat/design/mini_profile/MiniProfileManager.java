@@ -4,6 +4,12 @@ package kakao_Chat.design.mini_profile;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import kakao_Chat.design.mini_profile.chat.FourPeople;
+import kakao_Chat.design.mini_profile.chat.MoreThanFivePeople;
+import kakao_Chat.design.mini_profile.chat.ThreePeople;
+import kakao_Chat.design.mini_profile.chat.TwoPeople;
+import kakao_Chat.design.mini_profile.friend.FriendMiniProfile;
+
 /* miniProfile의 디자인을 결정하는 class => setMiniProfileDesign */
 public class MiniProfileManager {
 	
@@ -20,13 +26,18 @@ public class MiniProfileManager {
 	        return LazyHolder.INSTANCE;
 	    }
 	
-	public void setMiniProfileDesign(int numberOfPeople) {
+	public void setMiniProfileDesign_Chat(int numberOfPeople) {
 		switch(numberOfPeople) {
 		case 2: miniProfileDesign = new TwoPeople(); break;
 		case 3: miniProfileDesign = new ThreePeople(); break;
 		case 4: miniProfileDesign = new FourPeople(); break;
 		default: miniProfileDesign = new MoreThanFivePeople(); break;
 		}
+	}
+	
+	public void setMiniProfileDesign_Friend() {
+		miniProfileDesign = new FriendMiniProfile();
+
 	}
 	
 	public String makeMiniProfile(JPanel chattingPanel, int chattingListHeight, int chattingListIndex) {

@@ -1,4 +1,4 @@
-package kakao_Chat.design.mini_profile;
+package kakao_Chat.design.mini_profile.chat;
 
 
 import javax.swing.ImageIcon;
@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import kakao_Chat.design.RoundedButton;
 
 
-public class ThreePeople implements MiniProfileDesign{
+public class ThreePeople extends MiniProfileDesign_Chat{
 	
 	@Override
 	public void miniProfileMakeByNumber(JPanel chattingPanel) {
