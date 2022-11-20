@@ -8,7 +8,8 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 	private TranslucentLabel title_bar;
 	private JButton btn_exit;
 	private Point comPoint;
-	
+	private JPanel menu_bar;
+	private JLabel empty_menu_bar[];
 	public Profile_Frame()
 	{
 	
@@ -18,19 +19,20 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 		setLayout(new BorderLayout());
 		setLocationRelativeTo(null);
 		
+		
 		JPanel background_panel = new JPanel();
 		background_panel.setLayout(new BorderLayout());
 		Image bg_img = new ImageIcon("img/default_back.jpg").getImage().getScaledInstance(380,650,Image.SCALE_DEFAULT);
 		ImageIcon bg = new ImageIcon(bg_img);
 		JLabel img = new JLabel(bg);
 		background_panel.add(img);
-		add(background_panel);
+		add(background_panel,BorderLayout.CENTER);
 		
 		//상단바 구성
 		title_bar = new TranslucentLabel();
 		title_bar.setPreferredSize(new Dimension(380,34));
 		title_bar.setLayout(null);
-		title_bar.setBackground(new Color(0, 0, 0, 128));
+		title_bar.setBackground(new Color(0, 0, 0, 0));
 		title_bar.addMouseListener(this);
 		title_bar.addMouseMotionListener(this);
 		
@@ -41,7 +43,22 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 		btn_exit.addActionListener(this);
 		title_bar.add(btn_exit);
 		
+		//하단 메뉴바
+		menu_bar = new JPanel();
+		menu_bar.setPreferredSize(new Dimension(380,120));
+		menu_bar.setLayout(new GridLayout(1,3));
+		menu_bar.setBorder(BorderFactory.createEmptyBorder(50,50,50,50));
+		
+		empty_menu_bar = new JLabel[3];
+		for(int i=0;i<3;i++){ 
+			empty_menu_bar[i] = new JLabel();
+		    menu_bar.add(empty_menu_bar[i]);
+		}
+		empty_menu_bar[1].setText("test");
+		empty_menu_bar[1].addMouseListener(this);
 
+	
+		add(menu_bar,BorderLayout.SOUTH);
 		
 		background_panel.add(title_bar,BorderLayout.NORTH);
 		
@@ -94,11 +111,19 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 		if(e.getSource().equals(title_bar)) {
 			comPoint = e.getPoint();
 		}
+		else if (e.getSource().equals(empty_menu_bar[1])) {
+			empty_menu_bar[1].setBackground(new Color(0,0,0,124));
+			revalidate();
+		}
 	}
 	
 	public void mouseReleased(MouseEvent e) {
 		if(e.getSource().equals(title_bar)) {
 			comPoint = null;
+		}
+		else if (e.getSource().equals(empty_menu_bar[1])) {
+			chat_Frame chatting = new chat_Frame(1,"chatName");
+			
 		}
 	}
 

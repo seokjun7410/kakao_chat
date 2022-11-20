@@ -1,90 +1,95 @@
 package kakao_Chat;
 
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.JMenuItem;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import java.awt.Font;
+import java.awt.Graphics;
+
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextPane;
 import javax.swing.JList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Vector;
 import java.awt.BorderLayout;
+
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
+import java.awt.ScrollPane;
+
 import javax.swing.JSplitPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.ScrollPaneLayout;
+import javax.swing.plaf.basic.BasicMenuBarUI;
+
 import kakao_Chat.design.mini_profile.MiniProfileManager;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class ChattingListGUI{
-
-	private JFrame frame;
-	
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ChattingListGUI window = new ChattingListGUI();
-					window.frame.setVisible(true);
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public ChattingListGUI() {
-		initialize();
-	}
-
-	
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	static int chattingListHeight = 71; // 채팅방 버튼을 담는 list의 크기
+public class ChattingListGUI extends JFrame{
+	int chattingListHeight = 71; // 채팅방 버튼을 담는 list의 크기
 	static int chattingListIndex = -1; //채팅방이 생성될 때마다 +1
 	private MiniProfileManager miniProfileManager; //미니 프로필 디자인 동적 선택 생성 매니저
+	private JPanel chatPanel;
+
 	
-	private void initialize() {
+	public ChattingListGUI(String name) {
 		ArrayList<JPanel> chattingButtonList = new ArrayList<JPanel>();
+		setBackground(new Color(255, 255, 255));
+		setBounds(100, 100, 400, 690);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(null);
 		
-		frame = new JFrame();
-		frame.getContentPane().setBackground(new Color(255, 255, 255));
-		frame.setBounds(100, 100, 400, 690);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		
+		chatPanel = new JPanel();
+		chatPanel.setBackground(Color.WHITE);
+		chatPanel.setBounds(67, 50, 317, 600);
+		chatPanel.setLayout(new FlowLayout());
 		
 		JPanel chattingListPanel = new JPanel();
-		chattingListPanel.setBackground(new Color(255, 255, 255));
-		chattingListPanel.setBounds(67, 50, 317, 71);
-		chattingListPanel.setLayout(new GridLayout(0,1));
-		frame.getContentPane().add(chattingListPanel);
+		chattingListPanel.setBackground(Color.WHITE);
+		chattingListPanel.setBounds(67, 50, 317, 590);
+		chattingListPanel.setLayout(new FlowLayout());
+		JScrollPane pane = new JScrollPane (chattingListPanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		pane.setPreferredSize(new Dimension(317,590));
+		pane.getVerticalScrollBar().setUnitIncrement(14);
+		pane.setBorder(null);
+		chatPanel.add(pane);
+		add(chatPanel);
+	
 		
 		
 		JPanel sideMenuPane = new JPanel();
 		sideMenuPane.setBackground(new Color(236, 236, 236));
 		sideMenuPane.setBounds(0, 0, 67, 651);
-		frame.getContentPane().add(sideMenuPane);
+		add(sideMenuPane);
 		sideMenuPane.setLayout(null);
 		
 		JButton moveFriendsList = new JButton("");
@@ -112,18 +117,26 @@ public class ChattingListGUI{
 		
 		JPanel topBar = new JPanel();
 		topBar.setBackground(new Color(255, 255, 255));
-		topBar.setBounds(67, 0, 317, 52);
-		frame.getContentPane().add(topBar);
+		topBar.setBounds(67, -10, 317, 60);
+		topBar.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
+		add(topBar);
 		topBar.setLayout(null);
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(new Color(255, 255, 255));
-		menuBar.setBounds(12, 29, 50, 23);
+		menuBar.setBounds(12, 29, 50, 35);
+		menuBar.setUI ( new BasicMenuBarUI (){
+		    public void paint ( Graphics g, JComponent c ){
+		       g.setColor ( Color.white );
+		       g.fillRect ( 0, 0, c.getWidth (), c.getHeight () );
+		    }
+		} );
 		topBar.add(menuBar);
 		
 		JMenu chattingLableAndMenu = new JMenu("채팅");
 		chattingLableAndMenu.setBackground(new Color(255, 255, 255));
 		chattingLableAndMenu.setBorderPainted(false);
+		chattingLableAndMenu.setFocusable(false);
 		menuBar.add(chattingLableAndMenu);
 		chattingLableAndMenu.setFont(new Font("돋움", Font.BOLD, 17));
 		
@@ -146,21 +159,24 @@ public class ChattingListGUI{
 		JButton creatChatting = new JButton("");
 		creatChatting.setIcon(new ImageIcon("img/creatChat.PNG"));
 		creatChatting.setBorderPainted(false);
+	
 		
 		/* 채팅방 생성 버튼 클릭 */
 		creatChatting.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(chattingListIndex < 7) {
+				if(chattingListIndex < 20) {
 					createChattingRoom(chattingButtonList,chattingListPanel); //chatingRoom 생성
-					chattingListPanel.revalidate();
-					chattingListPanel.repaint();
+					//chattingListPanel.setSize(317,chattingListHeight);
+					chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
+					revalidate();
+					repaint();
 				}else {
 					System.out.println("최대 방 개수를 초과했습니다.");
 				}
 			}
 		});
-		creatChatting.setBounds(279, 24, 25, 23);
+		creatChatting.setBounds(279, 30, 25, 23);
 		topBar.add(creatChatting);
 		
 		
@@ -203,10 +219,11 @@ public class ChattingListGUI{
 	private void createChattingRoom(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel) {
 		
 		JPanel chattingPanel = new JPanel();
+		chattingPanel.setAutoscrolls(true);
 		chattingPanel.setBounds(67, 50, 317, chattingListHeight);
-		frame.getContentPane().add(chattingPanel);
 		chattingPanel.setBackground(Color.white);
 		chattingPanel.setLayout(null);
+		chattingPanel.setPreferredSize(new Dimension(317,71));
 		
 		/**** 채팅방 생성 ****/
 		int random = (int) ((Math.random() * (6 - 2)) + 2); //Random한 DummyData 생성
@@ -219,7 +236,7 @@ public class ChattingListGUI{
 		
 		
 		chattingButtonList.add(chattingPanel);
-		chattingListPanel.setBounds(67, 50, 317, chattingListHeight);
+		chattingListPanel.setBounds(0, 0, 317, chattingListHeight);
 		chattingListPanel.add(chattingButtonList.get(++chattingListIndex));
 		chattingListHeight += 71;
 		
@@ -241,5 +258,7 @@ public class ChattingListGUI{
 		    }
 			});
 	}
+	
+	
 	
 }

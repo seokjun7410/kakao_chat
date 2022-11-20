@@ -13,6 +13,7 @@ public class Chatting {
 	/**
 	 * Create the application.
 	 */
+	
 	public Chatting(String name,int mainX,int mainY) {
 		initialize(name,mainX,mainY);
 	}
