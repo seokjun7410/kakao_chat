@@ -1,6 +1,8 @@
 package kakao_Chat;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -9,7 +11,7 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 	private JButton btn_exit;
 	private Point comPoint;
 	private JPanel menu_bar;
-	private JLabel empty_menu_bar[];
+
 	public Profile_Frame()
 	{
 	
@@ -22,47 +24,52 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 		
 		JPanel background_panel = new JPanel();
 		background_panel.setLayout(new BorderLayout());
-		Image bg_img = new ImageIcon("img/default_back.jpg").getImage().getScaledInstance(380,650,Image.SCALE_DEFAULT);
-		ImageIcon bg = new ImageIcon(bg_img);
-		JLabel img = new JLabel(bg);
-		background_panel.add(img);
+//		Image bg_img = new ImageIcon("img/default_back.jpg").getImage().getScaledInstance(380,650,Image.SCALE_DEFAULT);
+//		ImageIcon bg = new ImageIcon(bg_img);
+//		JLabel img = new JLabel(bg);
+		background_panel.setBackground(new Color(132, 139, 145));
 		add(background_panel,BorderLayout.CENTER);
 		
 		//상단바 구성
 		title_bar = new TranslucentLabel();
-		title_bar.setPreferredSize(new Dimension(380,34));
+		title_bar.setPreferredSize(new Dimension(300,34));
 		title_bar.setLayout(null);
-		title_bar.setBackground(new Color(0, 0, 0, 0));
+		title_bar.setBackground(new Color(132, 139, 145));
 		title_bar.addMouseListener(this);
 		title_bar.addMouseMotionListener(this);
 		
 		//상단바 X버튼
-		btn_exit = new JButton("x");
-		btn_exit.setBounds(338,2, 40, 30);
-		btn_exit.setPreferredSize(new Dimension(30,30));
+		Image x = new ImageIcon("img/x.png").getImage().getScaledInstance(20,20,Image.SCALE_DEFAULT);
+		ImageIcon x_button = new ImageIcon(x);
+		btn_exit = new JButton(x_button);
+		btn_exit.setBounds(277,4, 20, 20);
+		btn_exit.setPreferredSize(new Dimension(20,20));
+		btn_exit.setBackground(new Color(132, 139, 145));
 		btn_exit.addActionListener(this);
 		title_bar.add(btn_exit);
 		
 		//하단 메뉴바
 		menu_bar = new JPanel();
-		menu_bar.setPreferredSize(new Dimension(380,120));
+		menu_bar.setPreferredSize(new Dimension(380,100));
 		menu_bar.setLayout(new GridLayout(1,3));
-		menu_bar.setBorder(BorderFactory.createEmptyBorder(50,50,50,50));
+		menu_bar.setBackground(new Color(132, 139, 145));
+		menu_bar.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(156,162,167)));
 		
-		empty_menu_bar = new JLabel[3];
-		for(int i=0;i<3;i++){ 
-			empty_menu_bar[i] = new JLabel();
-		    menu_bar.add(empty_menu_bar[i]);
-		}
-		empty_menu_bar[1].setText("test");
-		empty_menu_bar[1].addMouseListener(this);
+		//empty_menu_bar[1].setText("test");
+		Image bg_img = new ImageIcon("img/chat_1.png").getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT);
+		ImageIcon bg = new ImageIcon(bg_img);
+		JLabel img = new JLabel(bg);
+		//empty_menu_bar[1].setPreferredSize(new Dimension(200,200));
+		//empty_menu_bar[1].add(img);
+		menu_bar.add(img);
+		menu_bar.addMouseListener(this);
 
 	
 		add(menu_bar,BorderLayout.SOUTH);
 		
 		background_panel.add(title_bar,BorderLayout.NORTH);
 		
-		setBounds(100, 100, 380, 635);
+		setBounds(100, 100, 300, 600);
 		setVisible(true);
 	}
 
@@ -111,9 +118,9 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 		if(e.getSource().equals(title_bar)) {
 			comPoint = e.getPoint();
 		}
-		else if (e.getSource().equals(empty_menu_bar[1])) {
-			empty_menu_bar[1].setBackground(new Color(0,0,0,124));
-			revalidate();
+		else if (e.getSource().equals(menu_bar)) {
+//			menu_bar.setBackground(new Color(0,0,0,124));
+//			revalidate();
 		}
 	}
 	
@@ -121,7 +128,7 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 		if(e.getSource().equals(title_bar)) {
 			comPoint = null;
 		}
-		else if (e.getSource().equals(empty_menu_bar[1])) {
+		else if (e.getSource().equals(menu_bar)) {
 			chat_Frame chatting = new chat_Frame(1,"chatName");
 			
 		}

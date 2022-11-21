@@ -312,6 +312,8 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 		
 	public static void main(String[] args) {
 		Login_Frame frame = new Login_Frame();
+		
+		//Profile_Frame frame = new Profile_Frame();
 		frame.setVisible(true);
 	}
 }

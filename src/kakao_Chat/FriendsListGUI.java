@@ -41,6 +41,7 @@ import java.awt.BorderLayout;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.ScrollPane;
 
 import javax.swing.JSplitPane;
@@ -113,6 +114,7 @@ public class FriendsListGUI extends JFrame{
 		chattingLableAndMenu.setBackground(new Color(255, 255, 255));
 		chattingLableAndMenu.setBorderPainted(false);
 		chattingLableAndMenu.setFocusable(false);
+		chattingLableAndMenu.setBorder(BorderFactory.createEmptyBorder(0,0,5,0));
 		menuBar.add(chattingLableAndMenu);
 		chattingLableAndMenu.setFont(new Font("돋움", Font.BOLD, 17));
 		
@@ -153,14 +155,17 @@ public class FriendsListGUI extends JFrame{
 		topBar.add(creatChatting);
 		
 		JButton addFriend = new JButton("");
-		addFriend.setIcon(new ImageIcon("img/addFriend33.png"));
+		Image af = new ImageIcon("img/add_friend.png").getImage().getScaledInstance(28,22,Image.SCALE_DEFAULT);
+		ImageIcon btn_af = new ImageIcon(af);
+		addFriend.setIcon(btn_af);
+		addFriend.setBackground(new Color(255, 255, 255));
 		addFriend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new addFriendGUI();
 			}
 		});
 		addFriend.setBorderPainted(false);
-		addFriend.setBounds(247, 29, 25, 23);
+		addFriend.setBounds(237, 29, 31, 25);
 		topBar.add(addFriend);
 	
 		

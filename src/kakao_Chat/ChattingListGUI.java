@@ -41,6 +41,7 @@ import java.awt.BorderLayout;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.ScrollPane;
 
 import javax.swing.JSplitPane;
@@ -59,6 +60,8 @@ public class ChattingListGUI extends JFrame{
 	static int chattingListIndex = -1; //채팅방이 생성될 때마다 +1
 	private MiniProfileManager miniProfileManager; //미니 프로필 디자인 동적 선택 생성 매니저
 	private JPanel chatPanel;
+	JButton moveFriendsList;
+	JButton moveChattingList;
 	FriendsListGUI friendsListGUI = new FriendsListGUI();
 	
 	public ChattingListGUI(String name) {
@@ -153,39 +156,45 @@ public class ChattingListGUI extends JFrame{
 		
 		
 		JPanel sideMenuPane = new JPanel();
-		sideMenuPane.setBackground(new Color(236, 236, 236));
+		sideMenuPane.setBackground(new Color(236, 236, 237));
 		sideMenuPane.setBounds(0, 0, 67, 651);
 		getContentPane().add(sideMenuPane);
 		sideMenuPane.setLayout(null);
 		
-		JButton moveFriendsList = new JButton("");
-		moveFriendsList.setBackground(new Color(240, 240, 240));
-		moveFriendsList.setIcon(new ImageIcon("img/friendsList.PNG"));
+		moveFriendsList = new JButton("");
+		Image f = new ImageIcon("img/side_btn_1_1.png").getImage().getScaledInstance(22,22,Image.SCALE_DEFAULT);
+		ImageIcon f_button = new ImageIcon(f);
+		moveFriendsList.setBackground(new Color(236, 236, 237));
+		moveFriendsList.setIcon(f_button);
 		moveFriendsList.setBorderPainted(false);
 		moveFriendsList.setFocusPainted(false);
-		moveFriendsList.setBounds(12, 25, 43, 39);
+		moveFriendsList.setBounds(22, 35, 22, 22);
 		moveFriendsList.setBorderPainted(false);
 		sideMenuPane.add(moveFriendsList);
 
-		JButton moveChattingList = new JButton("");
-		moveChattingList.setBackground(new Color(240, 240, 240));
-		moveChattingList.setIcon(new ImageIcon("img/chattingList.PNG"));
-		moveChattingList.setBounds(12, 74, 43, 39);
+		moveChattingList = new JButton("");
+		Image c = new ImageIcon("img/side_btn_2_2.png").getImage().getScaledInstance(22,22,Image.SCALE_DEFAULT);
+		ImageIcon c_button = new ImageIcon(c);
+		moveChattingList.setBackground(new Color(236, 236, 237));
+		moveChattingList.setIcon(c_button);
+		moveChattingList.setBounds(22, 95, 22, 22);
 		moveChattingList.setBorderPainted(false);
 		sideMenuPane.add(moveChattingList);
 		
 		JButton moveMore = new JButton("");
-		moveMore.setBackground(new Color(240, 240, 240));
-		moveMore.setIcon(new ImageIcon("img/more.PNG"));
+		Image m = new ImageIcon("img/side_btn_3_2.png").getImage().getScaledInstance(22,6,Image.SCALE_DEFAULT);
+		ImageIcon m_button = new ImageIcon(m);
+		moveMore.setBackground(new Color(236, 236, 237));
+		moveMore.setIcon(m_button);
 		moveMore.setBorderPainted(false);
-		moveMore.setBounds(12, 123, 43, 39);
+		moveMore.setBounds(22, 155, 22, 7);
 		sideMenuPane.add(moveMore);
 		
 		JPanel friendPanel = friendsListGUI.get();
 		friendPanel.setBounds(67, 0, 317, 650);
 		getContentPane().add(friendPanel);
 		friendPanel.setLayout(null);
-		friendPanel.setVisible(false);
+		friendPanel.setVisible(true);
 	
 		
 		/* 채팅방 사이드바 이벤트 */
@@ -195,6 +204,13 @@ public class ChattingListGUI extends JFrame{
 			public void mouseClicked(MouseEvent e) {
 				chatPanel.setVisible(false);
 				friendPanel.setVisible(true);
+				Image f = new ImageIcon("img/side_btn_1_1.png").getImage().getScaledInstance(22,22,Image.SCALE_DEFAULT);
+				ImageIcon f_button = new ImageIcon(f);
+				moveFriendsList.setIcon(f_button);
+				
+				Image c = new ImageIcon("img/side_btn_2_2.png").getImage().getScaledInstance(22,22,Image.SCALE_DEFAULT);
+				ImageIcon c_button = new ImageIcon(c);
+				moveChattingList.setIcon(c_button);
 			}
 		});
 		moveChattingList.addMouseListener(new MouseAdapter() {
@@ -202,6 +218,13 @@ public class ChattingListGUI extends JFrame{
 			public void mouseClicked(MouseEvent e) {
 				chatPanel.setVisible(true);
 				friendPanel.setVisible(false);
+				Image f = new ImageIcon("img/side_btn_1_2.png").getImage().getScaledInstance(22,22,Image.SCALE_DEFAULT);
+				ImageIcon f_button = new ImageIcon(f);
+				moveFriendsList.setIcon(f_button);
+				
+				Image c = new ImageIcon("img/side_btn_2_1.png").getImage().getScaledInstance(22,22,Image.SCALE_DEFAULT);
+				ImageIcon c_button = new ImageIcon(c);
+				moveChattingList.setIcon(c_button);
 			}
 		});
 		
@@ -239,7 +262,7 @@ public class ChattingListGUI extends JFrame{
 //		profileButton_1_3.setBounds(29, 34, 30, 30);
 //		chattingPanel_1.add(profileButton_1_3);
 		
-		
+		chatPanel.setVisible(false);
 	}
 	
 	private void createChattingRoom(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel) {
