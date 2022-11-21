@@ -26,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -56,12 +57,12 @@ import kakao_Chat.design.mini_profile.MiniProfileManager;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class FriendsListGUI extends JFrame{
+public class FriendsListGUI extends JFrame implements MouseListener{
 	int chattingListHeight = 71; // 채팅방 버튼을 담는 list의 크기
 	static int chattingListIndex = -1; //채팅방이 생성될 때마다 +1
 	private MiniProfileManager miniProfileManager; //미니 프로필 디자인 동적 선택 생성 매니저
 	private JPanel chatPanel;
-
+	private JLabel profileButton;
 	public JPanel get() {
 		return chatPanel;
 	}
@@ -204,10 +205,11 @@ public class FriendsListGUI extends JFrame{
 		myInfoPanel.setBounds(0, 59, 317, 85);
 		chatPanel.add(myInfoPanel);
 		myInfoPanel.setLayout(null);
-		JButton profileButton = new RoundedButton("",new ImageIcon("img/defaultProfile80.png")); //본인 프로필 이미지
+		profileButton = new JLabel(new ImageIcon("img/defaultProfile80.png")); //본인 프로필 이미지
 		profileButton.setBounds(13, 8, 61, 61);
+		profileButton.setBackground(Color.WHITE);
+		profileButton.addMouseListener(this);
 		myInfoPanel.add(profileButton);
-		
 		JLabel currentUserName = new JLabel("USER");//본인 이름
 		currentUserName.setBounds(86, 30, 57, 15);
 		myInfoPanel.add(currentUserName);
@@ -271,5 +273,38 @@ public class FriendsListGUI extends JFrame{
 		        b.setBackground(Color.white);
 		    }
 			});
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		//System.out.println("clicked ["+chatName+"]");
+		if (e.getSource().equals(profileButton)) {
+		Profile_Frame profile_Frame = new Profile_Frame();
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

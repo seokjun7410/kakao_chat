@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -60,17 +62,24 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 		setVisible(true);
 		
 		
+		Image k = new ImageIcon("img/defaultProfile.png").getImage().getScaledInstance(100,100,Image.SCALE_DEFAULT);
+		//ImageIcon k_img = new ImageIcon(k);
+		ImageIcon k_img = new ImageIcon("img/kakao_talk.png");
+		JLabel k_label = new JLabel(k_img);
+		k_label.setBounds(0, 50, 380, 150);
+		
 		JPanel id_panel = new JPanel();
 		id_area = new JTextArea();
 		id_area.setText(" 아이디  ");
 		id_area.setEditable(false);
+		id_area.setBounds(80, 100, 380, 26);
 		id_area.setBackground(new Color(254,229,0));
 		id_panel.setPreferredSize(new Dimension(380,40));
 		id_text = new JTextField();
 		id_text.setEditable(true);
-		id_text.setBounds(100, 100, 380, 26);
+		id_text.setBounds(80, 100, 380, 26);
 		id_text.setPreferredSize(new Dimension(380,30));
-		id_text.setColumns(20);
+		id_text.setColumns(17);
 		id_panel.add(id_area);
 		id_panel.add(id_text);
 		id_panel.setBackground(new Color(254,229,0));
@@ -87,21 +96,30 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 		
 		pw_text.setBounds(100, 100, 380, 26);
 		pw_text.setPreferredSize(new Dimension(380,30));
-		pw_text.setColumns(20);
+		pw_text.setColumns(17);
 		pw_panel.add(pw_area);
 		pw_panel.add(pw_text);
 		pw_panel.setBackground(new Color(254,229,0));
 	
+		JPanel user_panel = new JPanel();
+		user_panel.setBounds(-18, 220, 380, 100);
+		user_panel.setBackground(new Color(254,229,0));
+		user_panel.setLayout(new FlowLayout());
+		user_panel.add(id_panel);
+		user_panel.add(pw_panel);
+		
 		
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(380,30));
-		panel.setLayout(new FlowLayout());
+		panel.setLayout(null);
 		panel.setBackground(new Color(254,229,0));
-		panel.add(id_panel);
-		panel.add(pw_panel);
+		panel.add(k_label);
+		panel.add(user_panel);
+
 		add(panel,BorderLayout.CENTER);
 		btn_login = new JButton("로그인");
 		btn_login.addActionListener(this);
+		btn_login.setBounds(135, 330, 110, 35);
 		panel.add(btn_login);
 		title_bar = new JPanel();
 		title_bar.setPreferredSize(new Dimension(380,34));

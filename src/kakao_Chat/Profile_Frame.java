@@ -48,6 +48,33 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 		btn_exit.addActionListener(this);
 		title_bar.add(btn_exit);
 		
+		JPanel center_panel = new JPanel();
+		center_panel.setBackground(new Color(132, 139, 145));
+		center_panel.setLayout(new BorderLayout());
+		background_panel.add(center_panel,BorderLayout.CENTER);
+		
+		JPanel Profile_panel = new JPanel();
+		Profile_panel.setPreferredSize(new Dimension(300,170));
+		Profile_panel.setBackground(new Color(132, 139, 145));
+		center_panel.add(Profile_panel,BorderLayout.SOUTH);
+		
+		JPanel Profile_panel2 = new JPanel();
+		Profile_panel2.setPreferredSize(new Dimension(130,170));
+		Profile_panel2.setBackground(new Color(132, 139, 145));
+		Profile_panel.add(Profile_panel2);
+		
+		Image p = new ImageIcon("img/user_default2.png").getImage().getScaledInstance(100,100,Image.SCALE_DEFAULT);
+		ImageIcon p_img = new ImageIcon(p);
+		JLabel profile_label = new JLabel(p_img);
+		profile_label.setBackground(new Color(132, 139, 145));
+		Profile_panel2.add(profile_label);
+		
+		JLabel name_label = new JLabel("이름");
+		name_label.setForeground(Color.white);
+		name_label.setFont(new Font("맑은 고딕",Font.BOLD, 15));
+		Profile_panel2.add(name_label);
+		
+		
 		//하단 메뉴바
 		menu_bar = new JPanel();
 		menu_bar.setPreferredSize(new Dimension(380,100));

@@ -10,12 +10,12 @@ public class MiniProfileDesign_Friend extends MiniProfileDesign{
 	protected String ProfileDesign(JPanel chattingPanel,int chattingListHeight, int chattingListIndex) {
 		String chattingName = "User"+(chattingListIndex+2);
 		JLabel userNameLabel = new JLabel(chattingName);
-		userNameLabel.setBounds(86, 9, 93, 15);
+		userNameLabel.setBounds(86, 14, 93, 15);
 		chattingPanel.add(userNameLabel);
 		
-		JLabel lastMassageLabel = new JLabel("state massage");
-		lastMassageLabel.setBounds(86, 31, 199, 15);
-		chattingPanel.add(lastMassageLabel);
+//		JLabel lastMassageLabel = new JLabel("state massage");
+//		lastMassageLabel.setBounds(86, 31, 199, 15);
+//		chattingPanel.add(lastMassageLabel);
 		
 		miniProfileMakeByNumber(chattingPanel);
 		
