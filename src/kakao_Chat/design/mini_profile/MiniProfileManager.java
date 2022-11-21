@@ -29,8 +29,19 @@ public class MiniProfileManager {
 		}
 	}
 	
+<<<<<<< Updated upstream
 	public void makeMiniProfile(String User_name,JPanel chattingPanel, int chattingListHeight, int chattingListIndex) {
 		miniProfileDesign.ProfileDesign(User_name, chattingPanel,chattingListHeight,chattingListIndex);
+=======
+	public void setMiniProfileDesign_Friend() {
+		miniProfileDesign = new FriendMiniProfile();
+
+	}
+	
+	public void makeMiniProfile(String User_name,JPanel chattingPanel, int chattingListHeight, int chattingListIndex) {
+		//String chattingName = miniProfileDesign.ProfileDesign(User_name,chattingPanel,chattingListHeight,chattingListIndex);
+		miniProfileDesign.ProfileDesign(User_name,chattingPanel,chattingListHeight,chattingListIndex);
+>>>>>>> Stashed changes
 		//return chattingName;
 	}
 
