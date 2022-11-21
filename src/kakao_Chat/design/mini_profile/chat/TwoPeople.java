@@ -12,7 +12,7 @@ public class TwoPeople extends MiniProfileDesign_Chat{
 	
 	@Override
 	public void miniProfileMakeByNumber(JPanel chattingPanel) {
-		JButton profileButton = new RoundedButton("",new ImageIcon("img/defaultProfile70.png"));
+		JButton profileButton = new RoundedButton("",new ImageIcon("img/Profile50.png"));
 		profileButton.setBounds(10, 8, 55, 56);
 		chattingPanel.add(profileButton);
 	}

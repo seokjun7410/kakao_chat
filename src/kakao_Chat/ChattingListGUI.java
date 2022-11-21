@@ -50,7 +50,6 @@ import javax.swing.plaf.basic.BasicMenuBarUI;
 
 import kakao_Chat.design.friendslist_drawLine.BottomDrawPanel;
 import kakao_Chat.design.mini_profile.MiniProfileManager;
-import kakao_Chat.designPack.RoundedButton;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;

@@ -12,7 +12,7 @@ public class FriendMiniProfile extends MiniProfileDesign_Friend{
 	
 	@Override
 	public void miniProfileMakeByNumber(JPanel chattingPanel) {
-		JButton profileButton = new RoundedButton("",new ImageIcon("img/defaultProfile60.png"));
+		JButton profileButton = new RoundedButton("",new ImageIcon("img/Profile45.png"));
 		profileButton.setBounds(18, 3, 46, 46);
 		chattingPanel.add(profileButton);
 	}

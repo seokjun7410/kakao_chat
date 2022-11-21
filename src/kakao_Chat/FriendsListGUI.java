@@ -72,9 +72,7 @@ public class FriendsListGUI extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		
-		
-//		JPanel friends = friendsListGUI.get();
-		
+
 		chatPanel = new JPanel();
 		chatPanel.setBackground(Color.WHITE);
 		chatPanel.setBounds(67, 0, 317, 650);
@@ -155,6 +153,7 @@ public class FriendsListGUI extends JFrame{
 		topBar.add(creatChatting);
 		
 		JButton addFriend = new JButton("");
+		addFriend.setIcon(new ImageIcon("img/addFriend33.png"));
 		addFriend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new addFriendGUI();
@@ -195,10 +194,9 @@ public class FriendsListGUI extends JFrame{
 		moveMore.setBounds(12, 123, 43, 39);
 		sideMenuPane.add(moveMore);
 		
-		JPanel myInfoPanel = new BottomDrawPanel();
+		JPanel myInfoPanel = new BottomDrawPanel(25, 75, 290, 75);
 		myInfoPanel.setBackground(Color.WHITE);
 		myInfoPanel.setBounds(0, 59, 317, 85);
-		//frame.getContentPane().add(myInfoPanel);
 		chatPanel.add(myInfoPanel);
 		myInfoPanel.setLayout(null);
 		JButton profileButton = new RoundedButton("",new ImageIcon("img/defaultProfile80.png")); //본인 프로필 이미지
@@ -224,64 +222,6 @@ public class FriendsListGUI extends JFrame{
 		        b.setBackground(Color.white);
 		    }
 			});
-//		//JPanel friendPanel = friendsListGUI.get();
-//		friendPanel.setBounds(67, 0, 317, 650);
-//		getContentPane().add(friendPanel);
-//		friendPanel.setLayout(null);
-//		friendPanel.setVisible(false);
-//	
-//		
-//		/* 채팅방 사이드바 이벤트 */
-//		
-//		moveFriendsList.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				chatPanel.setVisible(false);
-//				friendPanel.setVisible(true);
-//			}
-//		});
-//		moveChattingList.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				chatPanel.setVisible(true);
-//				friendPanel.setVisible(false);
-//			}
-//		});
-//		
-		
-		/* *
-		 * MiniProfile 디자인 할때 사용 
-		 * */
-		
-//		JPanel chattingPanel_1 = new JPanel();
-//		chattingPanel_1.setLayout(null);
-//		chattingPanel_1.setBounds(67, 190, 317, 71);
-//		frame.getContentPane().add(chattingPanel_1);
-//		
-//		JLabel userNameLabel_1 = new JLabel("User1");
-//		userNameLabel_1.setBounds(86, 16, 93, 15);
-//		chattingPanel_1.add(userNameLabel_1);
-//		
-//		JLabel lastMassageLabel_1 = new JLabel("last message left");
-//		lastMassageLabel_1.setBounds(86, 42, 199, 15);
-//		chattingPanel_1.add(lastMassageLabel_1);
-//		
-//		JButton profileButton_1 = new JButton("");
-//		profileButton_1.setBounds(1, 6, 30, 30);
-//		chattingPanel_1.add(profileButton_1);
-//		
-//		JButton profileButton_1_1 = new JButton("");
-//		profileButton_1_1.setBounds(29, 6, 30, 30);
-//		chattingPanel_1.add(profileButton_1_1);
-//		
-//		JButton profileButton_1_2 = new JButton("");
-//		profileButton_1_2.setBounds(1, 34, 30, 30);
-//		chattingPanel_1.add(profileButton_1_2);
-//		
-//		JButton profileButton_1_3 = new JButton("");
-//		profileButton_1_3.setBounds(29, 34, 30, 30);
-//		chattingPanel_1.add(profileButton_1_3);
-		
 		
 	}
 	
