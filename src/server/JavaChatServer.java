@@ -34,10 +34,10 @@ public class JavaChatServer extends JFrame {
 	JTextArea textArea;
 	private JTextField txtPortNumber;
 
-	private ServerSocket socket; // ��������
-	private Socket client_socket; // accept() ���� ������ client ����
-	private Vector UserVec = new Vector(); // ����� ����ڸ� ������ ����
-	private static final int BUF_LEN = 128; // Windows ó�� BUF_LEN �� ����
+	private ServerSocket socket; 
+	private Socket client_socket;
+	private Vector UserVec = new Vector(); 
+	private static final int BUF_LEN = 128; 
 
 	/**
 	 * Launch the application.
@@ -82,9 +82,8 @@ public class JavaChatServer extends JFrame {
 		txtPortNumber.setHorizontalAlignment(SwingConstants.CENTER);
 		txtPortNumber.setText("30000");
 		txtPortNumber.setBounds(111, 264, 199, 26);
-
-		txtPortNumber.setColumns(10);
 		contentPane.add(txtPortNumber);
+		txtPortNumber.setColumns(10);
 
 		JButton btnServerStart = new JButton("Server Start");
 		btnServerStart.addActionListener(new ActionListener() {
@@ -97,8 +96,8 @@ public class JavaChatServer extends JFrame {
 				}
 				AppendText("Chat Server Running..");
 				btnServerStart.setText("Chat Server Running..");
-				btnServerStart.setEnabled(false); // ������ ���̻� �����Ű�� �� �ϰ� ���´�
-				txtPortNumber.setEnabled(false); // ���̻� ��Ʈ��ȣ ������ �ϰ� ���´�
+				btnServerStart.setEnabled(false);
+				txtPortNumber.setEnabled(false); 
 				AcceptServer accept_server = new AcceptServer();
 				accept_server.start();
 			}
@@ -107,20 +106,19 @@ public class JavaChatServer extends JFrame {
 		contentPane.add(btnServerStart);
 	}
 
-	// ���ο� ������ accept() �ϰ� user thread�� ���� �����Ѵ�.
+
 	class AcceptServer extends Thread {
 		@SuppressWarnings("unchecked")
 		public void run() {
-			while (true) { // ����� ������ ����ؼ� �ޱ� ���� while��
+			while (true) { 
 				try {
 					AppendText("Waiting new clients ...");
-					client_socket = socket.accept(); // accept�� �Ͼ�� �������� ���� �����
-					AppendText("���ο� ������ from " + client_socket);
-					// User �� �ϳ��� Thread ����
+					client_socket = socket.accept(); 
+					AppendText("접속: " + client_socket);
 					UserService new_user = new UserService(client_socket);
-					UserVec.add(new_user); // ���ο� ������ �迭�� �߰�
-					new_user.start(); // ���� ��ü�� ������ ����
-					AppendText("���� ������ �� " + UserVec.size());
+					UserVec.add(new_user);
+					new_user.start(); 
+					AppendText("현재 인원: " + UserVec.size());
 				} catch (IOException e) {
 					AppendText("accept() error");
 					//System.exit(0);
@@ -130,13 +128,12 @@ public class JavaChatServer extends JFrame {
 	}
 
 	public void AppendText(String str) {
-		// textArea.append("����ڷκ��� ���� �޼��� : " + str+"\n");
+		
 		textArea.append(str + "\n");
 		textArea.setCaretPosition(textArea.getText().length());
 	}
 
-	// User �� �����Ǵ� Thread
-	// Read One ���� ��� -> Write All
+	
 	class UserService extends Thread {
 		private InputStream is;
 		private OutputStream os;
@@ -149,7 +146,7 @@ public class JavaChatServer extends JFrame {
 
 		public UserService(Socket client_socket) {
 			// TODO Auto-generated constructor stub
-			// �Ű������� �Ѿ�� �ڷ� ����
+	
 			this.client_socket = client_socket;
 			this.user_vc = UserVec;
 			try {
@@ -164,28 +161,28 @@ public class JavaChatServer extends JFrame {
 				String line1 = new String(b);
 				String[] msg = line1.split(" ");
 				UserName = msg[1].trim();
-				UserStatus = "O"; // Online ����
+				UserStatus = "O"; 
 				Login();
 			} catch (Exception e) {
 				AppendText("userService error");
 			}
 		}
 		public void Login() {
-			AppendText("���ο� ������ " + UserName + " ����.");
+			AppendText( UserName + " 님이 접속하였습니다");
 			WriteOne("Welcome to Java chat server\n");
-			WriteOne(UserName + "�� ȯ���մϴ�.\n"); // ����� ����ڿ��� ���������� �˸�
-			String msg ="["+UserName+"]���� ���� �Ͽ����ϴ�.\n";
-			WriteAll(msg); // ���� user_vc�� ���� ������ user�� ���Ե��� �ʾҴ�.
+			WriteOne(UserName + " pass");
+			String msg =UserName+" /login";
+			WriteAll(msg); 
 		}
 		
 		public void Logout() {
 			String msg ="["+UserName+"]���� ���� �Ͽ����ϴ�.\n";
-			UserVec.removeElement(this); // Logout�� ���� ��ü�� ���Ϳ��� �����
-			WriteAll(msg); // ���� ������ �ٸ� User�鿡�� ����
-			AppendText("����� " +"[" + UserName + "] ����. ���� ������ �� " + UserVec.size());
+			UserVec.removeElement(this); 
+			WriteAll(msg); 
+			AppendText("[" + UserName + "] 님이 로그아웃 하셨습니다. 인원: " + UserVec.size());
 		}
 
-		// ��� User�鿡�� ���. ������ UserService Thread�� WriteONe() �� ȣ���Ѵ�.
+		 
 		public void WriteAll(String str) {
 			for (int i = 0; i < user_vc.size(); i++) {
 				UserService user = (UserService) user_vc.elementAt(i);
@@ -194,7 +191,7 @@ public class JavaChatServer extends JFrame {
 			}
 		}
 		
-		// ���� ������ User�鿡�� ���. ������ UserService Thread�� WriteONe() �� ȣ���Ѵ�.
+		
 		public void WriteOthers(String str) {
 			for (int i = 0; i < user_vc.size(); i++) {
 				UserService user = (UserService) user_vc.elementAt(i);
@@ -203,7 +200,6 @@ public class JavaChatServer extends JFrame {
 			}
 		}
 
-		// Windows ó�� message ������ ������ �κ��� NULL �� ����� ���� �Լ�
 		public byte[] MakePacket(String msg) {
 			byte[] packet = new byte[BUF_LEN];
 			byte[] bb = null;
@@ -221,7 +217,7 @@ public class JavaChatServer extends JFrame {
 			return packet;
 		}
 
-		// UserService Thread�� ����ϴ� Client ���� 1:1 ����
+
 		public void WriteOne(String msg) {
 			try {
 				// dos.writeUTF(msg);
@@ -238,12 +234,12 @@ public class JavaChatServer extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				Logout(); // �������� ���� ��ü�� ���Ϳ��� �����
+				Logout();
 			}
 		}
 
 		public void run() {
-			while (true) { // ����� ������ ����ؼ� �ޱ� ���� while��
+			while (true) { 
 				try {
 					// String msg = dis.readUTF();
 					byte[] b = new byte[BUF_LEN];
@@ -262,10 +258,10 @@ public class JavaChatServer extends JFrame {
 						} // catch�� ��
 					}
 					String msg = new String(b, "euc-kr");
-					msg = msg.trim(); // �յ� blank NULL, \n ��� ����
-					AppendText(msg); // server ȭ�鿡 ���
+					msg = msg.trim();
+					AppendText(msg); 
 
-					String[] args = msg.split(" "); // �ܾ���� �и��Ѵ�.
+					String[] args = msg.split(" "); 
 					if (args.length == 1) { // Enter key �� ���� ���  Wakeup ó���� �Ѵ�.
 						UserStatus = "O";
 					} else if (args[1].matches("/exit")) {
@@ -284,12 +280,12 @@ public class JavaChatServer extends JFrame {
 						UserStatus = "S";
 					} else if (args[1].matches("/wakeup")) {
 						UserStatus = "O";
-					} else if (args[1].matches("/to")) { // �ӼӸ�
+					} else if (args[1].matches("/to")) {
 						for (int i = 0; i < user_vc.size(); i++) {
 							UserService user = (UserService) user_vc.elementAt(i);
 							if (user.UserName.matches(args[2]) && user.UserStatus.matches("O")) {
 								String msg2 = "";
-								for (int j = 3;j<args.length;j++) {// ���� message �κ�
+								for (int j = 3;j<args.length;j++) {
 									msg2 += args[j];
 									if (j < args.length - 1)
 										msg2 += " ";
@@ -298,7 +294,7 @@ public class JavaChatServer extends JFrame {
 								break;
 							}		
 						}
-					} else { // �Ϲ� ä�� �޽���
+					} else { 
 						UserStatus = "O";
 						WriteAll(msg + "\n"); // Write All
 					}
@@ -308,13 +304,13 @@ public class JavaChatServer extends JFrame {
 						dos.close();
 						dis.close();
 						client_socket.close();
-						Logout(); // �������� ���� ��ü�� ���Ϳ��� �����
+						Logout(); 
 						break;
 					} catch (Exception ee) {
 						break;
-					} // catch�� ��
-				} // �ٱ� catch����
-			} // while
-		} // run
+					} 
+				} 
+			} 
+		} 
 	}
 }

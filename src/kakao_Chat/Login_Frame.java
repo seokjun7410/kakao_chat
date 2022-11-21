@@ -12,9 +12,18 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.Socket;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -28,8 +37,20 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 	private JTextField pw_text;
 	private JTextArea id_area, pw_area;
 	ChattingListGUI window;
+	private Socket socket; 
+	private InputStream is;
+	private OutputStream os;
+	private DataInputStream dis;
+	private DataOutputStream dos;
+	private JLabel lblUserName;
+	private static final  int BUF_LEN = 128;
+	public User user_info;
+	public static ArrayList <User> User_list;
+	public int Size_list;
 	
 	public Login_Frame () {
+		User_list = new ArrayList<User>();
+		Size_list = 0;
 		setResizable(false);
 		setUndecorated(true);		
 //		setTitle("");
@@ -123,9 +144,29 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 			this.dispose();
 		}
 		else if(e.getSource().equals(btn_login)) {
-			window = new ChattingListGUI(id_area.getText());
-			window.setVisible(true);
-			setVisible(false);
+			String Name = id_text.getText();
+			try {
+				
+				socket = new Socket("127.0.0.1", 30000);
+				is = socket.getInputStream();
+				dis = new DataInputStream(is);
+				os = socket.getOutputStream();
+				dos = new DataOutputStream(os);
+				
+				SendMessage("/login "+Name);
+				ListenNetwork net = new ListenNetwork();
+				net.start();
+				user_info = new User(Name);
+				window = new ChattingListGUI(Name);
+				window.setVisible(true);
+				setVisible(false);
+			}
+			catch (NumberFormatException | IOException er) {
+				// TODO Auto-generated catch block
+				System.out.println("connect error");
+				//er.printStackTrace();
+				
+			}
 
 		}
 		
@@ -175,6 +216,100 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 		// TODO 자동 생성된 메소드 스텁
 		
 	}
+	
+	class ListenNetwork extends Thread {
+		public void run() {
+			while (true) {
+				try {
+					// String msg = dis.readUTF();
+					byte[] b = new byte[BUF_LEN];
+					int ret;
+					ret = dis.read(b);
+					if (ret < 0) {
+						//AppendText("dis.read() < 0 error");
+						try {
+							dos.close();
+							dis.close();
+							socket.close();
+							break;
+						} catch (Exception ee) {
+							break;
+						}// catch�� ��
+					}
+					String	msg = new String(b, "euc-kr");
+					msg = msg.trim(); // �յ� blank NULL, \n ��� ����
+					
+					String[] args = msg.split(" ");
+					System.out.println("msg:"+ msg); // server ȭ�鿡 ���
+					
+					if(args.length >1) {
+					if(args[1].equals("/login")) {
+						
+						System.out.println("msg:"+args[0]);
+						User new_user = new User(args[0]);
+						User_list.add(new_user);
+						for(int i =0; i<User_list.size(); i++) {
+							System.out.println("list:"+User_list.get(i).id);	
+							System.out.println("->");
+						}
+						
+					}
+					}
+				} catch (IOException e) {
+					//AppendText("dis.read() error");
+					try {
+						dos.close();
+						dis.close();
+						socket.close();
+						break;
+					} catch (Exception ee) {
+						break;
+					} // catch�� ��
+				} // �ٱ� catch����
+				
+			}
+		}
+	}
+	
+	
+	public byte[] MakePacket(String msg) {
+			byte[] packet = new byte[BUF_LEN];
+			byte[] bb = null;
+			int i;
+			for (i = 0; i < BUF_LEN; i++)
+				packet[i] = 0;
+			try {
+				bb = msg.getBytes("euc-kr");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.exit(0);
+			}
+			for (i = 0; i < bb.length; i++)
+				packet[i] = bb[i];
+			return packet;
+		}
+		
+		public void SendMessage(String msg) {
+			try {
+				// dos.writeUTF(msg);
+				byte[] bb;
+				bb = MakePacket(msg);
+				dos.write(bb, 0, bb.length);
+			} catch (IOException e) {
+				//AppendText("dos.write() error");
+				try {
+					dos.close();
+					dis.close();
+					socket.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					System.exit(0);
+				}
+			}
+		}
+		
 	public static void main(String[] args) {
 		Login_Frame frame = new Login_Frame();
 		frame.setVisible(true);
