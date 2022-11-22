@@ -210,13 +210,13 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		profileButton.setBackground(Color.WHITE);
 		profileButton.addMouseListener(this);
 		myInfoPanel.add(profileButton);
-		JLabel currentUserName = new JLabel("USER");//본인 이름
+		JLabel currentUserName = new JLabel(Login_Frame.user_info.id);//본인 이름
 		currentUserName.setBounds(86, 30, 57, 15);
 		myInfoPanel.add(currentUserName);
 		myInfoPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				chat_Frame chatting = new chat_Frame(1,"test");
+				chat_Frame chatting = new chat_Frame(1,Login_Frame.user_info.id);
 				}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -260,7 +260,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("clicked ["+chatName+"]");
-				Profile_Frame profile_Frame = new Profile_Frame();
+				Profile_Frame profile_Frame = new Profile_Frame(chatName);
 				}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -280,7 +280,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		// TODO Auto-generated method stub
 		//System.out.println("clicked ["+chatName+"]");
 		if (e.getSource().equals(profileButton)) {
-		Profile_Frame profile_Frame = new Profile_Frame();
+		Profile_Frame profile_Frame = new Profile_Frame(Login_Frame.user_info.id);
 		}
 	}
 

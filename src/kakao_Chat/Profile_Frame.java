@@ -11,10 +11,11 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 	private JButton btn_exit;
 	private Point comPoint;
 	private JPanel menu_bar;
-
-	public Profile_Frame()
-	{
+	private String User_name;
 	
+	public Profile_Frame(String user_name)
+	{
+		this.User_name = user_name;
 		setResizable(false);
 		setUndecorated(true);		
 //		setTitle("");
@@ -69,7 +70,7 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 		profile_label.setBackground(new Color(132, 139, 145));
 		Profile_panel2.add(profile_label);
 		
-		JLabel name_label = new JLabel("이름");
+		JLabel name_label = new JLabel(user_name);
 		name_label.setForeground(Color.white);
 		name_label.setFont(new Font("맑은 고딕",Font.BOLD, 15));
 		Profile_panel2.add(name_label);

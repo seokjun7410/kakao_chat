@@ -46,11 +46,12 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 	private DataOutputStream dos;
 	private JLabel lblUserName;
 	private static final  int BUF_LEN = 128;
-	public User user_info;
+	public static User user_info;
 	public static ArrayList <User> User_list;
 	public int Size_list;
 	
 	public Login_Frame () {
+		
 		User_list = new ArrayList<User>();
 		Size_list = 0;
 		setResizable(false);
@@ -261,6 +262,23 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 					System.out.println("msg:"+ msg); // server ȭ�鿡 ���
 					
 					if(args.length >1) {
+						if(args[1].equals("pass")) {
+							System.out.println("msg:"+args[0]);
+							user_info = new User(args[0]);
+						
+							
+						}
+						if(args[1].equals("/login")) {
+							
+							System.out.println("msg:"+args[0]);
+							User new_user = new User(args[0]);
+							User_list.add(new_user);
+							for(int i =0; i<User_list.size(); i++) {
+								System.out.println("list:"+User_list.get(i).id);	
+								System.out.println("->");
+							}
+							
+						}
 					if(args[1].equals("/login")) {
 						
 						System.out.println("msg:"+args[0]);
