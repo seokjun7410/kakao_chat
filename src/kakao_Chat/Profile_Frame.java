@@ -97,7 +97,7 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 		
 		background_panel.add(title_bar,BorderLayout.NORTH);
 		
-		setBounds(100, 100, 300, 600);
+		setBounds(550, 130, 300, 600);
 		setVisible(true);
 	}
 

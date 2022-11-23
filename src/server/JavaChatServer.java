@@ -158,7 +158,9 @@ public class JavaChatServer extends JFrame {
 				// /login user1 ==> msg[0] msg[1]
 				byte[] b = new byte[BUF_LEN];
 				dis.read(b);
+				
 				String line1 = new String(b);
+				AppendText(line1);
 				String[] msg = line1.split(" ");
 				UserName = msg[1].trim();
 				UserStatus = "O"; 

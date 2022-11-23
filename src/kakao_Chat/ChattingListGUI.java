@@ -67,7 +67,7 @@ public class ChattingListGUI extends JFrame{
 	public ChattingListGUI(String name) {
 		ArrayList<JPanel> chattingButtonList = new ArrayList<JPanel>();
 		setBackground(new Color(255, 255, 255));
-		setBounds(100, 100, 400, 690);
+		setBounds(900, 100, 400, 690);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		

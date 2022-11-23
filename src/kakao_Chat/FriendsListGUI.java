@@ -70,7 +70,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 	public FriendsListGUI() {
 		ArrayList<JPanel> chattingButtonList = new ArrayList<JPanel>();
 		setBackground(new Color(255, 255, 255));
-		setBounds(100, 100, 400, 690);
+		setBounds(400, 200, 400, 690);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		

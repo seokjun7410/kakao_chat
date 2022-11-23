@@ -149,9 +149,8 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		add(title_bar,BorderLayout.NORTH);
 		add(Panel_1,BorderLayout.CENTER);
 		
-		setBounds(100, 100, 380, 635);
+		setBounds(510, 130, 380, 635);
 		setVisible(true);
-
 	}
 		
 		public void makeRightBubble (String value) {

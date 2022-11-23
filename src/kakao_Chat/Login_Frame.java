@@ -59,7 +59,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 //		setTitle("");
 		setLayout(new BorderLayout());
 		setLocationRelativeTo(null);
-		setBounds(100, 100, 380, 635);
+		setBounds(900, 100, 380, 635);
 		setVisible(true);
 		
 		
