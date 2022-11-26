@@ -46,7 +46,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 	private DataOutputStream dos;
 	private JLabel lblUserName;
 	private static final  int BUF_LEN = 128;
-	public static User user_info;
+	public static String userName;
 	public static ArrayList <User> User_list;
 	public int Size_list;
 	
@@ -164,6 +164,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 		}
 		else if(e.getSource().equals(btn_login)) {
 			String Name = id_text.getText();
+			String PW = pw_text.getText();
 			try {
 				
 				socket = new Socket("127.0.0.1", 30000);
@@ -172,13 +173,9 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 				os = socket.getOutputStream();
 				dos = new DataOutputStream(os);
 				
-				SendMessage("/login "+Name);
+				SendMessage("/100 "+Name+" "+PW);
 				ListenNetwork net = new ListenNetwork();
 				net.start();
-				user_info = new User(Name);
-				window = new ChattingListGUI(Name);
-				window.setVisible(true);
-				setVisible(false);
 			}
 			catch (NumberFormatException | IOException er) {
 				// TODO Auto-generated catch block
@@ -262,17 +259,24 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 					System.out.println("msg:"+ msg); // server ȭ�鿡 ���
 					
 					if(args.length >1) {
+						if(args[1].equals("/101")) {
+							userName = args[0];
+							window = new ChattingListGUI(args[0]);
+							window.setVisible(true);
+							setVisible(false);
+						}
+						
 						if(args[1].equals("pass")) {
 							System.out.println("msg:"+args[0]);
-							user_info = new User(args[0]);
+//							user_info = new User(args[0]);
 						
 							
 						}
 						if(args[1].equals("/login")) {
 							
 							System.out.println("msg:"+args[0]);
-							User new_user = new User(args[0]);
-							User_list.add(new_user);
+//							User new_user = new User(args[0]);
+//							User_list.add(new_user);
 							for(int i =0; i<User_list.size(); i++) {
 								System.out.println("list:"+User_list.get(i).id);	
 								System.out.println("->");
@@ -282,8 +286,8 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 					if(args[1].equals("/login")) {
 						
 						System.out.println("msg:"+args[0]);
-						User new_user = new User(args[0]);
-						User_list.add(new_user);
+//						User new_user = new User(args[0]);
+//						User_list.add(new_user);
 						for(int i =0; i<User_list.size(); i++) {
 							System.out.println("list:"+User_list.get(i).id);	
 							System.out.println("->");

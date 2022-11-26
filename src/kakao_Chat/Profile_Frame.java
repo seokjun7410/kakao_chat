@@ -7,11 +7,12 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Profile_Frame extends JFrame implements MouseListener, MouseMotionListener,ActionListener{
-	private TranslucentLabel title_bar;
+	private JPanel title_bar;
 	private JButton btn_exit;
 	private Point comPoint;
 	private JPanel menu_bar;
 	private String User_name;
+	private JLabel pl;
 	
 	public Profile_Frame(String user_name)
 	{
@@ -32,23 +33,31 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 		add(background_panel,BorderLayout.CENTER);
 		
 		//상단바 구성
-		title_bar = new TranslucentLabel();
+		title_bar = new JPanel();
 		title_bar.setPreferredSize(new Dimension(300,34));
 		title_bar.setLayout(null);
 		title_bar.setBackground(new Color(132, 139, 145));
 		title_bar.addMouseListener(this);
 		title_bar.addMouseMotionListener(this);
 		
+		
+		Image ap = new ImageIcon("img/btn_profile.png").getImage().getScaledInstance(40,40,Image.SCALE_DEFAULT);
+		ImageIcon apf = new ImageIcon(ap);
+		JLabel pl = new JLabel(apf);
+		pl.setBackground(new Color(132, 139, 145));
+		pl.setBounds(0,0, 40, 40);
+		pl.addMouseListener(this);
+		
 		//상단바 X버튼
-		Image x = new ImageIcon("img/x.png").getImage().getScaledInstance(20,20,Image.SCALE_DEFAULT);
+		Image x = new ImageIcon("img/x.png").getImage().getScaledInstance(25,25,Image.SCALE_DEFAULT);
 		ImageIcon x_button = new ImageIcon(x);
+		
 		btn_exit = new JButton(x_button);
-		btn_exit.setBounds(277,4, 20, 20);
-		btn_exit.setPreferredSize(new Dimension(20,20));
+		btn_exit.setBounds(277,4, 25, 25);
 		btn_exit.setBackground(new Color(132, 139, 145));
 		btn_exit.addActionListener(this);
 		title_bar.add(btn_exit);
-		
+		title_bar.add(pl);
 		JPanel center_panel = new JPanel();
 		center_panel.setBackground(new Color(132, 139, 145));
 		center_panel.setLayout(new BorderLayout());
@@ -102,24 +111,6 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 	}
 
 	
-	 public class TranslucentLabel extends JLabel {
-	       public TranslucentLabel() {
-	            super();
-	        }
-	        @Override
-	        public boolean isOpaque() {
-	            return false;
-	        }
-
-	        @Override
-	        protected void paintComponent(Graphics g) {
-	            Graphics2D g2d = (Graphics2D) g.create();
-	            g2d.setColor(getBackground());
-	            g2d.fillRect(0, 0, getWidth(), getHeight());
-	            super.paintComponent(g2d);
-	            g2d.dispose();
-	        }
-	 }
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -138,7 +129,9 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO 자동 생성된 메소드 스텁
-		
+		if (e.getSource().equals(pl)) {
+			System.out.println("pl clicked");
+		}
 	}
 
 	public void mousePressed(MouseEvent e) 
@@ -149,6 +142,9 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 		else if (e.getSource().equals(menu_bar)) {
 //			menu_bar.setBackground(new Color(0,0,0,124));
 //			revalidate();
+		}
+		else if (e.getSource().equals(pl)) {
+			System.out.println("pl clicked");
 		}
 	}
 	

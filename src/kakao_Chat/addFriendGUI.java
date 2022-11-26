@@ -19,7 +19,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import kakao_Chat.Profile_Frame.TranslucentLabel;
 import kakao_Chat.design.friendslist_drawLine.BottomDoubleDrawPanel;
 import kakao_Chat.design.friendslist_drawLine.BottomDrawPanel;
 import kakao_Chat.design.friendslist_drawLine.BottomLineJTextField;
