@@ -29,4 +29,8 @@ public class User {
 	public String getPw () {
 		return this.pw;
 	}
+	
+	public ImageIcon getImage() {
+		return this.image;
+	}
 }
