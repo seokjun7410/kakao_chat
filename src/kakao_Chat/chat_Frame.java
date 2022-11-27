@@ -153,6 +153,34 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		setVisible(true);
 	}
 		
+	
+	public void makeLeftBubble (String value) {
+		if(!value.equals("")) {
+			JPanel chat_view = new JPanel();
+			chat_view.setLayout(new FlowLayout(FlowLayout.LEFT));
+			chat_view.setBackground(new Color(186,206,224));
+			chat_view.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
+			JLabel label = new JLabel(value);
+			label.setFont(new Font("나눔고딕", Font.PLAIN, 12));
+			label.setBorder(BorderFactory.createEmptyBorder(0,11,0,0));
+			LeftArrowBubble LeftArrowBubble = new LeftArrowBubble();
+			int width =(int) label.getPreferredSize().getWidth()+15;		
+			int height = 27;
+			if(width > 208) {
+				width = 208;
+				height = (int)((width /208) +1)*27;
+			}
+			chat_view.setPreferredSize(new Dimension(380,height+5));
+			LeftArrowBubble.setPreferredSize(new Dimension(width,height));
+			LeftArrowBubble.setBackground(new Color(255,255,255));	
+			System.out.print(label.getPreferredSize()+""+height);
+			LeftArrowBubble.add(label);
+			chat_view.add(LeftArrowBubble);
+			chat_panel.add(chat_view);
+			revalidate();
+		}
+	}
+	
 		public void makeRightBubble (String value) {
 			if(!value.equals("")) {
 				JPanel chat_view = new JPanel();
@@ -180,8 +208,33 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			}
 		}
 
+		public class LeftArrowBubble extends JPanel {
+			   private int radius = 10;
+			   private int arrowSize = 6;
+			   private int strokeThickness = 3;
+			   private int padding = strokeThickness / 2;
+			   @Override
+			   protected void paintComponent(final Graphics g) {
+			      final Graphics2D g2d = (Graphics2D) g;
+			      g2d.setColor(new Color(255,255,255));
+			      int x = padding + strokeThickness + arrowSize;
+			      int width = getWidth() - arrowSize - (strokeThickness * 2);
+			      int bottomLineY = getHeight() - strokeThickness;
+			      g2d.fillRect(x, padding, width, bottomLineY);
+			      g2d.setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING,   RenderingHints.VALUE_ANTIALIAS_ON));
+			      g2d.setStroke(new BasicStroke(strokeThickness));
+			      RoundRectangle2D.Double rect = new RoundRectangle2D.Double(x, padding, width, bottomLineY, radius, radius);
+			      Polygon arrow = new Polygon();
+			      arrow.addPoint(20, 8);
+			      arrow.addPoint(0, 10);
+			      arrow.addPoint(20, 12);
+			      Area area = new Area(rect);
+			      area.add(new Area(arrow));
+			      g2d.draw(area);
+			   }
+			}
+		
 		public class RightArrowBubble extends JPanel {
-			   private static final long serialVersionUID = -5389178141802153305L;
 			   private int strokeThickness = 3;
 			   private int radius = 10;
 			   private int arrowSize = 6;

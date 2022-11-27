@@ -41,6 +41,7 @@ public class JavaChatServer extends JFrame {
 	private Vector UserVec = new Vector(); 
 	private static final int BUF_LEN = 128;
 	public int recent_Num = 0;
+	public int room_Num = 0;
 
 	/**
 	 * Launch the application.
@@ -173,6 +174,11 @@ public class JavaChatServer extends JFrame {
 				AppendText("userService error");
 			}
 		}
+		
+		public String getUserName() {
+			return this.UserName;
+		}
+		
 		public void Login() {
 			AppendText( UserName + " 님이 접속하였습니다");
 			UserVec.add(this);
@@ -206,6 +212,7 @@ public class JavaChatServer extends JFrame {
 		public void WriteAll(String str) {
 			for (int i = 0; i < user_vc.size(); i++) {
 				UserService user = (UserService) user_vc.elementAt(i);
+				user.WriteOne(str);
 //				if (user.UserStatus == "O")
 //					user.WriteOne(str);
 			}
@@ -238,6 +245,16 @@ public class JavaChatServer extends JFrame {
 		}
 
 
+		public void sendTo(String name, String msg) {
+			for(int i=0; i<UserVec.size(); i++) {
+				UserService user = (UserService) user_vc.elementAt(i);
+				if(user.getUserName().equals(name)) {
+					user.WriteOne("");
+					break;
+				}
+			}
+		}
+		
 		public void WriteOne(String msg) {
 			try {
 				// dos.writeUTF(msg);
@@ -313,12 +330,29 @@ public class JavaChatServer extends JFrame {
 							WriteOne("/201" +((User) UserLoginInfo.get(userNum)).getId()+" " +((User) UserLoginInfo.get(userNum)).getImage()); 	
 						}
 					}
-					else if (args[0].matches("/300")) {
-						String[] users = new String[ Integer.parseInt(args[1])];
-						for(int i=0; i< users.length; i++) {
-							users[i] = args[i+2];
+					else if (args[0].matches("/300")) { //채팅방 생성
+						int room_num = assign_RoomNum();
+						String send_msg ="/301 "+String.valueOf(room_num); 
+						for(int i=0; i< Integer.parseInt(args[1]); i++) {
+							sendTo(args[i+2],send_msg);
 						}
 					}
+					else if (args[0].matches("/500")) { //메세지 전송
+						String send_msg ="/502 "+args[2]; 
+						sendTo(args[1],send_msg);
+					}
+					
+					else if (args[0].matches("/501")) { // 사진, 파일 전송
+						String send_msg ="/503 "+args[2]; 
+						sendTo(args[1],send_msg);
+					}
+					
+					else if (args[0].matches("/600")) { //프로필 변경 전송
+						String send_msg ="/601 "+ getUserName()+" "+args[1];
+						WriteAll(send_msg);
+					}
+					
+					
 //					else if (args[1].matches("/exit")) {
 //						Logout();
 //						break;
@@ -370,6 +404,12 @@ public class JavaChatServer extends JFrame {
 		
 		public int assign_UserNum() {
 			int num = recent_Num+1;
+			recent_Num = num;
+			return num;
+		}
+		
+		public int assign_RoomNum() {
+			int num = room_Num+1;
 			recent_Num = num;
 			return num;
 		}
