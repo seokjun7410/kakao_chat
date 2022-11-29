@@ -45,7 +45,7 @@ public class addFriendGUI extends Frame implements MouseListener, MouseMotionLis
 		setResizable(false);
 		setUndecorated(true);		
 //		setTitle("");
-		setLayout(new BorderLayout());
+
 		setLocationRelativeTo(null);
 		
 		

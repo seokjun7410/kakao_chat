@@ -64,7 +64,7 @@ public class ChattingListGUI extends JFrame{
 	JButton moveChattingList;
 	FriendsListGUI friendsListGUI = new FriendsListGUI();
 	
-	public ChattingListGUI(String name) {
+	public ChattingListGUI(Socket socket, String name) {
 		ArrayList<JPanel> chattingButtonList = new ArrayList<JPanel>();
 		setBackground(new Color(255, 255, 255));
 		setBounds(900, 100, 400, 690);
@@ -152,6 +152,22 @@ public class ChattingListGUI extends JFrame{
 		});
 		creatChatting.setBounds(279, 30, 25, 23);
 		topBar.add(creatChatting);
+	
+		
+		JButton addChatting = new JButton("");	
+		addChatting.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		addChatting.setBorderPainted(false);
+		addChatting.setBounds(244, 29, 25, 23);
+		addChatting.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new addChattingGUI();
+			}
+		});
+		topBar.add(addChatting);
 	
 		
 		
@@ -307,4 +323,5 @@ public class ChattingListGUI extends JFrame{
 		    }
 			});
 	}
+
 }

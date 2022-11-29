@@ -254,45 +254,45 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 					}
 					String	msg = new String(b, "euc-kr");
 					msg = msg.trim(); // �յ� blank NULL, \n ��� ����
-					
+
 					String[] args = msg.split(" ");
 					System.out.println("msg:"+ msg); // server ȭ�鿡 ���
-					
+
 					if(args.length >1) {
 						if(args[1].equals("/101")) {
 							userName = args[0];
-							window = new ChattingListGUI(args[0]);
+							window = new ChattingListGUI(socket,args[0]);
 							window.setVisible(true);
 							setVisible(false);
 						}
-						
+
 						if(args[1].equals("pass")) {
 							System.out.println("msg:"+args[0]);
 //							user_info = new User(args[0]);
-						
-							
+
+
 						}
 						if(args[1].equals("/login")) {
-							
+
 							System.out.println("msg:"+args[0]);
 //							User new_user = new User(args[0]);
 //							User_list.add(new_user);
 							for(int i =0; i<User_list.size(); i++) {
-								System.out.println("list:"+User_list.get(i).id);	
+								System.out.println("list:"+User_list.get(i).id);
 								System.out.println("->");
 							}
-							
+
 						}
 					if(args[1].equals("/login")) {
-						
+
 						System.out.println("msg:"+args[0]);
 //						User new_user = new User(args[0]);
 //						User_list.add(new_user);
 						for(int i =0; i<User_list.size(); i++) {
-							System.out.println("list:"+User_list.get(i).id);	
+							System.out.println("list:"+User_list.get(i).id);
 							System.out.println("->");
 						}
-						
+
 					}
 					}
 				} catch (IOException e) {
@@ -306,12 +306,12 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 						break;
 					} // catch�� ��
 				} // �ٱ� catch����
-				
+
 			}
 		}
 	}
-	
-	
+
+
 	public byte[] MakePacket(String msg) {
 			byte[] packet = new byte[BUF_LEN];
 			byte[] bb = null;
@@ -329,7 +329,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 				packet[i] = bb[i];
 			return packet;
 		}
-		
+
 		public void SendMessage(String msg) {
 			try {
 				// dos.writeUTF(msg);
