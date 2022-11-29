@@ -1,6 +1,5 @@
 package kakao_Chat;
 
-import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -15,18 +14,19 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import kakao_Chat.design.friendslist_drawLine.BottomDoubleDrawPanel;
-import kakao_Chat.design.friendslist_drawLine.BottomDrawPanel;
 import kakao_Chat.design.friendslist_drawLine.BottomLineJTextField;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.*;
+import java.net.Socket;
+import java.util.ArrayList;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
@@ -36,10 +36,25 @@ public class addFriendGUI extends Frame implements MouseListener, MouseMotionLis
 	private Point comPoint;
 	private JPanel menu_bar;
 	private JLabel empty_menu_bar[];
-	private JTextField textField;
+	private JTextField input_id;
+	JButton btn_addFriend;
 	private boolean editFrist;
-	public addFriendGUI()
+	private Socket socket;
+	private InputStream is;
+	private OutputStream os;
+	private DataInputStream dis;
+	private DataOutputStream dos;
+	private static final  int BUF_LEN = 128;
+	public static String userName;
+	public static ArrayList<User> User_list;
+	public int Size_list;
+	private JLabel lb_addFriend;
+	private addFriendGUI thisGUI = this;
+	private FriendsListGUI friendsListGUI;
+	public addFriendGUI(Socket s, FriendsListGUI gui)
 	{
+		this.socket = s;
+		friendsListGUI = gui;
 		editFrist = true;
 		
 		setResizable(false);
@@ -85,39 +100,62 @@ public class addFriendGUI extends Frame implements MouseListener, MouseMotionLis
 		panel.add(lblNewLabel_1);
 		lblNewLabel_1.setFont(new Font("굴림", Font.PLAIN, 12));
 		
-		JLabel lblNewLabel = new JLabel("친구 추가");
-		lblNewLabel.setBounds(12, 23, 69, 20);
-		panel.add(lblNewLabel);
-		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 17));
-		
+		lb_addFriend = new JLabel("친구 추가");
+		lb_addFriend.setBounds(12, 23, 69, 20);
+		panel.add(lb_addFriend);
+		lb_addFriend.setFont(new Font("굴림", Font.PLAIN, 17));
+
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(255, 255, 255));
 		panel_1.setBounds(0, 103, 300, 297);
 		background_panel.add(panel_1);
 		panel_1.setLayout(null);
 		
-		textField = new BottomLineJTextField(){
+		input_id = new BottomLineJTextField(){
 			public void setBorder(Border bodrder){
 				
 			}
 		};
-		textField.setText("친구 이름");
-		textField.setBounds(12, 41, 276, 34);
-		panel_1.add(textField);
-		textField.setColumns(10);
-		textField.addMouseListener(new MouseAdapter() {
+		input_id.setText("친구 이름");
+		input_id.setBounds(12, 41, 276, 34);
+		panel_1.add(input_id);
+		input_id.setColumns(10);
+		input_id.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(editFrist == true){
 					editFrist = false;
-					textField.setText("");
+					input_id.setText("");
 				}
 				}
 			});
 		
-		JButton btnNewButton = new JButton("친구 추가");
-		btnNewButton.setBounds(195, 253, 93, 34);
-		panel_1.add(btnNewButton);
+		btn_addFriend = new JButton("친구 추가");
+		btn_addFriend.setBounds(195, 253, 93, 34);
+		panel_1.add(btn_addFriend);
+		btn_addFriend.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("친구추가 버튼이 눌렸습니다.");
+			try {
+				is = socket.getInputStream();
+				dis = new DataInputStream(is);
+				os = socket.getOutputStream();
+				dos = new DataOutputStream(os);
+
+				String id = input_id.getText();
+
+
+
+//				ListenNetwork net = new ListenNetwork();
+//				net.start();
+
+				SendMessage("/200 " + id);
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
+			}
+		});
 	
 		setBounds(100, 100, 300, 400);
 		setVisible(true);
@@ -148,6 +186,23 @@ public class addFriendGUI extends Frame implements MouseListener, MouseMotionLis
 		if(e.getSource().equals(btn_exit)) {
 			this.dispose();
 		}
+//		else if(e.getSource().equals(btn_addFriend)){
+//			System.out.println("hello");
+//			try {
+//				is = socket.getInputStream();
+//				dis = new DataInputStream(is);
+//				os = socket.getOutputStream();
+//				dos = new DataOutputStream(os);
+//
+//				String id = input_id.getText();
+//
+//				SendMessage("/200 " + id);
+//
+//				ListenNetwork net = new ListenNetwork();
+//			} catch (IOException ex) {
+//				throw new RuntimeException(ex);
+//			}
+//		}
 		
 	}
 
@@ -179,7 +234,7 @@ public class addFriendGUI extends Frame implements MouseListener, MouseMotionLis
 			comPoint = null;
 		}
 		else if (e.getSource().equals(empty_menu_bar[1])) {
-			chat_Frame chatting = new chat_Frame(1,"chatName");
+			chat_Frame chatting = new chat_Frame(1,"chatName",socket);
 			
 		}
 	}
@@ -201,5 +256,105 @@ public class addFriendGUI extends Frame implements MouseListener, MouseMotionLis
 	public void mouseExited(MouseEvent e) {
 		// TODO 자동 생성된 메소드 스텁
 		
+	}
+
+	class ListenNetwork extends Thread {
+		public void run() {
+			while (true) {
+				try {
+					// String msg = dis.readUTF();
+					byte[] b = new byte[BUF_LEN];
+					int ret;
+					ret = dis.read(b);
+					if (ret < 0) {
+						//AppendText("dis.read() < 0 error");
+						try {
+							dos.close();
+							dis.close();
+							socket.close();
+							break;
+						} catch (Exception ee) {
+							break;
+						}// catch�� ��
+					}
+					String	msg = new String(b, "euc-kr");
+					msg = msg.trim(); // �յ� blank NULL, \n ��� ����
+
+					String[] args = msg.split(" ");
+					System.out.println("afmsg:"+ msg); // server ȭ�鿡 ���
+					System.out.println("args "+args[0]);
+
+					if(args.length >1) {
+//						if(args[1].equals("/101")) {
+//							userName = args[0];
+////							window = new ChattingListGUI(socket,args[0]);
+////							window.setVisible(true);
+//							setVisible(false);
+//						}
+						if (args[0].equals("/201")) {
+							String id = args[1];
+							String userProfile = args[2];
+							System.out.println(id+" "+userProfile);
+
+							friendsListGUI.addFriend(id,userProfile);
+
+							thisGUI.dispose();
+						}
+						else if(args[0].equals("/202")){
+							System.out.println("해당 id를 가진 USER가 없습니다.");
+						}
+					}
+				} catch (IOException e) {
+					//AppendText("dis.read() error");
+					try {
+						dos.close();
+						dis.close();
+						socket.close();
+						break;
+					} catch (Exception ee) {
+						break;
+					} // catch�� ��
+				} // �ٱ� catch����
+
+			}
+		}
+	}
+
+	public void SendMessage(String msg) {
+		try {
+			// dos.writeUTF(msg);
+			byte[] bb;
+			bb = MakePacket(msg);
+			dos.write(bb, 0, bb.length);
+		} catch (IOException e) {
+			//AppendText("dos.write() error");
+			try {
+				dos.close();
+				dis.close();
+				socket.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				System.exit(0);
+			}
+		}
+	}
+
+	public byte[] MakePacket(String msg) {
+		byte[] packet = new byte[BUF_LEN];
+		byte[] bb = null;
+		int i;
+		for (i = 0; i < BUF_LEN; i++)
+			packet[i] = 0;
+		try {
+			bb = msg.getBytes("euc-kr");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(0);
+		}
+		for (i = 0; i < bb.length; i++)
+			packet[i] = bb[i];
+		return packet;
 	}
 }

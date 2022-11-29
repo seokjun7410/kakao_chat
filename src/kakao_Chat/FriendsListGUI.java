@@ -66,20 +66,34 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 	public JPanel get() {
 		return chatPanel;
 	}
-	
-	public FriendsListGUI() {
-		ArrayList<JPanel> chattingButtonList = new ArrayList<JPanel>();
+	private Socket socket;
+	private InputStream is;
+	private OutputStream os;
+	private DataInputStream dis;
+	private DataOutputStream dos;
+	private JLabel lblUserName;
+	private FriendsListGUI thisGUI = this;
+	private static final  int BUF_LEN = 128;
+	public static String userName;
+	public static ArrayList <User> User_list;
+	public int Size_list;
+	private ArrayList<JPanel> chattingButtonList = new ArrayList<JPanel>();
+	private JPanel chattingListPanel = new JPanel();
+	private String currentName;
+	public FriendsListGUI(Socket s,String name) {
+		currentName = name;
+
 		setBackground(new Color(255, 255, 255));
 		setBounds(400, 200, 400, 690);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
-		
+		this.socket = s;
 
 		chatPanel = new JPanel();
 		chatPanel.setBackground(Color.WHITE);
 		chatPanel.setBounds(67, 0, 317, 650);
 		
-		JPanel chattingListPanel = new JPanel();
+
 		chattingListPanel.setBackground(Color.WHITE);
 		chattingListPanel.setBounds(67, 50, 317, 590);
 		chattingListPanel.setLayout(new FlowLayout());
@@ -142,7 +156,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(chattingListIndex < 20) {
-					createChattingRoom(chattingButtonList,chattingListPanel); //chatingRoom 생성
+					createChattingRoom(chattingButtonList,chattingListPanel,"user","img/defult45.png"); //chatingRoom 생성
 					//chattingListPanel.setSize(317,chattingListHeight);
 					chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
 					revalidate();
@@ -162,7 +176,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		addFriend.setBackground(new Color(255, 255, 255));
 		addFriend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new addFriendGUI();
+				new addFriendGUI(socket,thisGUI);
 			}
 		});
 		addFriend.setBorderPainted(false);
@@ -216,7 +230,8 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		myInfoPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				chat_Frame chatting = new chat_Frame(1,Login_Frame.userName);
+//
+				chat_Frame chatting = new chat_Frame(1,Login_Frame.userName,socket);
 				}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -232,7 +247,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		
 	}
 	
-	private void createChattingRoom(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel) {
+	private void createChattingRoom(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel,String id,String profile_img) {
 		
 		JPanel chattingPanel = new JPanel();
 		chattingPanel.setAutoscrolls(true);
@@ -246,8 +261,8 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		int DUMMY_NumberOfPeople = random;
 		
 		miniProfileManager = MiniProfileManager.getInstance();
-		miniProfileManager.setMiniProfileDesign_Friend();
-		String chatName = miniProfileManager.makeMiniProfile(chattingPanel,chattingListHeight, chattingListIndex);
+		miniProfileManager.setMiniProfileDesign_Friend(profile_img);
+		String chatName = miniProfileManager.makeMiniProfile(chattingPanel,chattingListHeight, chattingListIndex,id);
 		/*******************/
 		
 		
@@ -255,12 +270,13 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		chattingListPanel.setBounds(0, 0, 317, chattingListHeight);
 		chattingListPanel.add(chattingButtonList.get(++chattingListIndex));
 		chattingListHeight += 71;
-		
+
 		chattingPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("clicked ["+chatName+"]");
-				Profile_Frame profile_Frame = new Profile_Frame(chatName);
+				System.out.println("clicked ["+chatName+"] 프로필이 눌렸습니다.");
+				System.out.println("소켓포트 번호 : "+socket.getPort());
+				Profile_Frame profile_Frame = new Profile_Frame(chatName,socket,currentName);
 				}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -275,12 +291,24 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 			});
 	}
 
+	public void addFriend(String id,String profile_img){
+		if(chattingListIndex < 20) {
+			createChattingRoom(chattingButtonList,chattingListPanel,id,profile_img); //chatingRoom 생성
+			//chattingListPanel.setSize(317,chattingListHeight);
+			chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
+			revalidate();
+			repaint();
+		}else {
+			System.out.println("최대 방 개수를 초과했습니다.");
+		}
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		//System.out.println("clicked ["+chatName+"]");
 		if (e.getSource().equals(profileButton)) {
-		Profile_Frame profile_Frame = new Profile_Frame(Login_Frame.userName);
+		//Profile_Frame profile_Frame = new Profile_Frame(Login_Frame.userName,socket,currentName);
 		}
 	}
 
@@ -306,5 +334,122 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	class ListenNetwork extends Thread {
+		public void run() {
+			while (true) {
+				try {
+					// String msg = dis.readUTF();
+					byte[] b = new byte[BUF_LEN];
+					int ret;
+					ret = dis.read(b);
+					if (ret < 0) {
+						//AppendText("dis.read() < 0 error");
+						try {
+							dos.close();
+							dis.close();
+							socket.close();
+							break;
+						} catch (Exception ee) {
+							break;
+						}// catch�� ��
+					}
+					String	msg = new String(b, "euc-kr");
+					msg = msg.trim(); // �յ� blank NULL, \n ��� ����
+
+					String[] args = msg.split(" ");
+					System.out.println("fmsg:"+ msg); // server ȭ�鿡 ���
+
+					if(args.length >1) {
+						if(args[1].equals("/101")) {
+							userName = args[0];
+//							window = new ChattingListGUI(socket,args[0]);
+//							window.setVisible(true);
+//							setVisible(false);
+						}
+
+						if(args[1].equals("pass")) {
+							System.out.println("msg:"+args[0]);
+//							user_info = new User(args[0]);
+
+
+						}
+						if(args[1].equals("/login")) {
+
+							System.out.println("msg:"+args[0]);
+//							User new_user = new User(args[0]);
+//							User_list.add(new_user);
+							for(int i =0; i<User_list.size(); i++) {
+								System.out.println("list:"+User_list.get(i).id);
+								System.out.println("->");
+							}
+
+						}
+						if(args[1].equals("/login")) {
+
+							System.out.println("msg:"+args[0]);
+//						User new_user = new User(args[0]);
+//						User_list.add(new_user);
+							for(int i =0; i<User_list.size(); i++) {
+								System.out.println("list:"+User_list.get(i).id);
+								System.out.println("->");
+							}
+
+						}
+					}
+				} catch (IOException e) {
+					//AppendText("dis.read() error");
+					try {
+						dos.close();
+						dis.close();
+						socket.close();
+						break;
+					} catch (Exception ee) {
+						break;
+					} // catch�� ��
+				} // �ٱ� catch����
+
+			}
+		}
+	}
+
+
+	public byte[] MakePacket(String msg) {
+		byte[] packet = new byte[BUF_LEN];
+		byte[] bb = null;
+		int i;
+		for (i = 0; i < BUF_LEN; i++)
+			packet[i] = 0;
+		try {
+			bb = msg.getBytes("euc-kr");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(0);
+		}
+		for (i = 0; i < bb.length; i++)
+			packet[i] = bb[i];
+		return packet;
+	}
+
+	public void SendMessage(String msg) {
+		try {
+			// dos.writeUTF(msg);
+			byte[] bb;
+			bb = MakePacket(msg);
+			dos.write(bb, 0, bb.length);
+		} catch (IOException e) {
+			//AppendText("dos.write() error");
+			try {
+				dos.close();
+				dis.close();
+				socket.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				System.exit(0);
+			}
+		}
 	}
 }

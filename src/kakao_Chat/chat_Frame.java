@@ -3,7 +3,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Area;
-import java.awt.geom.RoundRectangle2D; 
+import java.awt.geom.RoundRectangle2D;
+import java.io.*;
+import java.net.Socket;
+import java.util.ArrayList;
 
 public class chat_Frame extends JFrame implements MouseListener, MouseMotionListener,ActionListener, KeyListener
 {	
@@ -17,17 +20,40 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 	private String user_names;
 	private JTextArea text_area;
 	private JPanel chat_panel;
-	
-	public chat_Frame(int chat_num, String user_Name)
-	{
-		
+	private Socket socket;
+	private InputStream is;
+	private OutputStream os;
+	private DataInputStream dis;
+	private DataOutputStream dos;
+	private static final int BUF_LEN = 128;
+	public static String userName;
+	public static ArrayList<User> User_list;
+	public int Size_list;
+	public chat_Frame(int chat_num, String un, Socket s)  {
+		this.socket = s;
+
+		try {
+			is = socket.getInputStream();
+			dis = new DataInputStream(is);
+			os = socket.getOutputStream();
+			dos = new DataOutputStream(os);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+
 		chat_number = chat_num;
-		user_names = user_Name;
+		user_names = un;
+//		System.out.println("un = " + un);
+//		System.out.println("user_names = " + user_names);
+//		System.out.println("chat_number = " + chat_number);
 		setResizable(false);
 		setUndecorated(true);		
 //		setTitle("");
 		setLayout(new BorderLayout());
 		setLocationRelativeTo(null);
+
+
 		
 		//상단바 구성
 		title_bar = new JPanel();
@@ -173,7 +199,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			chat_view.setPreferredSize(new Dimension(380,height+5));
 			LeftArrowBubble.setPreferredSize(new Dimension(width,height));
 			LeftArrowBubble.setBackground(new Color(255,255,255));	
-			System.out.print(label.getPreferredSize()+""+height);
+			System.out.println(label.getPreferredSize()+""+height);
 			LeftArrowBubble.add(label);
 			chat_view.add(LeftArrowBubble);
 			chat_panel.add(chat_view);
@@ -207,6 +233,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 				revalidate();
 			}
 		}
+		
 
 		public class LeftArrowBubble extends JPanel {
 			   private int radius = 10;
@@ -323,7 +350,11 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 				text_area.setText(""); // �޼����� ������ ���� �޼��� ����â�� ����.
 				text_area.requestFocus(); // �޼����� ������ Ŀ���� �ٽ� �ؽ�Ʈ �ʵ�� ��ġ��Ų��
 				makeRightBubble(value);
-				 // same value as
+
+				SendMessage("/500 "+user_names+" "+value);
+				System.out.println("LOG.User_names"+user_names+" "+value);
+
+				// same value as
 //				text_area.setCaretPosition(len); // place caret at the end (with no selection)
 //		 		textArea.replaceSelection(msg + "\n");
 			}
@@ -352,6 +383,42 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			
 		}
 
+	public void SendMessage(String msg) {
+		try {
+			// dos.writeUTF(msg);
+			byte[] bb;
+			bb = MakePacket(msg);
+			dos.write(bb, 0, bb.length);
+		} catch (IOException e) {
+			//AppendText("dos.write() error");
+			try {
+				dos.close();
+				dis.close();
+				socket.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				System.exit(0);
+			}
+		}
+	}
 
+	public byte[] MakePacket(String msg) {
+		byte[] packet = new byte[BUF_LEN];
+		byte[] bb = null;
+		int i;
+		for (i = 0; i < BUF_LEN; i++)
+			packet[i] = 0;
+		try {
+			bb = msg.getBytes("euc-kr");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(0);
+		}
+		for (i = 0; i < bb.length; i++)
+			packet[i] = bb[i];
+		return packet;
+	}
 	
 }

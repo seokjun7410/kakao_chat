@@ -7,8 +7,9 @@ import kakao_Chat.design.mini_profile.MiniProfileDesign;
 
 public class MiniProfileDesign_Chat extends MiniProfileDesign{
 	
-	protected String ProfileDesign(JPanel chattingPanel,int chattingListHeight, int chattingListIndex) {
-		String chattingName = "User"+(chattingListIndex+2);
+	protected String ProfileDesign(JPanel chattingPanel,int chattingListHeight, int chattingListIndex, String id) {
+		//String chattingName = "User"+(chattingListIndex+2);
+		String chattingName = id;
 		JLabel userNameLabel = new JLabel(chattingName);
 		userNameLabel.setBounds(86, 16, 93, 15);
 		chattingPanel.add(userNameLabel);
@@ -21,7 +22,7 @@ public class MiniProfileDesign_Chat extends MiniProfileDesign{
 		
 		return chattingName;
 	}
-	
+
 	public void miniProfileMakeByNumber(JPanel chattingPanel) {
 		// TODO Auto-generated method stub
 		

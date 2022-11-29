@@ -1,4 +1,5 @@
 package server;
+
 // Java Chatting Server
 import java.awt.EventQueue;
 
@@ -36,9 +37,9 @@ public class JavaChatServer extends JFrame {
 	JTextArea textArea;
 	private JTextField txtPortNumber;
 	private Vector UserLoginInfo = new Vector();
-	private ServerSocket socket; 
+	private ServerSocket socket;
 	private Socket client_socket;
-	private Vector UserVec = new Vector(); 
+	private Vector UserVec = new Vector();
 	private static final int BUF_LEN = 128;
 	public int recent_Num = 0;
 	public int room_Num = 0;
@@ -101,7 +102,7 @@ public class JavaChatServer extends JFrame {
 				AppendText("Chat Server Running..");
 				btnServerStart.setText("Chat Server Running..");
 				btnServerStart.setEnabled(false);
-				txtPortNumber.setEnabled(false); 
+				txtPortNumber.setEnabled(false);
 				AcceptServer accept_server = new AcceptServer();
 				accept_server.start();
 			}
@@ -110,36 +111,32 @@ public class JavaChatServer extends JFrame {
 		contentPane.add(btnServerStart);
 	}
 
-
 	class AcceptServer extends Thread {
 		@SuppressWarnings("unchecked")
 		public void run() {
-			while (true) { 
+			while (true) {
 				try {
 					AppendText("Waiting new clients ...");
-					client_socket = socket.accept(); 
+					client_socket = socket.accept();
 					AppendText("접속: " + client_socket);
 					UserService new_user = new UserService(client_socket);
 					new_user.start();
-					
+
 				} catch (IOException e) {
 					AppendText("accept() error");
-					//System.exit(0);
+					// System.exit(0);
 				}
 			}
 		}
-		
-		
 
 	}
 
 	public void AppendText(String str) {
-		
+
 		textArea.append(str + "\n");
 		textArea.setCaretPosition(textArea.getText().length());
 	}
 
-	
 	class UserService extends Thread {
 		private InputStream is;
 		private OutputStream os;
@@ -151,7 +148,7 @@ public class JavaChatServer extends JFrame {
 
 		public UserService(Socket client_socket) {
 			// TODO Auto-generated constructor stub
-			
+
 			this.client_socket = client_socket;
 			this.user_vc = UserVec;
 			try {
@@ -174,36 +171,36 @@ public class JavaChatServer extends JFrame {
 				AppendText("userService error");
 			}
 		}
-		
+
 		public String getUserName() {
 			return this.UserName;
 		}
-		
+
 		public void Login() {
-			AppendText( UserName + " 님이 접속하였습니다");
+			AppendText(UserName + " 님이 접속하였습니다");
 			UserVec.add(this);
 			WriteOne(UserName + " /101");
-			String msg =UserName+" /login" +" /101";
-			WriteAll(msg); 
+			String msg = UserName + " /login" + " /101";
+			WriteAll(msg);
 			AppendText("현재 인원: " + UserVec.size());
 		}
-		
+
 		public void Logout() {
-			String msg ="["+UserName+"]���� ���� �Ͽ����ϴ�.\n";
-			UserVec.removeElement(this); 
-			WriteAll(msg); 
+			String msg = "[" + UserName + "]���� ���� �Ͽ����ϴ�.\n";
+			UserVec.removeElement(this);
+			WriteAll(msg);
 			AppendText("[" + UserName + "] 님이 로그아웃 하셨습니다. 인원: " + UserVec.size());
 		}
 
 		public void LoginFail() {
-			AppendText( UserName + " 님이 로그인에 실패하였습니다");
-			//WriteOne("Welcome to Java chat server\n");
+			AppendText(UserName + " 님이 로그인에 실패하였습니다");
+			// WriteOne("Welcome to Java chat server\n");
 			WriteOne(UserName + " /102");
 		}
-		 
+
 		public void SignUp() {
-			AppendText( UserName + " 님이 새로 가입하였습니다");
-			//WriteOne("Welcome to Java chat server\n");
+			AppendText(UserName + " 님이 새로 가입하였습니다");
+			// WriteOne("Welcome to Java chat server\n");
 			UserVec.add(this);
 			WriteOne(UserName + " /103");
 			AppendText("현재 인원: " + UserVec.size());
@@ -217,8 +214,7 @@ public class JavaChatServer extends JFrame {
 //					user.WriteOne(str);
 			}
 		}
-		
-		
+
 		public void WriteOthers(String str) {
 			for (int i = 0; i < user_vc.size(); i++) {
 				UserService user = (UserService) user_vc.elementAt(i);
@@ -238,23 +234,22 @@ public class JavaChatServer extends JFrame {
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} 
+			}
 			for (i = 0; i < bb.length; i++)
 				packet[i] = bb[i];
 			return packet;
 		}
 
-
 		public void sendTo(String name, String msg) {
-			for(int i=0; i<UserVec.size(); i++) {
+			for (int i = 0; i < UserVec.size(); i++) {
 				UserService user = (UserService) user_vc.elementAt(i);
-				if(user.getUserName().equals(name)) {
+				if (user.getUserName().equals(name)) {
 					user.WriteOne("");
 					break;
 				}
 			}
 		}
-		
+
 		public void WriteOne(String msg) {
 			try {
 				// dos.writeUTF(msg);
@@ -277,7 +272,7 @@ public class JavaChatServer extends JFrame {
 
 		@SuppressWarnings("unchecked")
 		public void run() {
-			while (true) { 
+			while (true) {
 				try {
 					// String msg = dis.readUTF();
 					byte[] b = new byte[BUF_LEN];
@@ -297,62 +292,62 @@ public class JavaChatServer extends JFrame {
 					}
 					String msg = new String(b, "euc-kr");
 					msg = msg.trim();
-					AppendText(msg); 
+					AppendText(msg);
+					System.out.println("ServcerRecv = " + msg);
 
-					String[] args = msg.split(" "); 
+					String[] args = msg.split(" ");
 
-					if (args[0].matches("/100")){ // 로그인 "/100 id pw"
+					if (args[0].matches("/100")) { // 로그인 "/100 id pw"
 						String id = args[1].trim();
 						String pw = args[2].trim();
-						if (SearchUserInfo(id,pw)==1) { //로그인 성공
+						if (SearchUserInfo(id, pw) == 1) { // 로그인 성공
 							UserName = id;
 							Login();
-						}
-						else if (SearchUserInfo(id,pw)==-1) { //로그인 실패
+						} else if (SearchUserInfo(id, pw) == -1) { // 로그인 실패
 							UserName = id;
 							LoginFail();
-						}
-						else if (SearchUserInfo(id,pw)==0) { //회원 정보 추가
+						} else if (SearchUserInfo(id, pw) == 0) { // 회원 정보 추가
 							UserName = id;
-							User new_user = new User(id,pw,assign_UserNum());
+							User new_user = new User(id, pw, assign_UserNum());
 							UserLoginInfo.add(new_user);
 							SignUp();
 						}
 					}
-					
-					else if (args[0].matches("/200")) { //친구 추가
+
+					else if (args[0].matches("/200")) { // 친구 추가
 						String id = args[1].trim();
-						if (SearchUserInfo(id) == 0) { //유저 조회 실패
+						if (SearchUserInfo(id) == 0) { // 유저 조회 실패
 							WriteOne("/202");
-						}
-						else { //유저 조회 성공
+						} else { // 유저 조회 성공
 							int userNum = SearchUserInfo(id);
-							WriteOne("/201" +((User) UserLoginInfo.get(userNum)).getId()+" " +((User) UserLoginInfo.get(userNum)).getImage()); 	
+							WriteOne("/201 " + ((User) UserLoginInfo.get(userNum)).getId() + " "
+									+ ((User) UserLoginInfo.get(userNum)).getImage());
 						}
-					}
-					else if (args[0].matches("/300")) { //채팅방 생성
+					} else if (args[0].matches("/300")) { // 채팅방 생성
 						int room_num = assign_RoomNum();
-						String send_msg ="/301 "+String.valueOf(room_num); 
-						for(int i=0; i< Integer.parseInt(args[1]); i++) {
-							sendTo(args[i+2],send_msg);
-						}
-					}
-					else if (args[0].matches("/500")) { //메세지 전송
-						String send_msg ="/502 "+args[2]; 
-						sendTo(args[1],send_msg);
-					}
-					
-					else if (args[0].matches("/501")) { // 사진, 파일 전송
-						String send_msg ="/503 "+args[2]; 
-						sendTo(args[1],send_msg);
-					}
-					
-					else if (args[0].matches("/600")) { //프로필 변경 전송
-						String send_msg ="/601 "+ getUserName()+" "+args[1];
+						System.out.println("servRecv /300");
+						String send_msg = "/301 " + String.valueOf(room_num);
+//						for (int i = 0; i < Integer.parseInt(args[1]); i++) {
+//							sendTo(args[i + 2], send_msg);
+//						}
+						WriteAll(send_msg);
+					} else if (args[0].matches("/500")) { // 메세지 전송
+						String send_msg = "/502 " + args[2];
+						System.out.println("500 send_msg : " + send_msg);
+//						sendTo(args[1], send_msg);
 						WriteAll(send_msg);
 					}
-					
-					
+
+					else if (args[0].matches("/501")) { // 사진, 파일 전송
+						String send_msg = "/503 " + args[2];
+						sendTo(args[1], send_msg);
+					}
+
+					else if (args[0].matches("/600")) { // 프로필 변경 전송
+						String send_msg = "/601 " + getUserName() + " " + args[1];
+						WriteAll(send_msg);
+					}
+
 //					else if (args[1].matches("/exit")) {
 //						Logout();
 //						break;
@@ -369,7 +364,7 @@ public class JavaChatServer extends JFrame {
 //						UserStatus = "S";
 //					} else if (args[1].matches("/wakeup")) {
 //						UserStatus = "O";
-					 else if (args[1].matches("/to")) {
+					else if (args[1].matches("/to")) {
 						for (int i = 0; i < user_vc.size(); i++) {
 							UserService user = (UserService) user_vc.elementAt(i);
 //							if (user.UserName.matches(args[2]) && user.UserStatus.matches("O")) {
@@ -383,7 +378,7 @@ public class JavaChatServer extends JFrame {
 //								break;
 //							}		
 						}
-					} else { 
+					} else {
 //						UserStatus = "O";
 						WriteAll(msg + "\n"); // Write All
 					}
@@ -393,54 +388,52 @@ public class JavaChatServer extends JFrame {
 						dos.close();
 						dis.close();
 						client_socket.close();
-						Logout(); 
+						Logout();
 						break;
 					} catch (Exception ee) {
 						break;
-					} 
-				} 
-			} 
-		} 
-		
+					}
+				}
+			}
+		}
+
 		public int assign_UserNum() {
-			int num = recent_Num+1;
+			int num = recent_Num + 1;
 			recent_Num = num;
 			return num;
 		}
-		
+
 		public int assign_RoomNum() {
-			int num = room_Num+1;
+			int num = room_Num + 1;
 			recent_Num = num;
 			return num;
 		}
-		
+
 		public int SearchUserInfo(String user_id, String user_pw) {
-			int found =0;
-			for(int i =0; i<UserLoginInfo.size(); i++) {
-				if( ((User) UserLoginInfo.get(i)).getId().equals(user_id)) { 
-					if(((User) UserLoginInfo.get(i)).getPw().equals(user_pw)) { //아이디, 비밀번호 일치
-						found =1; break;
+			int found = 0;
+			for (int i = 0; i < UserLoginInfo.size(); i++) {
+				if (((User) UserLoginInfo.get(i)).getId().equals(user_id)) {
+					if (((User) UserLoginInfo.get(i)).getPw().equals(user_pw)) { // 아이디, 비밀번호 일치
+						found = 1;
+						break;
+					} else { // 아이디만 일치, 로그인 실패
+						found = -1;
+						break;
 					}
-					else {  //아이디만 일치, 로그인 실패
-						found = -1; break;
-					}
-				}	
+				}
 			}
-			return found;  //일치하는 아이디가 없을 경우 0 리턴
+			return found; // 일치하는 아이디가 없을 경우 0 리턴
 		}
-		
+
 		public int SearchUserInfo(String user_id) {
-			int found =0;
-			for(int i =0; i<UserLoginInfo.size(); i++) {
-				if( ((User) UserLoginInfo.get(i)).getId().equals(user_id)) { 
-						found = i; break;
-				}	
+			int found = 0;
+			for (int i = 0; i < UserLoginInfo.size(); i++) {
+				if (((User) UserLoginInfo.get(i)).getId().equals(user_id)) {
+					found = i;
+					break;
+				}
 			}
-			return found;  //일치하는 아이디가 없을 경우 0 리턴
-		}
+			return found; // 일치하는 아이디가 없을 경우 0 리턴
 		}
 	}
-
-	
-
-
+}

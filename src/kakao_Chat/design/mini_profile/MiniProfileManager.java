@@ -35,13 +35,13 @@ public class MiniProfileManager {
 		}
 	}
 	
-	public void setMiniProfileDesign_Friend() {
-		miniProfileDesign = new FriendMiniProfile();
+	public void setMiniProfileDesign_Friend(String profile_img) {
+		miniProfileDesign = new FriendMiniProfile(profile_img);
 
 	}
 	
-	public String makeMiniProfile(JPanel chattingPanel, int chattingListHeight, int chattingListIndex) {
-		String chattingName = miniProfileDesign.ProfileDesign(chattingPanel,chattingListHeight,chattingListIndex);
+	public String makeMiniProfile(JPanel chattingPanel, int chattingListHeight, int chattingListIndex,String id) {
+		String chattingName = miniProfileDesign.ProfileDesign(chattingPanel,chattingListHeight,chattingListIndex,id);
 		return chattingName;
 	}
 

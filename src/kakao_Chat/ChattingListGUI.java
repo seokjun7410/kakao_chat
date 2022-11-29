@@ -62,10 +62,28 @@ public class ChattingListGUI extends JFrame{
 	private JPanel chatPanel;
 	JButton moveFriendsList;
 	JButton moveChattingList;
-	FriendsListGUI friendsListGUI = new FriendsListGUI();
-	
-	public ChattingListGUI(Socket socket, String name) {
-		ArrayList<JPanel> chattingButtonList = new ArrayList<JPanel>();
+	private Socket socket;
+	FriendsListGUI friendsListGUI;// = new FriendsListGUI(socket);
+	chat_Frame chatting;
+	private InputStream is;
+	private OutputStream os;
+	private DataInputStream dis;
+	private DataOutputStream dos;
+	private JLabel lblUserName;
+	private static final  int BUF_LEN = 128;
+	public static String userName;
+	public static ArrayList <User> User_list;
+	public int Size_list;
+	private ArrayList<JPanel> chattingButtonList = new ArrayList<JPanel>();
+	private JPanel chattingListPanel;
+	public FriendsListGUI getFriendsListGUI() {
+		return friendsListGUI;
+	}
+
+	public ChattingListGUI(Socket s, String name) {
+		this.socket = s;
+
+		
 		setBackground(new Color(255, 255, 255));
 		setBounds(900, 100, 400, 690);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -78,7 +96,7 @@ public class ChattingListGUI extends JFrame{
 		chatPanel.setBackground(Color.WHITE);
 		chatPanel.setBounds(67, 0, 317, 650);
 		
-		JPanel chattingListPanel = new JPanel();
+		chattingListPanel = new JPanel();
 		chattingListPanel.setBackground(Color.WHITE);
 		chattingListPanel.setBounds(67, 50, 317, 590);
 		chattingListPanel.setLayout(new FlowLayout());
@@ -164,7 +182,7 @@ public class ChattingListGUI extends JFrame{
 		addChatting.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new addChattingGUI();
+				new addChattingGUI(socket,name);
 			}
 		});
 		topBar.add(addChatting);
@@ -205,7 +223,8 @@ public class ChattingListGUI extends JFrame{
 		moveMore.setBorderPainted(false);
 		moveMore.setBounds(22, 155, 22, 7);
 		sideMenuPane.add(moveMore);
-		
+
+		friendsListGUI = new FriendsListGUI(socket,name);
 		JPanel friendPanel = friendsListGUI.get();
 		friendPanel.setBounds(67, 0, 317, 650);
 		getContentPane().add(friendPanel);
@@ -281,6 +300,18 @@ public class ChattingListGUI extends JFrame{
 		chatPanel.setVisible(false);
 	}
 	
+	public void addChatting() {
+		if(chattingListIndex < 20) {
+			createChattingRoom(chattingButtonList,chattingListPanel); //chatingRoom 생성
+			//chattingListPanel.setSize(317,chattingListHeight);
+			chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
+			revalidate();
+			repaint();
+		}else {
+			System.out.println("최대 방 개수를 초과했습니다.");
+		}
+	}
+	
 	private void createChattingRoom(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel) {
 		
 		JPanel chattingPanel = new JPanel();
@@ -296,7 +327,7 @@ public class ChattingListGUI extends JFrame{
 		
 		miniProfileManager = MiniProfileManager.getInstance();
 		miniProfileManager.setMiniProfileDesign_Chat( DUMMY_NumberOfPeople );
-		String chatName = miniProfileManager.makeMiniProfile(chattingPanel,chattingListHeight, chattingListIndex);
+		String chatName = miniProfileManager.makeMiniProfile(chattingPanel,chattingListHeight, chattingListIndex,"user");
 		/*******************/
 		
 		
@@ -305,12 +336,14 @@ public class ChattingListGUI extends JFrame{
 		chattingListPanel.add(chattingButtonList.get(++chattingListIndex));
 		chattingListHeight += 71;
 		
+
+		
 		chattingPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("clicked ["+chatName+"]");
-				chat_Frame chatting = new chat_Frame(DUMMY_NumberOfPeople,chatName);
-				}
+				chatting = new chat_Frame(DUMMY_NumberOfPeople,chatName,socket);
+			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				JPanel b = (JPanel)e.getSource();
@@ -323,5 +356,125 @@ public class ChattingListGUI extends JFrame{
 		    }
 			});
 	}
+	
+	public chat_Frame getChatting() {
+		return chatting;
+	}
+	
+	class ListenNetwork extends Thread {
+		public void run() {
+			while (true) {
+				try {
+					// String msg = dis.readUTF();
+					byte[] b = new byte[BUF_LEN];
+					int ret;
+					ret = dis.read(b);
+					if (ret < 0) {
+						//AppendText("dis.read() < 0 error");
+						try {
+							dos.close();
+							dis.close();
+							socket.close();
+							break;
+						} catch (Exception ee) {
+							break;
+						}// catch�� ��
+					}
+					String	msg = new String(b, "euc-kr");
+					msg = msg.trim(); // �յ� blank NULL, \n ��� ����
 
+					String[] args = msg.split(" ");
+					System.out.println("clmsg:"+ msg); // server ȭ�鿡 ���
+
+					if(args.length >1) {
+						if(args[1].equals("/101")) {
+							userName = args[0];
+//							window = new ChattingListGUI(socket,args[0]);
+//							window.setVisible(true);
+//							setVisible(false);
+						}
+
+						if(args[1].equals("pass")) {
+							System.out.println("PASSmsg:"+args[0]);
+//							user_info = new User(args[0]);
+
+
+						}
+						if(args[1].equals("/login")) {
+
+							System.out.println("LOGINmsg:"+args[0]);
+//							User new_user = new User(args[0]);
+//							User_list.add(new_user);
+							for(int i =0; i<User_list.size(); i++) {
+								System.out.println("list:"+User_list.get(i).id);
+								System.out.println("->");
+							}
+
+						}
+//						if(args[1].equals("/login")) {
+//
+//							System.out.println("msg:"+args[0]);
+////						User new_user = new User(args[0]);
+////						User_list.add(new_user);
+//							for(int i =0; i<User_list.size(); i++) {
+//								System.out.println("list:"+User_list.get(i).id);
+//								System.out.println("->");
+//							}
+//
+//						}
+					}
+				} catch (IOException e) {
+					//AppendText("dis.read() error");
+					try {
+						dos.close();
+						dis.close();
+						socket.close();
+						break;
+					} catch (Exception ee) {
+						break;
+					} // catch�� ��
+				} // �ٱ� catch����
+
+			}
+		}
+	}
+
+
+	public byte[] MakePacket(String msg) {
+		byte[] packet = new byte[BUF_LEN];
+		byte[] bb = null;
+		int i;
+		for (i = 0; i < BUF_LEN; i++)
+			packet[i] = 0;
+		try {
+			bb = msg.getBytes("euc-kr");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(0);
+		}
+		for (i = 0; i < bb.length; i++)
+			packet[i] = bb[i];
+		return packet;
+	}
+
+	public void SendMessage(String msg) {
+		try {
+			// dos.writeUTF(msg);
+			byte[] bb;
+			bb = MakePacket(msg);
+			dos.write(bb, 0, bb.length);
+		} catch (IOException e) {
+			//AppendText("dos.write() error");
+			try {
+				dos.close();
+				dis.close();
+				socket.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				System.exit(0);
+			}
+		}
+	}
 }

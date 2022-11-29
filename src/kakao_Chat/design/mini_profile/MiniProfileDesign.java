@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 public abstract class MiniProfileDesign {
 	
 	
-	protected abstract String ProfileDesign(JPanel chattingPanel,int chattingListHeight, int chattingListIndex);
+	protected abstract String ProfileDesign(JPanel chattingPanel,int chattingListHeight, int chattingListIndex, String id);
 	
 	protected abstract void miniProfileMakeByNumber(JPanel chattingPanel);
 }
