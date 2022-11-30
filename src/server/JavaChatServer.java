@@ -244,7 +244,7 @@ public class JavaChatServer extends JFrame {
 			for (int i = 0; i < UserVec.size(); i++) {
 				UserService user = (UserService) user_vc.elementAt(i);
 				if (user.getUserName().equals(name)) {
-					user.WriteOne("");
+					user.WriteOne(msg);
 					break;
 				}
 			}
@@ -303,10 +303,10 @@ public class JavaChatServer extends JFrame {
 						if (SearchUserInfo(id, pw) == 1) { // 로그인 성공
 							UserName = id;
 							Login();
-						} else if (SearchUserInfo(id, pw) == -1) { // 로그인 실패
+						} else if (SearchUserInfo(id, pw) == -2) { // 로그인 실패
 							UserName = id;
 							LoginFail();
-						} else if (SearchUserInfo(id, pw) == 0) { // 회원 정보 추가
+						} else if (SearchUserInfo(id, pw) == -1) { // 회원 정보 추가
 							UserName = id;
 							User new_user = new User(id, pw, assign_UserNum());
 							UserLoginInfo.add(new_user);
@@ -316,7 +316,7 @@ public class JavaChatServer extends JFrame {
 
 					else if (args[0].matches("/200")) { // 친구 추가
 						String id = args[1].trim();
-						if (SearchUserInfo(id) == 0) { // 유저 조회 실패
+						if (SearchUserInfo(id) == -1) { // 유저 조회 실패
 							WriteOne("/202");
 						} else { // 유저 조회 성공
 							int userNum = SearchUserInfo(id);
@@ -327,20 +327,21 @@ public class JavaChatServer extends JFrame {
 						int room_num = assign_RoomNum();
 						System.out.println("servRecv /300");
 						String send_msg = "/301 " + String.valueOf(room_num);
-//						for (int i = 0; i < Integer.parseInt(args[1]); i++) {
-//							sendTo(args[i + 2], send_msg);
-//						}
-						WriteAll(send_msg);
+						for (int i = 0; i < Integer.parseInt(args[1]); i++) {
+							sendTo(args[i + 2], send_msg);
+						}
+//						WriteAll(send_msg);
 					} else if (args[0].matches("/500")) { // 메세지 전송
 						String send_msg = "/502 " + args[2];
 						System.out.println("500 send_msg : " + send_msg);
-//						sendTo(args[1], send_msg);
-						WriteAll(send_msg);
+						sendTo(args[1], send_msg);
+						//WriteAll(send_msg);
 					}
 
 					else if (args[0].matches("/501")) { // 사진, 파일 전송
 						String send_msg = "/503 " + args[2];
 						sendTo(args[1], send_msg);
+						
 					}
 
 					else if (args[0].matches("/600")) { // 프로필 변경 전송
@@ -410,14 +411,14 @@ public class JavaChatServer extends JFrame {
 		}
 
 		public int SearchUserInfo(String user_id, String user_pw) {
-			int found = 0;
+			int found = -1;
 			for (int i = 0; i < UserLoginInfo.size(); i++) {
 				if (((User) UserLoginInfo.get(i)).getId().equals(user_id)) {
 					if (((User) UserLoginInfo.get(i)).getPw().equals(user_pw)) { // 아이디, 비밀번호 일치
 						found = 1;
 						break;
 					} else { // 아이디만 일치, 로그인 실패
-						found = -1;
+						found = -2;
 						break;
 					}
 				}
@@ -426,14 +427,14 @@ public class JavaChatServer extends JFrame {
 		}
 
 		public int SearchUserInfo(String user_id) {
-			int found = 0;
+			int found = -1;
 			for (int i = 0; i < UserLoginInfo.size(); i++) {
 				if (((User) UserLoginInfo.get(i)).getId().equals(user_id)) {
 					found = i;
 					break;
 				}
 			}
-			return found; // 일치하는 아이디가 없을 경우 0 리턴
+			return found; // 일치하는 아이디가 없을 경우 -1 리턴
 		}
 	}
 }

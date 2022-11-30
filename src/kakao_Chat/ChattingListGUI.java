@@ -312,7 +312,7 @@ public class ChattingListGUI extends JFrame{
 		}
 	}
 	
-	private void createChattingRoom(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel) {
+	private void createChattingRoom( ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel) {
 		
 		JPanel chattingPanel = new JPanel();
 		chattingPanel.setAutoscrolls(true);

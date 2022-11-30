@@ -27,6 +27,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -36,7 +37,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
     private JButton btn_exit, btn_login;
     private Point comPoint;
     private JTextField id_text;
-    private JTextField pw_text;
+    private JPasswordField pw_text;
     private JTextArea id_area, pw_area;
     ChattingListGUI window;
     private Socket socket;
@@ -94,7 +95,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
         pw_area.setEditable(false);
         pw_area.setBackground(new Color(254, 229, 0));
         pw_panel.setPreferredSize(new Dimension(380, 40));
-        pw_text = new JTextField();
+        pw_text = new JPasswordField();
         pw_text.setEditable(true);
 
         pw_text.setBounds(100, 100, 380, 26);
@@ -280,7 +281,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                     }
                     
                     if (args.length > 1) {
-                        if (args[1].equals("/101")) {
+                        if (args[1].equals("/101")||args[1].equals("/103")) {
                             userName = args[0];
                             chattingListGUI = new ChattingListGUI(socket, args[0]);
                             chattingListGUI.setVisible(true);
