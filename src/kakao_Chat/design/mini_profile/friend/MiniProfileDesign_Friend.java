@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 
 import kakao_Chat.design.mini_profile.MiniProfileDesign;
 
-public class MiniProfileDesign_Friend extends MiniProfileDesign{
+public abstract class MiniProfileDesign_Friend extends MiniProfileDesign{
 	
 	protected String ProfileDesign(JPanel chattingPanel,int chattingListHeight, int chattingListIndex,String id) {
 //		String chattingName = "User"+(chattingListIndex+2);
@@ -27,5 +27,6 @@ public class MiniProfileDesign_Friend extends MiniProfileDesign{
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

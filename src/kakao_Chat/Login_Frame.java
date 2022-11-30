@@ -21,6 +21,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -48,6 +49,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
     private static final int BUF_LEN = 128;
     public static String userName;
     public static ArrayList<User> User_list;
+    public static Vector Room_list = new Vector();
     public int Size_list;
     private ChattingListGUI chattingListGUI;
     private FriendsListGUI friendsListGUI;
@@ -270,9 +272,17 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                     } else if (args[0].matches("/202")) {
                         System.out.println("해당 id를 가진 USER가 없습니다.");
                     }
-                    if(args[0].matches("/301")){
+                    if(args[0].matches("/301")){ //msg : /301 방번호 이름1 이름2 ...
+                    	int size = args.length;
+                    	int RoomNum = Integer.parseInt(args[1]);
+                    	ArrayList <String> members = new ArrayList<String>();
+                    	for(int i =0; i<size; i++) {
+                    		members.add(args[i+2]);
+                    	}
+                    	RoomInfo new_room = new RoomInfo(RoomNum,size,members); //클라이언트에 새로운 방 정보 저장
+                    	Room_list.add(new_room); //벡터에 저장
                         System.out.println("채팅방 생성");
-                        chattingListGUI.addChatting();
+                        chattingListGUI.addChatting(new_room);
                     }
                     if(args[0].matches("/502")) {
                     	String message = args[1];

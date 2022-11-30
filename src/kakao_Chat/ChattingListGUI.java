@@ -158,7 +158,7 @@ public class ChattingListGUI extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(chattingListIndex < 20) {
-					createChattingRoom(chattingButtonList,chattingListPanel); //chatingRoom 생성
+					//createChattingRoom(chattingButtonList,chattingListPanel); //chatingRoom 생성
 					//chattingListPanel.setSize(317,chattingListHeight);
 					chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
 					revalidate();
@@ -300,9 +300,9 @@ public class ChattingListGUI extends JFrame{
 		chatPanel.setVisible(false);
 	}
 	
-	public void addChatting() {
+	public void addChatting(RoomInfo roominfo) {
 		if(chattingListIndex < 20) {
-			createChattingRoom(chattingButtonList,chattingListPanel); //chatingRoom 생성
+			createChattingRoom(roominfo,chattingButtonList,chattingListPanel); //chatingRoom 생성
 			//chattingListPanel.setSize(317,chattingListHeight);
 			chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
 			revalidate();
@@ -312,7 +312,7 @@ public class ChattingListGUI extends JFrame{
 		}
 	}
 	
-	private void createChattingRoom( ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel) {
+	private void createChattingRoom(RoomInfo roominfo, ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel) {
 		
 		JPanel chattingPanel = new JPanel();
 		chattingPanel.setAutoscrolls(true);
@@ -321,13 +321,16 @@ public class ChattingListGUI extends JFrame{
 		chattingPanel.setLayout(null);
 		chattingPanel.setPreferredSize(new Dimension(317,71));
 		
+		int size = roominfo.getSize();
+		ArrayList <String> members = new ArrayList<String>();
 		/**** 채팅방 생성 ****/
 		int random = (int) ((Math.random() * (6 - 2)) + 2); //Random한 DummyData 생성
 		int DUMMY_NumberOfPeople = random;
 		
 		miniProfileManager = MiniProfileManager.getInstance();
-		miniProfileManager.setMiniProfileDesign_Chat( DUMMY_NumberOfPeople );
-		String chatName = miniProfileManager.makeMiniProfile(chattingPanel,chattingListHeight, chattingListIndex,"user");
+		miniProfileManager.setMiniProfileDesign_Chat( roominfo.getSize()); //룸 크기 설정
+		
+		String chatName = miniProfileManager.makeMiniProfile_chatroom(size, members,chattingPanel,chattingListHeight, chattingListIndex);
 		/*******************/
 		
 		

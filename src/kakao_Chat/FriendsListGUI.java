@@ -149,25 +149,25 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		allReadProcessMenuItem.setBackground(new Color(255, 255, 255));
 		chattingLableAndMenu.add(allReadProcessMenuItem);
 		
-		JButton creatChatting = new JButton("");
-		creatChatting.setIcon(new ImageIcon("img/creatChat.PNG"));
-		creatChatting.setBorderPainted(false);
-		creatChatting.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(chattingListIndex < 20) {
-					createChattingRoom(chattingButtonList,chattingListPanel,"user","img/defult45.png"); //chatingRoom 생성
-					//chattingListPanel.setSize(317,chattingListHeight);
-					chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
-					revalidate();
-					repaint();
-				}else {
-					System.out.println("최대 방 개수를 초과했습니다.");
-				}
-			}
-		});
-		creatChatting.setBounds(279, 30, 25, 23);
-		topBar.add(creatChatting);
+//		JButton creatChatting = new JButton("");
+//		creatChatting.setIcon(new ImageIcon("img/creatChat.PNG"));
+//		creatChatting.setBorderPainted(false);
+//		creatChatting.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				if(chattingListIndex < 20) {
+//					createFriendProfile(chattingButtonList,chattingListPanel,"user","img/defult45.png"); //chatingRoom 생성
+//					//chattingListPanel.setSize(317,chattingListHeight);
+//					chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
+//					revalidate();
+//					repaint();
+//				}else {
+//					System.out.println("최대 방 개수를 초과했습니다.");
+//				}
+//			}
+//		});
+//		creatChatting.setBounds(279, 30, 25, 23);
+//		topBar.add(creatChatting);
 		
 		JButton addFriend = new JButton("");
 		Image af = new ImageIcon("img/add_friend.png").getImage().getScaledInstance(28,22,Image.SCALE_DEFAULT);
@@ -246,8 +246,8 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 			});
 		
 	}
-	
-	private void createChattingRoom(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel,String id,String profile_img) {
+
+	private void createFriendProfile(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel,String id,String profile_img) {
 		
 		JPanel chattingPanel = new JPanel();
 		chattingPanel.setAutoscrolls(true);
@@ -262,7 +262,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		
 		miniProfileManager = MiniProfileManager.getInstance();
 		miniProfileManager.setMiniProfileDesign_Friend(profile_img);
-		String chatName = miniProfileManager.makeMiniProfile(chattingPanel,chattingListHeight, chattingListIndex,id);
+		String chatName = miniProfileManager.makeMiniProfile_Friend(id,chattingPanel,chattingListHeight, chattingListIndex);
 		/*******************/
 		
 		
@@ -293,7 +293,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 
 	public void addFriend(String id,String profile_img){
 		if(chattingListIndex < 20) {
-			createChattingRoom(chattingButtonList,chattingListPanel,id,profile_img); //chatingRoom 생성
+			createFriendProfile(chattingButtonList,chattingListPanel,id,profile_img); //친구 프로필 생성
 			//chattingListPanel.setSize(317,chattingListHeight);
 			chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
 			revalidate();

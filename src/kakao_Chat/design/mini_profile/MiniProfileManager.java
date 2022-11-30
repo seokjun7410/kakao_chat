@@ -1,9 +1,12 @@
 package kakao_Chat.design.mini_profile;
 
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import kakao_Chat.RoomInfo;
 import kakao_Chat.design.mini_profile.chat.FourPeople;
 import kakao_Chat.design.mini_profile.chat.MoreThanFivePeople;
 import kakao_Chat.design.mini_profile.chat.ThreePeople;
@@ -40,8 +43,12 @@ public class MiniProfileManager {
 
 	}
 	
-	public String makeMiniProfile(JPanel chattingPanel, int chattingListHeight, int chattingListIndex,String id) {
-		String chattingName = miniProfileDesign.ProfileDesign(chattingPanel,chattingListHeight,chattingListIndex,id);
+	public String makeMiniProfile_chatroom(int size, ArrayList<String> members, JPanel chattingPanel, int chattingListHeight, int chattingListIndex) {
+		String chattingName = miniProfileDesign.ProfileDesign(size,members,chattingPanel,chattingListHeight,chattingListIndex);
+		return chattingName;
+	}
+	public String makeMiniProfile_Friend(String name, JPanel chattingPanel, int chattingListHeight, int chattingListIndex) {
+		String chattingName = miniProfileDesign.ProfileDesign(2,name,chattingPanel,chattingListHeight,chattingListIndex);
 		return chattingName;
 	}
 

@@ -199,7 +199,7 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(chattingListIndex < 20) {
-					createChattingRoom(chattingButtonList,chattingListPanel); //chatingRoom 생성
+					//createChattingRoom(chattingButtonList,chattingListPanel); //chatingRoom 생성
 					//chattingListPanel.setSize(317,chattingListHeight);
 					chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
 					
@@ -214,56 +214,56 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 		
 	}
 	
-	private void createChattingRoom(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel) {
-		
-		JPanel chattingPanel = new JPanel();
-		chattingPanel.setAutoscrolls(true);
-		chattingPanel.setBounds(67, 50, 317, chattingListHeight);
-		chattingPanel.setBackground(Color.white);
-		chattingPanel.setLayout(null);
-		chattingPanel.setPreferredSize(new Dimension(317,55));
-		
-		/**** 친구목록 생성 ****/
-		int random = (int) ((Math.random() * (6 - 2)) + 2); //Random한 DummyData 생성
-		int DUMMY_NumberOfPeople = random;
-		
-		miniProfileManager = MiniProfileManager.getInstance();
-		miniProfileManager.setMiniProfileDesign_Friend("img/default45.png");
-		String chatName = miniProfileManager.makeMiniProfile(chattingPanel,chattingListHeight, chattingListIndex,"img/default45.png");
-		/*******************/
-		
-		//우측 체크박스 add
-		JCheckBox chckbxNewCheckBox = new JCheckBox("");
-		chckbxNewCheckBox.setBounds(260, 10, 40, 30);
-		chckbxNewCheckBox.setBackground(Color.white);
-		chckbxNewCheckBox.setIcon(new ImageIcon("img/checkBox.png"));
-		chckbxNewCheckBox.setSelectedIcon(new ImageIcon("img/checkBox_checked.PNG"));
-		chattingPanel.add(chckbxNewCheckBox);
-		
-		
-		chattingButtonList.add(chattingPanel);
-		chattingListPanel.setBounds(0, 0, 317, chattingListHeight);
-		chattingListPanel.add(chattingButtonList.get(++chattingListIndex));
-		chattingListHeight += 71;
-		
-		chattingPanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.out.println("clicked ["+chatName+"]");
-				Profile_Frame profile_Frame = new Profile_Frame(chatName,socket,currentName);
-				}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				JPanel b = (JPanel)e.getSource();
-		        b.setBackground(new Color(245,245,245));
-			}
-			@Override//마우스가 버튼 밖으로 나가면 노란색으로 바뀜
-		    public void mouseExited(MouseEvent e) {
-				JPanel b = (JPanel)e.getSource();
-		        b.setBackground(Color.white);
-		    }
-			});
-	}
+//	private void createChattingRoom(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel) {
+//		
+//		JPanel chattingPanel = new JPanel();
+//		chattingPanel.setAutoscrolls(true);
+//		chattingPanel.setBounds(67, 50, 317, chattingListHeight);
+//		chattingPanel.setBackground(Color.white);
+//		chattingPanel.setLayout(null);
+//		chattingPanel.setPreferredSize(new Dimension(317,55));
+//		
+//		/**** 친구목록 생성 ****/
+//		int random = (int) ((Math.random() * (6 - 2)) + 2); //Random한 DummyData 생성
+//		int DUMMY_NumberOfPeople = random;
+//		
+//		miniProfileManager = MiniProfileManager.getInstance();
+//		miniProfileManager.setMiniProfileDesign_Friend("img/default45.png");
+//		String chatName = miniProfileManager.makeMiniProfile(chattingPanel,chattingListHeight, chattingListIndex,"img/default45.png");
+//		/*******************/
+//		
+//		//우측 체크박스 add
+//		JCheckBox chckbxNewCheckBox = new JCheckBox("");
+//		chckbxNewCheckBox.setBounds(260, 10, 40, 30);
+//		chckbxNewCheckBox.setBackground(Color.white);
+//		chckbxNewCheckBox.setIcon(new ImageIcon("img/checkBox.png"));
+//		chckbxNewCheckBox.setSelectedIcon(new ImageIcon("img/checkBox_checked.PNG"));
+//		chattingPanel.add(chckbxNewCheckBox);
+//		
+//		
+//		chattingButtonList.add(chattingPanel);
+//		chattingListPanel.setBounds(0, 0, 317, chattingListHeight);
+//		chattingListPanel.add(chattingButtonList.get(++chattingListIndex));
+//		chattingListHeight += 71;
+//		
+//		chattingPanel.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				System.out.println("clicked ["+chatName+"]");
+//				Profile_Frame profile_Frame = new Profile_Frame(chatName,socket,currentName);
+//				}
+//			@Override
+//			public void mouseEntered(MouseEvent e) {
+//				JPanel b = (JPanel)e.getSource();
+//		        b.setBackground(new Color(245,245,245));
+//			}
+//			@Override//마우스가 버튼 밖으로 나가면 노란색으로 바뀜
+//		    public void mouseExited(MouseEvent e) {
+//				JPanel b = (JPanel)e.getSource();
+//		        b.setBackground(Color.white);
+//		    }
+//			});
+//	}
 
 	
 	public class TranslucentLabel extends JLabel {

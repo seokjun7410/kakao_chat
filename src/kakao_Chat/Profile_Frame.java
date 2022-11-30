@@ -167,19 +167,9 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 //			revalidate();
 
             //채팅방 생성
-            try {
-                is = socket.getInputStream();
-                dis = new DataInputStream(is);
-                os = socket.getOutputStream();
-                dos = new DataOutputStream(os);
-                SendMessage("/300 2 " + User_name + " " + currentName);
-
-            } catch (IOException ee) {
-                throw new RuntimeException(ee);
-            }
-        } else if (e.getSource().equals(pl)) {
-            System.out.println("pl clicked");
+                SendMessage("/300 1 " + User_name);
         }
+
     }
 
     public void mouseReleased(MouseEvent e) {

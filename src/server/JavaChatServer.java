@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import kakao_Chat.RoomInfo;
 import kakao_Chat.User;
 
 import javax.swing.JScrollPane;
@@ -23,6 +24,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
@@ -40,6 +42,7 @@ public class JavaChatServer extends JFrame {
 	private ServerSocket socket;
 	private Socket client_socket;
 	private Vector UserVec = new Vector();
+	private Vector RoomVec = new Vector();
 	private static final int BUF_LEN = 128;
 	public int recent_Num = 0;
 	public int room_Num = 0;
@@ -324,11 +327,25 @@ public class JavaChatServer extends JFrame {
 									+ ((User) UserLoginInfo.get(userNum)).getImage());
 						}
 					} else if (args[0].matches("/300")) { // 채팅방 생성
-						int room_num = assign_RoomNum();
+						RoomInfo new_Room; // 방 객체
+						int room_num = assign_RoomNum(); //방 번호 배정
+						int size = Integer.parseInt(args[1]); //방 인원
+						ArrayList<String> members = new ArrayList<String>();
+						StringBuffer temp = new StringBuffer(); //보낼 메세지
+						
 						System.out.println("servRecv /300");
-						String send_msg = "/301 " + String.valueOf(room_num);
+						
+						String send_msg = "/301 " + String.valueOf(room_num)+ " " + UserName ;
+						temp.append(send_msg);
 						for (int i = 0; i < Integer.parseInt(args[1]); i++) {
-							sendTo(args[i + 2], send_msg);
+							String name = args[i + 2];
+							members.add(name);
+							temp.append(" ").append(name);
+						}
+						new_Room = new RoomInfo(room_num,size,members);
+						send_msg = temp.toString();
+						for (int i = 0; i < Integer.parseInt(args[1]); i++) {
+							sendTo(args[i + 2], send_msg); //send_msg : /301 방번호 이름1 이름2 ...
 						}
 //						WriteAll(send_msg);
 					} else if (args[0].matches("/500")) { // 메세지 전송
