@@ -321,6 +321,9 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                     if(args[0].matches("/502")) {
                     	String message = args[1];
                     	System.out.println("RECV message : "+ message);
+        				if(message.equals("(등장)") || message.equals("(떼쓰기)") || message.equals("(우와)")|| message.equals("(축하)") || message.equals("(충성)") || message.equals("(ㅋㅋ)"))
+        					chattingListGUI.getChatting().printEmoticon_Left(message);
+        				else
                     	chattingListGUI.getChatting().makeLeftBubble(message);
                     }
                     

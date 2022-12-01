@@ -1,5 +1,8 @@
 package kakao_Chat;
 import javax.swing.*;
+
+import kakao_Chat.design.pictureEdit.editImage;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Area;
@@ -194,6 +197,53 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		}
 	}
 	
+		public void printEmoticon(String text) {
+			ImageIcon emoticon;
+			switch(text) {
+			case "(ㅋㅋ)": emoticon= new ImageIcon("img/ㅋㅋ.png"); break;
+			case "(등장)": emoticon= new ImageIcon("img/등장.png"); break;
+			case "(떼쓰기)": emoticon= new ImageIcon("img/떼쓰기.png"); break;
+			case "(우와)": emoticon= new ImageIcon("img/우와.png"); break;
+			case "(축하)": emoticon= new ImageIcon("img/축하.png"); break;
+			case "(충성)": emoticon= new ImageIcon("img/충성.png"); break;
+			default: emoticon= new ImageIcon(); break;
+			}
+			ImageIcon edit =editImage.EditImage( emoticon,70);
+			int height = edit.getIconHeight();
+			JPanel chat_view = new JPanel();
+			chat_view.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			chat_view.setBackground(new Color(186,206,224));
+			chat_view.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
+			chat_view.setPreferredSize(new Dimension(380,height+5));
+			JLabel label = new JLabel(edit);
+			chat_view.add(label);
+			chat_panel.add(chat_view);
+			revalidate();
+		}
+		public void printEmoticon_Left(String text) {
+			ImageIcon emoticon;
+			switch(text) {
+			case "(ㅋㅋ)": emoticon= new ImageIcon("img/ㅋㅋ.png"); break;
+			case "(등장)": emoticon= new ImageIcon("img/등장.png"); break;
+			case "(떼쓰기)": emoticon= new ImageIcon("img/떼쓰기.png"); break;
+			case "(우와)": emoticon= new ImageIcon("img/우와.png"); break;
+			case "(축하)": emoticon= new ImageIcon("img/축하.png"); break;
+			case "(충성)": emoticon= new ImageIcon("img/충성.png"); break;
+			default: emoticon= new ImageIcon(); break;
+			}
+			ImageIcon edit =editImage.EditImage( emoticon,70);
+			int height = edit.getIconHeight();
+			JPanel chat_view = new JPanel();
+			chat_view.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			chat_view.setBackground(new Color(186,206,224));
+			chat_view.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
+			chat_view.setPreferredSize(new Dimension(380,height+5));
+			JLabel label = new JLabel(edit);
+			chat_view.add(label);
+			chat_panel.add(chat_view);
+			revalidate();
+		}
+	
 		public void makeRightBubble (String value) {
 			if(!value.equals("")) {
 				JPanel chat_view = new JPanel();
@@ -337,7 +387,10 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 				String value = text_area.getText();
 				text_area.setText(""); // �޼����� ������ ���� �޼��� ����â�� ����.
 				text_area.requestFocus(); // �޼����� ������ Ŀ���� �ٽ� �ؽ�Ʈ �ʵ�� ��ġ��Ų��
-				makeRightBubble(value);
+				if(value.equals("(등장)") || value.equals("(떼쓰기)") || value.equals("(우와)")|| value.equals("(축하)") || value.equals("(충성)") || value.equals("(ㅋㅋ)"))
+					printEmoticon(value);
+				
+				else makeRightBubble(value);
 
 				Login_Frame.SendMessage("/500 "+room_number+" "+value);
 				System.out.println("LOG.User_names"+room_number+" "+value);
