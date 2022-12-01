@@ -81,7 +81,7 @@ public class ChattingListGUI extends JFrame{
 		return friendsListGUI;
 	}
 
-	public ChattingListGUI(Socket s, String name) {
+	public ChattingListGUI(Socket s, String name) throws IOException {
 		this.socket = s;
 
 		

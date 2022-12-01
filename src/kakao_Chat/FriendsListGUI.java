@@ -53,6 +53,7 @@ import javax.swing.plaf.basic.BasicMenuBarUI;
 import kakao_Chat.design.RoundedButton;
 import kakao_Chat.design.friendslist_drawLine.BottomDrawPanel;
 import kakao_Chat.design.mini_profile.MiniProfileManager;
+import kakao_Chat.design.pictureEdit.PictureRound;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -80,7 +81,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 	private ArrayList<JPanel> chattingButtonList = new ArrayList<JPanel>();
 	private JPanel chattingListPanel = new JPanel();
 	private String currentName;
-	public FriendsListGUI(Socket s,String name) {
+	public FriendsListGUI(Socket s,String name) throws IOException {
 		currentName = name;
 
 		setBackground(new Color(255, 255, 255));
@@ -219,7 +220,10 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		myInfoPanel.setBounds(0, 59, 317, 85);
 		chatPanel.add(myInfoPanel);
 		myInfoPanel.setLayout(null);
-		profileButton = new JLabel(new ImageIcon("img/defaultProfile80.png")); //본인 프로필 이미지
+        String profile = "defaultProfile80.png"; //profile 사진 이름
+        String profile_filename = "img/"+profile;
+        ImageIcon pi = PictureRound.setImageRound(profile_filename,80);
+		profileButton = new JLabel(pi); //본인 프로필 이미지
 		profileButton.setBounds(13, 8, 61, 61);
 		profileButton.setBackground(Color.WHITE);
 		profileButton.addMouseListener(this);
@@ -279,7 +283,12 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("clicked ["+chatName+"] 프로필이 눌렸습니다.");
 				System.out.println("소켓포트 번호 : "+socket.getPort());
-				Profile_Frame profile_Frame = new Profile_Frame(chatName,socket,currentName);
+				try {
+					Profile_Frame profile_Frame = new Profile_Frame(chatName,socket,currentName);
+				} catch (IOException e1) {
+					// TODO 자동 생성된 catch 블록
+					e1.printStackTrace();
+				}
 				}
 			@Override
 			public void mouseEntered(MouseEvent e) {
