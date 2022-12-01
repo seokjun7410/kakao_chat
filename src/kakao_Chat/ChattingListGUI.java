@@ -73,6 +73,7 @@ public class ChattingListGUI extends JFrame{
 	private static final  int BUF_LEN = 128;
 	public static String userName;
 	public static ArrayList <User> User_list;
+	public Vector RoomVec = new Vector();
 	public int Size_list;
 	private ArrayList<JPanel> chattingButtonList = new ArrayList<JPanel>();
 	private JPanel chattingListPanel;
@@ -302,6 +303,7 @@ public class ChattingListGUI extends JFrame{
 	
 	public void addChatting(RoomInfo roominfo) {
 		if(chattingListIndex < 20) {
+			Login_Frame.Room_list.add(roominfo);
 			createChattingRoom(roominfo,chattingButtonList,chattingListPanel); //chatingRoom 생성
 			//chattingListPanel.setSize(317,chattingListHeight);
 			chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
@@ -353,7 +355,7 @@ public class ChattingListGUI extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("clicked ["+chatName+"]");
-				chatting = new chat_Frame(DUMMY_NumberOfPeople,chatName,socket);
+				chatting = new chat_Frame(((RoomInfo)Login_Frame.Room_list.get(chattingListIndex-1)).getRoomNum(),((RoomInfo) Login_Frame.Room_list.get(chattingListIndex-1)).getMembers(),socket);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {

@@ -223,19 +223,12 @@ public class addFriendGUI extends Frame implements MouseListener, MouseMotionLis
 		if(e.getSource().equals(title_bar)) {
 			comPoint = e.getPoint();
 		}
-		else if (e.getSource().equals(empty_menu_bar[1])) {
-			empty_menu_bar[1].setBackground(new Color(0,0,0,124));
-			revalidate();
-		}
+
 	}
 	
 	public void mouseReleased(MouseEvent e) {
 		if(e.getSource().equals(title_bar)) {
 			comPoint = null;
-		}
-		else if (e.getSource().equals(empty_menu_bar[1])) {
-			chat_Frame chatting = new chat_Frame(1,"chatName",socket);
-			
 		}
 	}
 

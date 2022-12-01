@@ -234,6 +234,16 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
         // TODO 자동 생성된 메소드 스텁
 
     }
+    
+    public static int check_RoomNum(String name) {
+    	int result = -1;
+    	for( int i=0; i<Room_list.size(); i++) {
+    		if(((RoomInfo) Room_list.get(i)).getMembersToString().equals(name)) {
+    			result = i;
+    		}
+    	}
+    	return result;
+    }
 
     class ListenNetwork extends Thread {
         public void run() {
@@ -293,6 +303,21 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         System.out.println("채팅방 생성");
                         chattingListGUI.addChatting(new_room);
                     }
+                    
+                    if(args[0].matches("/302")){
+                        int argsSize = args.length;
+                      	int size = argsSize-2;
+                      	int RoomNum = Integer.parseInt(args[1]);
+                      	ArrayList <String> members = new ArrayList<String>();
+                      	for(int i =2; i<argsSize; i++) {
+                      		members.add(args[i]);
+                      	}
+                      	RoomInfo new_room = new RoomInfo(RoomNum,size,members); //클라이언트에 새로운 방 정보 저장
+                      	Room_list.add(new_room); //벡터에 저장
+                          System.out.println("채팅방 생성");
+                          chat_Frame chatting = new chat_Frame(RoomNum, members, socket);
+                    }
+                    
                     if(args[0].matches("/502")) {
                     	String message = args[1];
                     	System.out.println("RECV message : "+ message);

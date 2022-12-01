@@ -20,7 +20,7 @@ public class MiniProfileDesign_Chat extends MiniProfileDesign{
 
 
 		for(int i=0; i<members.size(); i++) {
-			name.append(" "+members.indexOf(i));
+			name.append(members.get(i)+" ");
 		}
 		String chattingName = name.toString();
 //		JLabel userNameLabel = new JLabel(chattingName);

@@ -335,7 +335,7 @@ public class JavaChatServer extends JFrame {
 						
 						System.out.println("servRecv /300");
 						
-						String send_msg = "/301 " + String.valueOf(room_num)+ " " + UserName ;
+						String send_msg = String.valueOf(room_num)+ " " + UserName ;
 						temp.append(send_msg);
 						for (int i = 0; i < Integer.parseInt(args[1]); i++) {
 							String name = args[i + 2];
@@ -343,10 +343,12 @@ public class JavaChatServer extends JFrame {
 							temp.append(" ").append(name);
 						}
 						new_Room = new RoomInfo(room_num,size,members);
+						RoomVec.add(new_Room);
 						send_msg = temp.toString();
 						for (int i = 0; i < Integer.parseInt(args[1]); i++) {
-							sendTo(args[i + 2], send_msg); //send_msg : /301 방번호 이름1 이름2 ...
+							sendTo(args[i + 2], "/301 "+send_msg); //send_msg : /301 방번호 이름1 이름2 ...
 						}
+						WriteOne("/302 "+send_msg);
 //						WriteAll(send_msg);
 					} else if (args[0].matches("/500")) { // 메세지 전송
 						String send_msg = "/502 " + args[2];

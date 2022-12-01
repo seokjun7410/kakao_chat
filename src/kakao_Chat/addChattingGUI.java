@@ -320,10 +320,10 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 		if(e.getSource().equals(title_bar)) {
 			comPoint = null;
 		}
-		else if (e.getSource().equals(empty_menu_bar[1])) {
-			chat_Frame chatting = new chat_Frame(1,"chatName",socket);
-			
-		}
+//		else if (e.getSource().equals(empty_menu_bar[1])) {
+//			chat_Frame chatting = new chat_Frame(1,"chatName",socket);
+//			
+//		}
 	}
 
 	public void mouseDragged(MouseEvent e) 

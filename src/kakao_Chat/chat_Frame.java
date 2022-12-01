@@ -16,34 +16,21 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 	private JLabel chat_text;
 	private JButton btn_exit,btn_send;
 	private Point comPoint;
-	private int chat_number;
-	private String user_names;
+	private int room_number;
+	private String members;
 	private JTextArea text_area;
 	private JPanel chat_panel;
-	private Socket socket;
-	private InputStream is;
-	private OutputStream os;
-	private DataInputStream dis;
-	private DataOutputStream dos;
 	private static final int BUF_LEN = 128;
-	public static String userName;
 	public static ArrayList<User> User_list;
 	public int Size_list;
-	public chat_Frame(int chat_num, String un, Socket s)  {
-		this.socket = s;
+	public chat_Frame(int roomNum, ArrayList<String> un, Socket s)  {
 
-		try {
-			is = socket.getInputStream();
-			dis = new DataInputStream(is);
-			os = socket.getOutputStream();
-			dos = new DataOutputStream(os);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+		this.room_number = roomNum;
+		StringBuffer names = new StringBuffer();
+		for(int i =0; i<un.size();i++) {
+			names.append(" "+un.get(i));
 		}
-
-
-		chat_number = chat_num;
-		user_names = un;
+		this.members = names.toString();
 //		System.out.println("un = " + un);
 //		System.out.println("user_names = " + user_names);
 //		System.out.println("chat_number = " + chat_number);
@@ -100,7 +87,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		user_name.setPreferredSize(new Dimension(380,20));
 		user_name.setBackground(new Color(186,206,224));
 		user_name.setLayout(new BorderLayout());
-		JLabel name = new JLabel(user_names);
+		JLabel name = new JLabel(members);
 		name.setFont(new Font("맑은 고딕",Font.BOLD,14));
 		user_name.add(name,BorderLayout.WEST);
 		
@@ -109,7 +96,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		user_num.setPreferredSize(new Dimension(380,20));
 		user_num.setBackground(new Color(186,206,224));
 		user_num.setLayout(new BorderLayout());
-		JLabel num = new JLabel(String.valueOf(chat_number));
+		JLabel num = new JLabel(String.valueOf(room_number));
 		num.setBorder(BorderFactory.createEmptyBorder(0,3,0,0));
 		user_num.add(num,BorderLayout.CENTER);
 		ImageIcon user_icon_s = new ImageIcon("img/user_s.png");
@@ -346,13 +333,14 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 				this.dispose();
 			}
 			else if(e.getSource().equals(btn_send)) {
+				int RoomNum ;
 				String value = text_area.getText();
 				text_area.setText(""); // �޼����� ������ ���� �޼��� ����â�� ����.
 				text_area.requestFocus(); // �޼����� ������ Ŀ���� �ٽ� �ؽ�Ʈ �ʵ�� ��ġ��Ų��
 				makeRightBubble(value);
 
-				SendMessage("/500 "+user_names+" "+value);
-				System.out.println("LOG.User_names"+user_names+" "+value);
+				Login_Frame.SendMessage("/500 "+room_number+" "+value);
+				System.out.println("LOG.User_names"+room_number+" "+value);
 
 				// same value as
 //				text_area.setCaretPosition(len); // place caret at the end (with no selection)
@@ -383,42 +371,6 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			
 		}
 
-	public void SendMessage(String msg) {
-		try {
-			// dos.writeUTF(msg);
-			byte[] bb;
-			bb = MakePacket(msg);
-			dos.write(bb, 0, bb.length);
-		} catch (IOException e) {
-			//AppendText("dos.write() error");
-			try {
-				dos.close();
-				dis.close();
-				socket.close();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				System.exit(0);
-			}
-		}
-	}
-
-	public byte[] MakePacket(String msg) {
-		byte[] packet = new byte[BUF_LEN];
-		byte[] bb = null;
-		int i;
-		for (i = 0; i < BUF_LEN; i++)
-			packet[i] = 0;
-		try {
-			bb = msg.getBytes("euc-kr");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(0);
-		}
-		for (i = 0; i < bb.length; i++)
-			packet[i] = bb[i];
-		return packet;
-	}
+	
 	
 }

@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Profile_Frame extends JFrame implements MouseListener, MouseMotionListener, ActionListener {
     private JPanel title_bar;
@@ -167,7 +168,14 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 //			revalidate();
 
             //채팅방 생성
+        	int roomNum = Login_Frame.check_RoomNum(User_name);
+        	if(roomNum<0)
                 Login_Frame.SendMessage("/300 1 " + User_name);
+        	else {
+        		ArrayList<String> name = new ArrayList<String>();
+            	name.add(User_name);
+        		chat_Frame chatting = new chat_Frame(roomNum, name, socket);
+        	}
         }
 
     }
@@ -175,13 +183,8 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
     public void mouseReleased(MouseEvent e) {
         if (e.getSource().equals(title_bar)) {
             comPoint = null;
-        } else if (e.getSource().equals(menu_bar)) {
-
-
-            chat_Frame chatting = new chat_Frame(1, User_name, socket);
-
-        }
-    }
+        }    
+     }
 
     public void mouseDragged(MouseEvent e) {
         Point current = e.getLocationOnScreen();

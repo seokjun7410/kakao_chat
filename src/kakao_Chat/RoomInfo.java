@@ -14,6 +14,15 @@ public class RoomInfo {
 	public ArrayList<String> getMembers() {
 		return members;
 	}
+	
+	public String getMembersToString() {
+		StringBuffer buffer = new StringBuffer();
+		for(int i =0; i<members.size(); i++) {
+			buffer.append(members.get(i)+" ");
+		}
+		return buffer.toString();
+	}
+	
 	public void setMembers(ArrayList<String> members) {
 		this.members = members;
 	}

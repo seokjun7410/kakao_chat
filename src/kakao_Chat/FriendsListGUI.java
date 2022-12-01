@@ -230,8 +230,9 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		myInfoPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-//
-				chat_Frame chatting = new chat_Frame(1,Login_Frame.userName,socket);
+				ArrayList <String> name = new ArrayList<String>();
+				name.add(Login_Frame.userName);
+				chat_Frame chatting = new chat_Frame(1,name,socket);
 				}
 			@Override
 			public void mouseEntered(MouseEvent e) {
