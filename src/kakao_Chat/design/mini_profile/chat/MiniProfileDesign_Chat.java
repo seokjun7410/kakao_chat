@@ -12,19 +12,21 @@ public class MiniProfileDesign_Chat extends MiniProfileDesign{
 	protected String ProfileDesign(int size, ArrayList<String> members, JPanel chattingPanel, int chattingListHeight, int chattingListIndex) {
 		//String chattingName = "User"+(chattingListIndex+2);
 		StringBuffer name= new StringBuffer();
-		System.out.println("*****************************");
-		for (String member : members) {
-			System.out.println("member = " + member);
-		}
-		System.out.println("*****************************");
+//		System.out.println("*****************************");
+//		for (String member : members) {
+//			System.out.println("member = " + member);
+//		}
+//		System.out.println("*****************************");
 
-
-		for(int i=0; i<members.size(); i++) {
-			name.append(members.get(i)+" ");
+		if(members.size() <= 2){
+			name.append(members.get(0));
+		}else {
+			for (int i = 0; i < members.size(); i++) {
+				name.append(" " + members.get(i));
+			}
 		}
 		String chattingName = name.toString();
-//		JLabel userNameLabel = new JLabel(chattingName);
-		JLabel userNameLabel = new JLabel(members.get(0));
+		JLabel userNameLabel = new JLabel(chattingName);
 		userNameLabel.setBounds(86, 16, 93, 15);
 		chattingPanel.add(userNameLabel);
 		

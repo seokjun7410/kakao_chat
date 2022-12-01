@@ -278,7 +278,6 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("clicked ["+chatName+"] 프로필이 눌렸습니다.");
-				System.out.println("소켓포트 번호 : "+socket.getPort());
 				Profile_Frame profile_Frame = new Profile_Frame(chatName,socket,currentName);
 				}
 			@Override

@@ -166,16 +166,25 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
         } else if (e.getSource().equals(menu_bar)) {
 //			menu_bar.setBackground(new Color(0,0,0,124));
 //			revalidate();
+            System.out.println("1:1 채팅버튼이 눌렸습니다.");
 
             //채팅방 생성
-        	int roomNum = Login_Frame.check_RoomNum(User_name);
-        	if(roomNum<0)
-                Login_Frame.SendMessage("/300 1 " + User_name);
-        	else {
+            int roomNum = Login_Frame.check_RoomNum(User_name);
+            if (roomNum < 0) { //채팅방이 없을경우
+                System.out.println("상대방과 존재하는 채팅이 없어 채팅방 생성을 요청합니다");
+                Login_Frame.SendMessage("/300 2 " + User_name + " "+currentName);
+                System.out.println("SEND :"+" 인원수 2 " + "TO "+ User_name + " " + "FROM"+ currentName);
+            }
+        	else {//채팅방이 있을경우
         		ArrayList<String> name = new ArrayList<String>();
             	name.add(User_name);
+
         		chat_Frame chatting = new chat_Frame(roomNum, name, socket);
-        	}
+            }
+            //chat_Frame 생성을 server에게 요청
+
+
+
         }
 
     }
@@ -183,8 +192,8 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
     public void mouseReleased(MouseEvent e) {
         if (e.getSource().equals(title_bar)) {
             comPoint = null;
-        }    
-     }
+        }
+    }
 
     public void mouseDragged(MouseEvent e) {
         Point current = e.getLocationOnScreen();
