@@ -27,6 +27,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
@@ -41,11 +42,11 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
     private JPasswordField pw_text;
     private JTextArea id_area, pw_area;
     ChattingListGUI window;
-    private Socket socket;
-    private InputStream is;
-    private OutputStream os;
-    private DataInputStream dis;
-    private DataOutputStream dos;
+    private static Socket socket;
+    private static InputStream is;
+    private static OutputStream os;
+    private static DataInputStream dis;
+    private static DataOutputStream dos;
     private static final int BUF_LEN = 128;
     public static String userName;
     public static ArrayList<User> User_list;
@@ -266,7 +267,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         System.out.println("process /201");
                         //System.out.println(id+" "+userProfile);
                         chattingListGUI.getFriendsListGUI().addFriend(id,userProfile);
-                        friendsListGUI.addFriend(id,userProfile);
+                       // friendsListGUI.addFriend(id,userProfile);
 //
 //                        thisGUI.dispose();
                     } else if (args[0].matches("/202")) {
@@ -276,8 +277,8 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                     	int size = args.length;
                     	int RoomNum = Integer.parseInt(args[1]);
                     	ArrayList <String> members = new ArrayList<String>();
-                    	for(int i =0; i<size; i++) {
-                    		members.add(args[i+2]);
+                    	for(int i =2; i<size; i++) {
+                    		members.add(args[i]);
                     	}
                     	RoomInfo new_room = new RoomInfo(RoomNum,size,members); //클라이언트에 새로운 방 정보 저장
                     	Room_list.add(new_room); //벡터에 저장
@@ -297,6 +298,9 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                             chattingListGUI.setVisible(true);
                             setVisible(false);
                         }
+//                        if(args[1].equals("/103")) {
+//                        	int answer = JOptionPane.showConfirmDialog(frame(), "종료하시겠습니까?", "confirm",JOptionPane.YES_NO_OPTION );
+//                        }
 
                         if (args[1].equals("pass")) {
                             System.out.println("msg:" + args[0]);
@@ -335,7 +339,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
     }
 
 
-    public byte[] MakePacket(String msg) {
+    public static byte[] MakePacket(String msg) {
         byte[] packet = new byte[BUF_LEN];
         byte[] bb = null;
         int i;
@@ -353,7 +357,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
         return packet;
     }
 
-    public void SendMessage(String msg) {
+    public static void SendMessage(String msg) {
         try {
             // dos.writeUTF(msg);
             byte[] bb;

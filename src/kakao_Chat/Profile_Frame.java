@@ -118,7 +118,7 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 //                    os = socket.getOutputStream();
 //                    dos = new DataOutputStream(os);
 //
-//                    SendMessage("/300 2 "+ User_name+" "+ currentName);
+//                    //SendMessage("/300 2 "+ User_name+" "+ currentName);
 //                } catch (IOException ex) {
 //                    throw new RuntimeException(ex);
 //                }
@@ -167,7 +167,7 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 //			revalidate();
 
             //채팅방 생성
-                SendMessage("/300 1 " + User_name);
+                Login_Frame.SendMessage("/300 1 " + User_name);
         }
 
     }
@@ -201,41 +201,4 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 
     }
 
-    public byte[] MakePacket(String msg) {
-        byte[] packet = new byte[BUF_LEN];
-        byte[] bb = null;
-        int i;
-        for (i = 0; i < BUF_LEN; i++)
-            packet[i] = 0;
-        try {
-            bb = msg.getBytes("euc-kr");
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            System.exit(0);
-        }
-        for (i = 0; i < bb.length; i++)
-            packet[i] = bb[i];
-        return packet;
-    }
-
-    public void SendMessage(String msg) {
-        try {
-            // dos.writeUTF(msg);
-            byte[] bb;
-            bb = MakePacket(msg);
-            dos.write(bb, 0, bb.length);
-        } catch (IOException e) {
-            //AppendText("dos.write() error");
-            try {
-                dos.close();
-                dis.close();
-                socket.close();
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-                System.exit(0);
-            }
-        }
-    }
 }
