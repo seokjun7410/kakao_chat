@@ -266,7 +266,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         System.out.println("process /201");
                         //System.out.println(id+" "+userProfile);
                         chattingListGUI.getFriendsListGUI().addFriend(id,userProfile);
-//                        friendsListGUI.addFriend(id,userProfile);
+                        friendsListGUI.addFriend(id,userProfile);
 //
 //                        thisGUI.dispose();
                     } else if (args[0].matches("/202")) {

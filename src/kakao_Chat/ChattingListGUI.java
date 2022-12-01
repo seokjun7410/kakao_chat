@@ -330,7 +330,7 @@ public class ChattingListGUI extends JFrame{
 		miniProfileManager = MiniProfileManager.getInstance();
 		miniProfileManager.setMiniProfileDesign_Chat( roominfo.getSize()); //룸 크기 설정
 		
-		String chatName = miniProfileManager.makeMiniProfile_chatroom(size, members,chattingPanel,chattingListHeight, chattingListIndex);
+		String chatName = miniProfileManager.makeMiniProfile(size, members,chattingPanel,chattingListHeight, chattingListIndex);
 		/*******************/
 		
 		

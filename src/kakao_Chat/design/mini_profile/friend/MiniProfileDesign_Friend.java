@@ -1,5 +1,7 @@
 package kakao_Chat.design.mini_profile.friend;
 
+import java.util.ArrayList;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -7,9 +9,9 @@ import kakao_Chat.design.mini_profile.MiniProfileDesign;
 
 public abstract class MiniProfileDesign_Friend extends MiniProfileDesign{
 	
-	protected String ProfileDesign(JPanel chattingPanel,int chattingListHeight, int chattingListIndex,String id) {
+	protected String ProfileDesign(int size, ArrayList<String> member,JPanel chattingPanel,int chattingListHeight, int chattingListIndex) {
 //		String chattingName = "User"+(chattingListIndex+2);
-		String chattingName = id;
+		String chattingName = member.get(1);
 		JLabel userNameLabel = new JLabel(chattingName);
 		userNameLabel.setBounds(86, 14, 93, 15);
 		chattingPanel.add(userNameLabel);

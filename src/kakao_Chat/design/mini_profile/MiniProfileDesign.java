@@ -10,10 +10,10 @@ import javax.swing.JPanel;
 import kakao_Chat.RoomInfo;
 
 
-public abstract class MiniProfileDesign {
+public abstract class MiniProfileDesign<T> {
 	
 	
-	protected abstract String ProfileDesign(int size, String name,JPanel chattingPanel,int chattingListHeight, int chattingListIndex);
+	protected abstract String ProfileDesign(int size, ArrayList<String> member,JPanel chattingPanel,int chattingListHeight, int chattingListIndex);
 
 	protected abstract void miniProfileMakeByNumber(JPanel chattingPanel);
 }

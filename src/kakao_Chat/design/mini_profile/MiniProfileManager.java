@@ -43,13 +43,10 @@ public class MiniProfileManager {
 
 	}
 	
-	public String makeMiniProfile_chatroom(int size, ArrayList<String> members, JPanel chattingPanel, int chattingListHeight, int chattingListIndex) {
+	public String makeMiniProfile(int size, ArrayList<String> members, JPanel chattingPanel, int chattingListHeight, int chattingListIndex) {
 		String chattingName = miniProfileDesign.ProfileDesign(size,members,chattingPanel,chattingListHeight,chattingListIndex);
 		return chattingName;
 	}
-	public String makeMiniProfile_Friend(String name, JPanel chattingPanel, int chattingListHeight, int chattingListIndex) {
-		String chattingName = miniProfileDesign.ProfileDesign(2,name,chattingPanel,chattingListHeight,chattingListIndex);
-		return chattingName;
-	}
+
 
 }

@@ -149,25 +149,25 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		allReadProcessMenuItem.setBackground(new Color(255, 255, 255));
 		chattingLableAndMenu.add(allReadProcessMenuItem);
 		
-//		JButton creatChatting = new JButton("");
-//		creatChatting.setIcon(new ImageIcon("img/creatChat.PNG"));
-//		creatChatting.setBorderPainted(false);
-//		creatChatting.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				if(chattingListIndex < 20) {
-//					createFriendProfile(chattingButtonList,chattingListPanel,"user","img/defult45.png"); //chatingRoom 생성
-//					//chattingListPanel.setSize(317,chattingListHeight);
-//					chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
-//					revalidate();
-//					repaint();
-//				}else {
-//					System.out.println("최대 방 개수를 초과했습니다.");
-//				}
-//			}
-//		});
-//		creatChatting.setBounds(279, 30, 25, 23);
-//		topBar.add(creatChatting);
+		JButton creatChatting = new JButton("");
+		creatChatting.setIcon(new ImageIcon("img/creatChat.PNG"));
+		creatChatting.setBorderPainted(false);
+		creatChatting.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(chattingListIndex < 20) {
+					createFriendProfile(chattingButtonList,chattingListPanel,"user","img/defult45.png"); //chatingRoom 생성
+					//chattingListPanel.setSize(317,chattingListHeight);
+					chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
+					revalidate();
+					repaint();
+				}else {
+					System.out.println("최대 방 개수를 초과했습니다.");
+				}
+			}
+		});
+		creatChatting.setBounds(279, 30, 25, 23);
+		topBar.add(creatChatting);
 		
 		JButton addFriend = new JButton("");
 		Image af = new ImageIcon("img/add_friend.png").getImage().getScaledInstance(28,22,Image.SCALE_DEFAULT);
@@ -259,10 +259,12 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		/**** 채팅방 생성 ****/
 		int random = (int) ((Math.random() * (6 - 2)) + 2); //Random한 DummyData 생성
 		int DUMMY_NumberOfPeople = random;
+		ArrayList<String> name = new ArrayList<String>();
+		name.add(id);
 		
 		miniProfileManager = MiniProfileManager.getInstance();
 		miniProfileManager.setMiniProfileDesign_Friend(profile_img);
-		String chatName = miniProfileManager.makeMiniProfile_Friend(id,chattingPanel,chattingListHeight, chattingListIndex);
+		String chatName = miniProfileManager.makeMiniProfile(2,name,chattingPanel,chattingListHeight, chattingListIndex);
 		/*******************/
 		
 		
