@@ -274,13 +274,21 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         System.out.println("해당 id를 가진 USER가 없습니다.");
                     }
                     if(args[0].matches("/301")){ //msg : /301 방번호 이름1 이름2 ...
-                    	int size = args.length;
+                        int argsSize = args.length;
+                    	int size = argsSize-2;
                     	int RoomNum = Integer.parseInt(args[1]);
                     	ArrayList <String> members = new ArrayList<String>();
-                    	for(int i =2; i<size; i++) {
+                    	for(int i =2; i<argsSize; i++) {
                     		members.add(args[i]);
                     	}
                     	RoomInfo new_room = new RoomInfo(RoomNum,size,members); //클라이언트에 새로운 방 정보 저장
+
+                        //사이즈 출력 =
+//                        System.out.println("************************");
+//                        System.out.println("size = " + size);
+//                        System.out.println("************************");
+
+
                     	Room_list.add(new_room); //벡터에 저장
                         System.out.println("채팅방 생성");
                         chattingListGUI.addChatting(new_room);

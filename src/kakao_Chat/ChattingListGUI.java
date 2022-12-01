@@ -322,14 +322,22 @@ public class ChattingListGUI extends JFrame{
 		chattingPanel.setPreferredSize(new Dimension(317,71));
 		
 		int size = roominfo.getSize();
-		ArrayList <String> members = new ArrayList<String>();
+		ArrayList <String> members =roominfo.getMembers();
 		/**** 채팅방 생성 ****/
 		int random = (int) ((Math.random() * (6 - 2)) + 2); //Random한 DummyData 생성
 		int DUMMY_NumberOfPeople = random;
 		
 		miniProfileManager = MiniProfileManager.getInstance();
 		miniProfileManager.setMiniProfileDesign_Chat( roominfo.getSize()); //룸 크기 설정
-		
+
+		System.out.println("#############");
+		for (String member : members) {
+			System.out.println("member = " + member);
+		}
+		System.out.println("#############");
+
+
+
 		String chatName = miniProfileManager.makeMiniProfile(size, members,chattingPanel,chattingListHeight, chattingListIndex);
 		/*******************/
 		
