@@ -2,15 +2,11 @@ package kakao_Chat.design.pictureEdit;
 
 import javax.swing.JFrame;
 
-import java.awt.AlphaComposite;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -24,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
+import static kakao_Chat.Login_Frame.userName;
+
 public class PictureRound {
 
 //    public static void main (String [] args) {
@@ -34,7 +32,7 @@ public class PictureRound {
 //        jframe.setBounds(900, 100, 380, 635);
 //        jframe.setVisible(true);
 //    }
-  public static ImageIcon jFileChooserUtil(int size){
+  public static ImageIcon jFileChooserUtil(int size) throws IOException {
         
         String folderPath = "";
         JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory()); // 디렉토리 설정
@@ -51,7 +49,7 @@ public class PictureRound {
         if(returnVal == JFileChooser.APPROVE_OPTION) { // 열기를 클릭 
             File file = chooser.getSelectedFile();
             String sname = file.getAbsolutePath();
-            
+            saveImageIcon(userName,sname);
             
             BufferedImage master;
 			try {
@@ -89,7 +87,11 @@ public class PictureRound {
         }
 		return null;   
     }
-  
+
+    public static void saveImageIcon(String username, String image) throws IOException {
+        BufferedImage orginalImage = ImageIO.read(new File(image));
+        ImageIO.write( orginalImage, "png", new File("img/UserProfile/"+username+".png"));
+    }
   public static ImageIcon setImageRound(String image, int size) throws IOException {
 	  BufferedImage master = ImageIO.read(new File(image));
 	  int diameter = Math.min(master.getWidth(), master.getHeight());

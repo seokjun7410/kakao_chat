@@ -309,13 +309,16 @@ public class JavaChatServer extends JFrame {
                         String pw = args[2].trim();
                         if (SearchUserInfo(id, pw) == 1) { // 로그인 성공
                             UserName = id;
+                            AppendText("login");
                             Login();
                         } else if (SearchUserInfo(id, pw) == -2) { // 로그인 실패
                             UserName = id;
+                            AppendText("fail");
                             LoginFail();
                         } else if (SearchUserInfo(id, pw) == -1) { // 회원 정보 추가
                             UserName = id;
                             User new_user = new User(id, pw, assign_UserNum());
+                            AppendText("new");
                             UserLoginInfo.add(new_user);
                             SignUp();
                         }

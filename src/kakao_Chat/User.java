@@ -24,7 +24,7 @@ public class User {
 		this.id = id;
 		this.pw = pw;
 		this.userNum = userNum;
-		this.image = new ImageIcon("img/user_s.png");
+		this.image = new ImageIcon("img/UserProfile/"+id+".png");
 		this.chattingCount = 0;
 	}
 	public User(String id, String pw, int userNum, String image) {

@@ -1,6 +1,5 @@
 package kakao_Chat;
 
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
@@ -8,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 
 import javax.swing.JMenuItem;
@@ -17,11 +15,7 @@ import javax.swing.JMenu;
 import java.awt.Font;
 import java.awt.Graphics;
 
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextPane;
-import javax.swing.JList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -33,24 +27,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Vector;
-import java.awt.BorderLayout;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.ScrollPane;
 
-import javax.swing.JSplitPane;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.ScrollPaneLayout;
 import javax.swing.plaf.basic.BasicMenuBarUI;
 
-import kakao_Chat.design.RoundedButton;
 import kakao_Chat.design.friendslist_drawLine.BottomDrawPanel;
 import kakao_Chat.design.mini_profile.MiniProfileManager;
 import kakao_Chat.design.pictureEdit.PictureRound;
@@ -220,9 +204,9 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		myInfoPanel.setBounds(0, 59, 317, 85);
 		chatPanel.add(myInfoPanel);
 		myInfoPanel.setLayout(null);
-        String profile = "defaultProfile80.png"; //profile 사진 이름
-        String profile_filename = "img/"+profile;
-        ImageIcon pi = PictureRound.setImageRound(profile_filename,80);
+
+        String profile_filename = "img/UserProfile/"+Login_Frame.userName+".png";
+        ImageIcon pi = PictureRound.setImageRound(profile_filename,60);
 		profileButton = new JLabel(pi); //본인 프로필 이미지
 		profileButton.setBounds(13, 8, 61, 61);
 		profileButton.setBackground(Color.WHITE);
@@ -284,13 +268,13 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 				System.out.println("clicked ["+chatName+"] 프로필이 눌렸습니다.");
 				System.out.println("소켓포트 번호 : "+socket.getPort());
 				try {
-					Profile_Frame profile_Frame = new Profile_Frame(chatName,socket,currentName);
+					Profile_Frame Profile_Frame = new Profile_Frame(chatName,socket,currentName);
 				} catch (IOException e1) {
 					// TODO 자동 생성된 catch 블록
 					e1.printStackTrace();
 				}
 				try {
-					Profile_Frame profile_Frame = new Profile_Frame(chatName,socket,currentName);
+					Profile_Frame Profile_Frame = new Profile_Frame(chatName,socket,currentName);
 				} catch (IOException ex) {
 					throw new RuntimeException(ex);
 				}
@@ -325,7 +309,11 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		// TODO Auto-generated method stub
 		//System.out.println("clicked ["+chatName+"]");
 		if (e.getSource().equals(profileButton)) {
-		//Profile_Frame profile_Frame = new Profile_Frame(Login_Frame.userName,socket,currentName);
+			try {
+				my_Profile_Frame profile_Frame = new my_Profile_Frame(Login_Frame.userName,socket,currentName);
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
 		}
 	}
 

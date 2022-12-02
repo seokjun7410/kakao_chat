@@ -1,11 +1,8 @@
 package kakao_Chat;
 
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-
-import kakao_Chat.design.pictureEdit.FileSelector;
 import kakao_Chat.design.pictureEdit.PictureRound;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -33,6 +30,7 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
         currentName = name;
         this.socket = s;
         this.User_name = user_name;
+        profile_filename = "img/UserProfile/"+User_name+".png";
         setResizable(false);
         setUndecorated(true);
 //		setTitle("");
@@ -57,14 +55,6 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
         title_bar.addMouseMotionListener(this);
 
         
-        Image ap = new ImageIcon("img/btn_profile.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT);
-        ImageIcon apf = new ImageIcon(ap);
-        pl = new JLabel(apf);
-        
-        pl.setBackground(new Color(132, 139, 145));
-        pl.setName("btn_profile");
-        pl.setBounds(0, 0, 40, 40);
-        pl.addMouseListener(this);
 
         //상단바 X버튼
         Image x = new ImageIcon("img/x.png").getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT);
@@ -75,7 +65,7 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
         btn_exit.setBackground(new Color(132, 139, 145));
         btn_exit.addActionListener(this);
         title_bar.add(btn_exit);
-        title_bar.add(pl);
+
         JPanel center_panel = new JPanel();
         center_panel.setBackground(new Color(132, 139, 145));
         center_panel.setLayout(new BorderLayout());
@@ -92,11 +82,7 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
         Profile_panel.add(Profile_panel2);
         
         //TODO 프로필 사진 이름 불러오기
-        String profile = "user_default2.png"; //profile 사진 이름
-        profile_filename = "img/"+profile;
-        ImageIcon pi = PictureRound.setImageRound(profile_filename,100);
-//        Image p = new ImageIcon("img/user_default2.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
-//        ImageIcon p_img = new ImageIcon(p);
+        ImageIcon pi = PictureRound.setImageRound(profile_filename,80);
         profile_label = new JLabel(pi);
         profile_label.setBackground(new Color(132, 139, 145));
         Profile_panel2.add(profile_label);
@@ -167,11 +153,6 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
     @Override
     public void mouseClicked(MouseEvent e) {
         // TODO 자동 생성된 메소드 스텁
-    	if (e.getComponent().equals(pl)) {
-            System.out.println("pl clicked");
-            profile_label.setIcon(PictureRound.jFileChooserUtil(100));
-        	revalidate();
-        }
     }
 
     public void mousePressed(MouseEvent e) {

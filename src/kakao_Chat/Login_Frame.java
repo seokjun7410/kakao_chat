@@ -34,6 +34,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import static kakao_Chat.design.pictureEdit.PictureRound.saveImageIcon;
+
 public class Login_Frame extends JFrame implements MouseListener, MouseMotionListener, ActionListener, KeyListener {
     private JPanel title_bar;
     private JButton btn_exit, btn_login;
@@ -67,8 +69,6 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
         setBounds(900, 100, 380, 635);
         setVisible(true);
 
-
-        Image k = new ImageIcon("img/defaultProfile.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         //ImageIcon k_img = new ImageIcon(k);
         ImageIcon k_img = new ImageIcon("img/kakao_talk.png");
         JLabel k_label = new JLabel(k_img);
@@ -250,7 +250,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
     }
 
     class ListenNetwork extends Thread {
-        private ChattingListGUI chattingListGUI;
+        public ChattingListGUI chattingListGUI;
         private FriendsListGUI friendsListGUI;
         private addFriendGUI addFriendGUI;
         private chat_Frame chatting;
@@ -327,7 +327,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                                 membersNoCurrentUser.add(args[i]); //나자신 뺴고 members
                         }
 
-                        //새로운 채팅방 생성 ->여기선 멤버 다 넣어주고 addchatting에서 제거하는 식으로 변경해야됨! 꼭!
+                        //TODO 새로운 채팅방 생성 ->여기선 멤버 다 넣어주고 addchatting에서 제거하는 식으로 변경해야됨! 꼭!
                         RoomInfo new_room = new RoomInfo(RoomNum, size, membersNoCurrentUser, "lastMessage"); //클라이언트에 새로운 방 정보 저장
                         Room_list.add(new_room); //벡터에 저장
                         System.out.print("방번호 : "+RoomNum+" 인원수 : "+size);
@@ -467,9 +467,17 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                     }
 
                     if (args.length > 1) {
-                        if (args[1].equals("/101") || args[1].equals("/103")) {
+                        if (args[1].equals("/101")) {
                             System.out.println("Recv: 서버로부터 로그인승인 받음");
                             userName = args[0];
+                            chattingListGUI = new ChattingListGUI(socket, args[0]);
+                            chattingListGUI.setVisible(true);
+                            setVisible(false);
+                        }
+                        if(args[1].equals("/103")){
+                            System.out.println("Recv: 서버로부터 로그인승인 받음");
+                            userName = args[0];
+                            saveImageIcon(userName,"img/dp.jpg");
                             chattingListGUI = new ChattingListGUI(socket, args[0]);
                             chattingListGUI.setVisible(true);
                             setVisible(false);
