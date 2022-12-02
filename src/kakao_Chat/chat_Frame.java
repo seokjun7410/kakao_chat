@@ -26,6 +26,11 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 	private static final int BUF_LEN = 128;
 	public static ArrayList<User> User_list;
 	public int Size_list;
+
+	public int getRoom_number() {
+		return room_number;
+	}
+
 	public chat_Frame(int roomNum, ArrayList<String> un, Socket s)  {
 
 		this.room_number = roomNum;
@@ -90,7 +95,13 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		user_name.setPreferredSize(new Dimension(380,20));
 		user_name.setBackground(new Color(186,206,224));
 		user_name.setLayout(new BorderLayout());
-		JLabel name = new JLabel(members);
+		//유저이름 Label 설정
+		JLabel name;
+		if (un.size() <= 2) //: 일대일 톡방일 경우
+			name = new JLabel(un.get(0));
+		else // : 단톡방일 경우
+			name = new JLabel(members);
+
 		name.setFont(new Font("맑은 고딕",Font.BOLD,14));
 		user_name.add(name,BorderLayout.WEST);
 		
@@ -380,6 +391,9 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource().equals(btn_exit)) {
+				System.out.println("채팅방이 닫혔습니다. Chatting_List 에서 방번호 "+room_number+"를 제거요청 합니다.");
+				Login_Frame.SendMessage("/320 " +room_number+" "+Login_Frame.userName);
+				System.out.println("SEND /320 " +room_number+" "+Login_Frame.userName);
 				this.dispose();
 			}
 			else if(e.getSource().equals(btn_send)) {
@@ -392,8 +406,8 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 				
 				else makeRightBubble(value);
 
-				Login_Frame.SendMessage("/500 "+room_number+" "+value);
-				System.out.println("LOG.User_names"+room_number+" "+value);
+				Login_Frame.SendMessage("/500 " +room_number+" "+value +" "+Login_Frame.userName);
+				System.out.println("LOG.User_names " +room_number+" "+value);
 
 				// same value as
 //				text_area.setCaretPosition(len); // place caret at the end (with no selection)

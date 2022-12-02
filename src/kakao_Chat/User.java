@@ -8,6 +8,16 @@ public class User {
 	String id;
 	String pw;
 	int userNum;
+	int chattingCount;
+
+	public void setChattingCount(int chattingCount) {
+		this.chattingCount = chattingCount;
+	}
+
+	public int getChattingCount() {
+		return chattingCount;
+	}
+
 	private ImageIcon image;
 	
 	public User(String id, String pw, int userNum) {
@@ -15,6 +25,7 @@ public class User {
 		this.pw = pw;
 		this.userNum = userNum;
 		this.image = new ImageIcon("img/user_s.png");
+		this.chattingCount = 0;
 	}
 	public User(String id, String pw, int userNum, String image) {
 		this.id =id;

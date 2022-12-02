@@ -5,11 +5,14 @@ import java.util.ArrayList;
 public class RoomInfo {
 	private int roomNum;
 	private int size;
+	/* HSJ 채팅리스트 만들때 마지막 메시지 필요해서 추가 */
+	private String lastMessage;
 	private ArrayList<String> members;
-	public RoomInfo (int RoomNum, int size, ArrayList<String> members) {
+	public RoomInfo (int RoomNum, int size, ArrayList<String> members, String lastMessage) {
 		this.roomNum = RoomNum;
 		this.size= size ;
 		this.members =members;
+		this.lastMessage = lastMessage;
 	}
 	public ArrayList<String> getMembers() {
 		return members;
@@ -37,5 +40,10 @@ public class RoomInfo {
 	}
 	public void setRoomNum(int roomNum) {
 		this.roomNum = roomNum;
+	}
+
+	/* HSJ 채팅리스트 만들때 마지막 메시지 필요해서 추가 */
+	public String getLastMessage() {
+		return lastMessage;
 	}
 }

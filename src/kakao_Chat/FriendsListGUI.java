@@ -53,7 +53,6 @@ import javax.swing.plaf.basic.BasicMenuBarUI;
 import kakao_Chat.design.RoundedButton;
 import kakao_Chat.design.friendslist_drawLine.BottomDrawPanel;
 import kakao_Chat.design.mini_profile.MiniProfileManager;
-import kakao_Chat.design.pictureEdit.PictureRound;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -289,6 +288,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 					// TODO 자동 생성된 catch 블록
 					e1.printStackTrace();
 				}
+				Profile_Frame profile_Frame = new Profile_Frame(chatName,socket,currentName);
 				}
 			@Override
 			public void mouseEntered(MouseEvent e) {
