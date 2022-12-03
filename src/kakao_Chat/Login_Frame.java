@@ -440,7 +440,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 //                        System.out.println("args[1] = " + args[1]);
                         chatting.makeLeftBubble(message);
                     }
-                    if (args[0].matches("/503")) { //502 RoomNum UserName
+                    if (args[0].matches("/503")) { //503 RoomNum UserName
                         System.out.println(msg);
                         System.out.println("/503");
                         ObjectInputStream ois = new ObjectInputStream(is);
