@@ -4,32 +4,20 @@ package server;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import kakao_Chat.Login_Frame;
 import kakao_Chat.RoomInfo;
 import kakao_Chat.User;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
-import javax.swing.SwingConstants;
 
 public class JavaChatServer extends JFrame {
 
@@ -256,6 +244,18 @@ public class JavaChatServer extends JFrame {
             }
         }
 
+        public void sendImage(String name, ImageIcon img) throws IOException {
+            for (int i = 0; i < UserVec.size(); i++) {
+                UserService user = (UserService) user_vc.elementAt(i);
+                if (user.getUserName().equals(name)) {
+                    ObjectOutputStream oos = new ObjectOutputStream(user.os);
+                    oos.writeObject(img);
+                    oos.close();
+                    break;
+                }
+            }
+        }
+
         public void WriteOne(String msg) {
             try {
                 // dos.writeUTF(msg);
@@ -410,10 +410,37 @@ public class JavaChatServer extends JFrame {
 
 
                     } else if (args[0].matches("/501")) { // 사진, 파일 전송
+                        ObjectInputStream ois = new ObjectInputStream(is);
+                        ImageIcon img = (ImageIcon)ois.readObject();
+                        ois.close();
+                        JFrame jf = new JFrame();
+                        JLabel jl = new JLabel();
+                        jf.add(jl);
+                        jl.setIcon(img);
+                        jf.setBounds(900, 100, img.getIconWidth(), img.getIconHeight());
+                        jf.setVisible(true);
                         String send_msg = "/503 " + args[2];
-                        sendTo(args[1], send_msg);
-                    } else if (args[0].matches("/600")) { // 프로필 변경 전송
-                        String send_msg = "/601 " + getUserName() + " " + args[1];
+                        ArrayList<String> recvUsers = getRecvUser(args[1]);
+                        ArrayList<String> recvUsers2 = getRecvUser(args[1]);
+                        for (String recvUser : recvUsers) { // 이미지를 전송할거라는 메세지 먼저 전송
+                            if (!args[2].equals(recvUser)) {//송신유저가 아닐 경우만 전송
+                                sendTo(recvUser, send_msg);
+                                System.out.print(recvUser + ", ");
+                            }
+                        }
+
+                        for (String recvUser : recvUsers2) { // 파일 전송
+                            if (!args[2].equals(recvUser)) {//송신유저가 아닐 경우만 전송
+                                sendImage(recvUser, img);
+                                System.out.print(recvUser + ", ");
+                            }
+                        }
+
+                    }
+
+                        else if (args[0].matches("/600")) { // 프로필 변경 전송
+                        String send_msg = "/601 " + getUserName();
+                        WriteOne(send_msg); // 친구화면 새로고침을 위해 본인에게도 전송
                         WriteAll(send_msg);
                     }
 
@@ -451,7 +478,7 @@ public class JavaChatServer extends JFrame {
 //						UserStatus = "O";
                         WriteAll(msg + "\n"); // Write All
                     }
-                } catch (IOException e) {
+                } catch (IOException | ClassNotFoundException e) {
                     AppendText("dis.read() error");
                     try {
                         dos.close();
