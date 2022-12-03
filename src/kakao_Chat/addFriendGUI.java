@@ -153,7 +153,7 @@ public class addFriendGUI extends Frame implements MouseListener, MouseMotionLis
 //				ListenNetwork net = new ListenNetwork();
 //				net.start();
 
-				SendMessage("/200 " + id);
+				Login_Frame.SendMessage("/200 " + id);
 				dispose();
 			} catch (IOException ex) {
 				throw new RuntimeException(ex);
@@ -255,103 +255,6 @@ public class addFriendGUI extends Frame implements MouseListener, MouseMotionLis
 		
 	}
 
-	class ListenNetwork extends Thread {
-		public void run() {
-			while (true) {
-				try {
-					// String msg = dis.readUTF();
-					byte[] b = new byte[BUF_LEN];
-					int ret;
-					ret = dis.read(b);
-					if (ret < 0) {
-						//AppendText("dis.read() < 0 error");
-						try {
-							dos.close();
-							dis.close();
-							socket.close();
-							break;
-						} catch (Exception ee) {
-							break;
-						}// catch�� ��
-					}
-					String	msg = new String(b, "euc-kr");
-					msg = msg.trim(); // �յ� blank NULL, \n ��� ����
+	
 
-					String[] args = msg.split(" ");
-					System.out.println("afmsg:"+ msg); // server ȭ�鿡 ���
-					System.out.println("args "+args[0]);
-
-					if(args.length >1) {
-//						if(args[1].equals("/101")) {
-//							userName = args[0];
-////							window = new ChattingListGUI(socket,args[0]);
-////							window.setVisible(true);
-//							setVisible(false);
-//						}
-						if (args[0].equals("/201")) {
-							String id = args[1];
-							String userProfile = args[2];
-							System.out.println(id+" "+userProfile);
-
-							friendsListGUI.addFriend(id,userProfile);
-
-							thisGUI.dispose();
-						}
-						else if(args[0].equals("/202")){
-							System.out.println("해당 id를 가진 USER가 없습니다.");
-						}
-					}
-				} catch (IOException e) {
-					//AppendText("dis.read() error");
-					try {
-						dos.close();
-						dis.close();
-						socket.close();
-						break;
-					} catch (Exception ee) {
-						break;
-					} // catch�� ��
-				} // �ٱ� catch����
-
-			}
-		}
-	}
-
-	public void SendMessage(String msg) {
-		try {
-			// dos.writeUTF(msg);
-			byte[] bb;
-			bb = MakePacket(msg);
-			dos.write(bb, 0, bb.length);
-		} catch (IOException e) {
-			//AppendText("dos.write() error");
-			try {
-				dos.close();
-				dis.close();
-				socket.close();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				System.exit(0);
-			}
-		}
-	}
-
-	public byte[] MakePacket(String msg) {
-		byte[] packet = new byte[BUF_LEN];
-		byte[] bb = null;
-		int i;
-		for (i = 0; i < BUF_LEN; i++)
-			packet[i] = 0;
-		try {
-			bb = msg.getBytes("euc-kr");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(0);
-		}
-		for (i = 0; i < bb.length; i++)
-			packet[i] = bb[i];
-		return packet;
-	}
 }
