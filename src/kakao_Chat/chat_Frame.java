@@ -9,6 +9,9 @@ import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 import java.io.*;
 import java.net.Socket;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class chat_Frame extends JFrame implements MouseListener, MouseMotionListener,ActionListener, KeyListener
@@ -223,6 +226,23 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			LeftArrowBubble.add(label);
 			chat_view.add(LeftArrowBubble);
 			chat_panel.add(chat_view);
+
+
+			/* 시간 추가 */
+			LocalTime time = LocalTime.now();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+			String currentTime = time.format(formatter);
+			String currentTime12;
+			if(Integer.parseInt(currentTime.substring(0,2)) >= 13)
+				currentTime12 = "오후"+(Integer.parseInt(currentTime.substring(0,2))-12)+":"+currentTime.substring(3,5);
+			else
+				currentTime12 = "오전"+currentTime;
+
+			JLabel timeLabel = new JLabel(currentTime12);
+			timeLabel.setBounds(0,5,50,50);
+			timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
+			chat_view.add(timeLabel);
+
 			revalidate();
 		}
 	}
@@ -277,9 +297,26 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		public void makeRightBubble (String value) {
 			if(!value.equals("")) {
 				JPanel chat_view = new JPanel();
+				chat_view.setBounds(0,0,300,30);
 				chat_view.setLayout(new FlowLayout(FlowLayout.RIGHT));
 				chat_view.setBackground(new Color(186,206,224));
 				chat_view.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
+
+				/* 시간 추가 */
+				LocalTime time = LocalTime.now();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+				String currentTime = time.format(formatter);
+				String currentTime12;
+				if(Integer.parseInt(currentTime.substring(0,2)) >= 13)
+					currentTime12 = "오후"+(Integer.parseInt(currentTime.substring(0,2))-12)+":"+currentTime.substring(3,5);
+				else
+					currentTime12 = "오전"+currentTime;
+
+				JLabel timeLabel = new JLabel(currentTime12);
+				timeLabel.setBounds(0,5,50,50);
+				timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
+				chat_view.add(timeLabel);
+
 				JLabel label = new JLabel(value);
 				label.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 				label.setBorder(BorderFactory.createEmptyBorder(0,0,0,10));
@@ -297,6 +334,9 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 				RightArrowBubble.add(label);
 				chat_view.add(RightArrowBubble);
 				chat_panel.add(chat_view);
+
+
+
 				revalidate();
 			}
 		}

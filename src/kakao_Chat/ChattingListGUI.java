@@ -355,6 +355,7 @@ public class ChattingListGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.out.println("clicked [" + chatName + "]");
+                //눌린거 찾기
                 for (int i = 0; i < chattingButtonList.size(); i++) {
                     if(chattingButtonList.get(i) == (JPanel) e.getSource()){
                         index = i;

@@ -55,7 +55,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
     public Vector<RoomInfo> Room_list = new Vector();
     public Vector<chat_Frame> Chatting_List = new Vector();
     public int Size_list;
-
+    public static Vector<String> Friends_List = new Vector<>();
 
     public Login_Frame() {
 
@@ -245,7 +245,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
         private addFriendGUI addFriendGUI;
         private chat_Frame chatting;
         public Vector<RoomInfo> Room_list = new Vector();
-        private Vector<String> Friends_List = new Vector<>();
+
 
         public void run() {
 
@@ -430,7 +430,11 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 //                        System.out.println("Chatting_List.size() = " + Chatting_List.size());
                         chat_Frame chatting = getChatFrameByRoomNum(args[1]);
 //                        System.out.println("args[1] = " + args[1]);
-                        chatting.makeLeftBubble(message);
+                        try {
+                            chatting.makeLeftBubble(message);
+                        }catch (NullPointerException e){
+                            System.out.println(e.getMessage());
+                        }
                     }
 
                     if (args.length > 1) {
