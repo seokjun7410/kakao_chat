@@ -11,13 +11,18 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import static kakao_Chat.Login_Frame.sendImage;
+import static kakao_Chat.design.pictureEdit.FileSelector.ImageSeletor;
+import static kakao_Chat.design.pictureEdit.FileSelector.ImageSeletorByLink;
+
 public class chat_Frame extends JFrame implements MouseListener, MouseMotionListener,ActionListener, KeyListener
 {	
 	private Point initialClick;
 	private JPanel title_bar;
 	private JPanel Panel_1;
 	private JLabel chat_text;
-	private JButton btn_exit,btn_send;
+	private JButton btn_exit,btn_send,image_send;
+
 	private Point comPoint;
 	private int room_number;
 	private String members;
@@ -124,9 +129,6 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		
 		
 		Panel_1.add(Profile_panel,BorderLayout.NORTH);
-
-
-
 		
 		//중간 채팅창 패널
 		
@@ -182,13 +184,29 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		send_panel.setPreferredSize(new Dimension(380,50));
 		send_panel.setLayout(new BorderLayout());
 		ImageIcon send_img = new ImageIcon("img/btn_send.png");
-		Image send_img2 = send_img.getImage().getScaledInstance(50,30,Image.SCALE_DEFAULT);
+		Image send_img2 = send_img.getImage().getScaledInstance(50,30,Image.SCALE_SMOOTH);
 		ImageIcon send_img3 = new ImageIcon(send_img2);
 		btn_send = new JButton(send_img3);
-		btn_send.setBorderPainted(false); 
+		btn_send.setBackground(Color.white);
+		btn_send.setBorderPainted(false);
 		btn_send.setPreferredSize(new Dimension(50, 30)); 
 		btn_send.addActionListener(this);
-		send_panel.add(btn_send,BorderLayout.EAST);		
+		send_panel.add(btn_send,BorderLayout.EAST);
+
+
+		ImageIcon img_send = new ImageIcon("img/clip.png");
+		Image img_send1 = img_send.getImage().getScaledInstance(20,20,Image.SCALE_SMOOTH);
+		ImageIcon img_send2 = new ImageIcon(img_send1);
+		image_send = new JButton(img_send2);
+		image_send.setBackground(Color.white);
+		image_send.setBorder(BorderFactory.createEmptyBorder(0,5,0,0));
+		image_send.setBorderPainted(false);
+		image_send.setPreferredSize(new Dimension(40, 30));
+		image_send.addActionListener(this);
+		send_panel.setBackground(Color.white);
+		send_panel.add(image_send,BorderLayout.WEST);
+
+
 		text_panel.add(send_panel,BorderLayout.SOUTH);
 		
 
@@ -416,6 +434,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 				this.dispose();
 			}
 			else if(e.getSource().equals(btn_send)) {
+				int RoomNum ;
 				String value = text_area.getText();
 				text_area.setText(""); // �޼����� ������ ���� �޼��� ����â�� ����.
 				text_area.requestFocus(); // �޼����� ������ Ŀ���� �ٽ� �ؽ�Ʈ �ʵ�� ��ġ��Ų��
@@ -432,7 +451,45 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 //				text_area.setCaretPosition(len); // place caret at the end (with no selection)
 //		 		textArea.replaceSelection(msg + "\n");
 			}
-			
+			else if(e.getSource().equals(image_send)) {  //이미지 첨부 버튼을 누를 경우
+				try {
+					String path =ImageSeletor();   // 파일 선택해서 파일 위치를 저장
+					ImageIcon img = ImageSeletorByLink(path,200);  //가로 200 크기로 변환
+					int height = img.getIconHeight();
+					JPanel chat_view = new JPanel();
+					chat_view.setLayout(new FlowLayout(FlowLayout.RIGHT));
+					chat_view.setBackground(new Color(186,206,224));
+					chat_view.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
+					chat_view.setPreferredSize(new Dimension(380,height+5));
+					ImageLabel label = new ImageLabel(img,path);
+					label.addMouseListener(new MouseAdapter()
+					{
+						public void mouseClicked(MouseEvent e)
+						{
+							JFrame ImageFrame = new JFrame();
+							JLabel ImageLabel = new JLabel();
+							ImageIcon img;
+							try {
+								img = ImageSeletorByLink(path);
+								ImageLabel.setIcon(img);
+								ImageFrame.add(ImageLabel);
+								ImageFrame.setBounds(900, 100, img.getIconWidth(), img.getIconHeight());
+								ImageFrame.setVisible(true);
+							} catch (IOException ex) {
+								throw new RuntimeException(ex);
+							}
+						}
+					});
+					chat_view.add(label);
+					chat_panel.add(chat_view);
+					revalidate();
+					Login_Frame.SendMessage("/501 " +room_number+" "+Login_Frame.userName);
+					sendImage(path);
+				} catch (IOException ex) {
+					throw new RuntimeException(ex);
+				}
+			}
+
 		}
 
 		@Override

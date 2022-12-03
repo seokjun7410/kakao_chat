@@ -13,16 +13,14 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -52,10 +50,10 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
     private static final int BUF_LEN = 128;
     public static String userName;
     public static ArrayList<User> User_list;
-    public Vector<RoomInfo> Room_list = new Vector();
-    public Vector<chat_Frame> Chatting_List = new Vector();
+    public static Vector<RoomInfo> Room_list = new Vector();
+    public  Vector<chat_Frame> Chatting_List = new Vector();
     public int Size_list;
-
+    private static int file_num =0;
 
     public Login_Frame() {
 
@@ -234,13 +232,23 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 
     }
 
+    //채팅방 있으면 해당 채팅방 번호, 없으면 -1 반환
+    public static int check_RoomNum(String name) {
+        int result = -1;
+        for (int i = 0; i < Room_list.size(); i++) {
+            if (((RoomInfo) Room_list.get(i)).getMembersToString().equals(name)) {
+                result = i;
+            }
+        }
+        return result;
+    }
 
-    public static int ChattingExist(String roomNum) {
+        public static int ChattingExist(String roomNum){
         return 0;
     }
 
     class ListenNetwork extends Thread {
-        public ChattingListGUI chattingListGUI;
+        private ChattingListGUI chattingListGUI;
         private FriendsListGUI friendsListGUI;
         private addFriendGUI addFriendGUI;
         private chat_Frame chatting;
@@ -449,15 +457,10 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                             chattingListGUI.setVisible(true);
                             setVisible(false);
                         }
-//                        if(args[1].equals("/103")) {
-//                        	int answer = JOptionPane.showConfirmDialog(frame(), "종료하시겠습니까?", "confirm",JOptionPane.YES_NO_OPTION );
-//                        }
 
                         if (args[1].equals("pass")) {
                             System.out.println("msg:" + args[0]);
 //							user_info = new User(args[0]);
-
-
                         }
                         if (args[1].equals("/login")) {
 
@@ -561,6 +564,17 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                 System.exit(0);
             }
         }
+    }
+
+    //이미지 전송 , "/501 방번호 사용자이름"을 보내준 뒤 파일을 보냄
+    public static void sendImage(String path) throws IOException {
+        //String file_name = userName+"_"+String.valueOf(file_num++)+".png";
+        System.out.println("sendImage:"+path);
+        BufferedImage img = ImageIO.read(new File(path));
+        ImageIcon ic =  new ImageIcon(img);
+        ObjectOutputStream oos = new ObjectOutputStream(os);
+        oos.writeObject(ic);
+        oos.close();
     }
 
     public static void main(String[] args) {

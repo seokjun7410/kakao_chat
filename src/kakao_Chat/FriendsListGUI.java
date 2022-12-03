@@ -43,7 +43,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class FriendsListGUI extends JFrame implements MouseListener{
-	int chattingListHeight = 71; // 채팅방 버튼을 담는 list의 크기
+	int chattingListHeight = 77; // 채팅방 버튼을 담는 list의 크기
 	static int chattingListIndex = -1; //채팅방이 생성될 때마다 +1
 	private MiniProfileManager miniProfileManager; //미니 프로필 디자인 동적 선택 생성 매니저
 	private JPanel chatPanel;
@@ -252,7 +252,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		chattingPanel.setBounds(67, 50, 317, chattingListHeight);
 		chattingPanel.setBackground(Color.white);
 		chattingPanel.setLayout(null);
-		chattingPanel.setPreferredSize(new Dimension(317,55));
+		chattingPanel.setPreferredSize(new Dimension(317,77));
 		
 		/**** 채팅방 생성 ****/
 		int random = (int) ((Math.random() * (6 - 2)) + 2); //Random한 DummyData 생성
