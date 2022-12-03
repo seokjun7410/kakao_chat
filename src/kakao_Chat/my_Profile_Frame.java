@@ -203,7 +203,7 @@ public class my_Profile_Frame extends JFrame implements MouseListener, MouseMoti
         		ArrayList<String> name = new ArrayList<String>();
             	name.add(User_name);
 
-        		chat_Frame chatting = new chat_Frame(roomNum, name, socket);
+        		//chat_Frame chatting = new chat_Frame(roomNum, roominfo.getMembers().size(),name, socket);
             }
             //chat_Frame 생성을 server에게 요청
 

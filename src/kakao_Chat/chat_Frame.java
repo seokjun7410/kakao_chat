@@ -26,14 +26,17 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 	private static final int BUF_LEN = 128;
 	public static ArrayList<User> User_list;
 	public int Size_list;
+	private int numOfPeople;
 
 	public int getRoom_number() {
 		return room_number;
 	}
 
-	public chat_Frame(int roomNum, ArrayList<String> un, Socket s)  {
+	public chat_Frame(int roomNum,int numOfPeople, ArrayList<String> un, Socket s)  {
 
 		this.room_number = roomNum;
+		this.numOfPeople = numOfPeople;
+
 		StringBuffer names = new StringBuffer();
 		for(int i =0; i<un.size();i++) {
 			names.append(" "+un.get(i));
@@ -96,12 +99,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		user_name.setBackground(new Color(186,206,224));
 		user_name.setLayout(new BorderLayout());
 		//유저이름 Label 설정
-		JLabel name;
-		if (un.size() <= 2) //: 일대일 톡방일 경우
-			name = new JLabel(un.get(0));
-		else // : 단톡방일 경우
-			name = new JLabel(members);
-
+		JLabel name = new JLabel(members);
 		name.setFont(new Font("맑은 고딕",Font.BOLD,14));
 		user_name.add(name,BorderLayout.WEST);
 		
@@ -110,7 +108,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		user_num.setPreferredSize(new Dimension(380,20));
 		user_num.setBackground(new Color(186,206,224));
 		user_num.setLayout(new BorderLayout());
-		JLabel num = new JLabel(String.valueOf(room_number));
+		JLabel num = new JLabel(String.valueOf(numOfPeople));
 		num.setBorder(BorderFactory.createEmptyBorder(0,3,0,0));
 		user_num.add(num,BorderLayout.CENTER);
 		ImageIcon user_icon_s = new ImageIcon("img/user_s.png");
@@ -397,7 +395,6 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 				this.dispose();
 			}
 			else if(e.getSource().equals(btn_send)) {
-				int RoomNum ;
 				String value = text_area.getText();
 				text_area.setText(""); // �޼����� ������ ���� �޼��� ����â�� ����.
 				text_area.requestFocus(); // �޼����� ������ Ŀ���� �ٽ� �ؽ�Ʈ �ʵ�� ��ġ��Ų��
@@ -407,7 +404,8 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 				else makeRightBubble(value);
 
 				Login_Frame.SendMessage("/500 " +room_number+" "+value +" "+Login_Frame.userName);
-				System.out.println(Login_Frame.userName+"이(가) " +room_number+"번방에 "+value+"을 보내라고 요청합니다.");
+				System.out.println("\n"+Login_Frame.userName+"이(가) " +room_number+"번방에 "+value+"을 보내라고 요청합니다.");
+
 
 				// same value as
 //				text_area.setCaretPosition(len); // place caret at the end (with no selection)

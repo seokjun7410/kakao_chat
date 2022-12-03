@@ -64,6 +64,8 @@ public class ChattingListGUI extends JFrame {
     private JPanel chattingListPanel;
     private String currentUserName = "null";
     private  Vector<RoomInfo> room_list;
+    private String lastMsg = "";
+
 
     public FriendsListGUI getFriendsListGUI() {
         return friendsListGUI;
@@ -305,6 +307,12 @@ public class ChattingListGUI extends JFrame {
         }
     }
 
+    public void setlastMsg(String msg){
+        this.lastMsg = msg;
+        chattingListPanel.repaint();
+        chattingListPanel.revalidate();
+    }
+
     private void createChattingRoom(RoomInfo roominfo, ArrayList<JPanel> chattingButtonList, JPanel chattingListPanel) {
 
         JPanel chattingPanel = new JPanel();
@@ -316,6 +324,14 @@ public class ChattingListGUI extends JFrame {
 
         int size = roominfo.getSize();
         ArrayList<String> members = roominfo.getMembers();
+
+        //채팅방 타이틀에는 나를 제외한 멤버들 이름만 존재함.
+        ArrayList<String> chatTitleMembers = new ArrayList<>();
+        for (String member : members) {
+            if(!member.equals(currentUserName))
+                chatTitleMembers.add(member);
+        }
+
         /**** 채팅방 생성 ****/
         int random = (int) ((Math.random() * (6 - 2)) + 2); //Random한 DummyData 생성
         int DUMMY_NumberOfPeople = random;
@@ -323,7 +339,7 @@ public class ChattingListGUI extends JFrame {
         miniProfileManager = MiniProfileManager.getInstance();
         miniProfileManager.setMiniProfileDesign_Chat(roominfo.getSize()); //룸 크기 설정
 
-        String chatName = miniProfileManager.makeMiniProfile(size, members, chattingPanel, chattingListHeight, chattingListIndex);
+        String chatName = miniProfileManager.makeMiniProfile(size, chatTitleMembers, chattingPanel, chattingListHeight, chattingListIndex, lastMsg);
 
         /*******************/
 
@@ -374,124 +390,124 @@ public class ChattingListGUI extends JFrame {
         });
     }
 
-    public chat_Frame getChatting() {
-        return chatting;
-    }
+//    public chat_Frame getChatting() {
+//        return chatting;
+//    }
 
-    class ListenNetwork extends Thread {
-        public void run() {
-            while (true) {
-                try {
-                    // String msg = dis.readUTF();
-                    byte[] b = new byte[BUF_LEN];
-                    int ret;
-                    ret = dis.read(b);
-                    if (ret < 0) {
-                        //AppendText("dis.read() < 0 error");
-                        try {
-                            dos.close();
-                            dis.close();
-                            socket.close();
-                            break;
-                        } catch (Exception ee) {
-                            break;
-                        }// catch�� ��
-                    }
-                    String msg = new String(b, "euc-kr");
-                    msg = msg.trim(); // �յ� blank NULL, \n ��� ����
-
-                    String[] args = msg.split(" ");
-                    System.out.println("clmsg:" + msg); // server ȭ�鿡 ���
-
-                    if (args.length > 1) {
-                        if (args[1].equals("/101")) {
-                            userName = args[0];
-//							window = new ChattingListGUI(socket,args[0]);
-//							window.setVisible(true);
-//							setVisible(false);
-                        }
-
-                        if (args[1].equals("pass")) {
-                            System.out.println("PASSmsg:" + args[0]);
-//							user_info = new User(args[0]);
-
-
-                        }
-                        if (args[1].equals("/login")) {
-
-                            System.out.println("LOGINmsg:" + args[0]);
-//							User new_user = new User(args[0]);
-//							User_list.add(new_user);
-                            for (int i = 0; i < User_list.size(); i++) {
-                                System.out.println("list:" + User_list.get(i).getId());
-                                System.out.println("->");
-                            }
-
-                        }
-//						if(args[1].equals("/login")) {
+//    class ListenNetwork extends Thread {
+//        public void run() {
+//            while (true) {
+//                try {
+//                    // String msg = dis.readUTF();
+//                    byte[] b = new byte[BUF_LEN];
+//                    int ret;
+//                    ret = dis.read(b);
+//                    if (ret < 0) {
+//                        //AppendText("dis.read() < 0 error");
+//                        try {
+//                            dos.close();
+//                            dis.close();
+//                            socket.close();
+//                            break;
+//                        } catch (Exception ee) {
+//                            break;
+//                        }// catch�� ��
+//                    }
+//                    String msg = new String(b, "euc-kr");
+//                    msg = msg.trim(); // �յ� blank NULL, \n ��� ����
 //
-//							System.out.println("msg:"+args[0]);
-////						User new_user = new User(args[0]);
-////						User_list.add(new_user);
-//							for(int i =0; i<User_list.size(); i++) {
-//								System.out.println("list:"+User_list.get(i).id);
-//								System.out.println("->");
-//							}
+//                    String[] args = msg.split(" ");
+//                    System.out.println("clmsg:" + msg); // server ȭ�鿡 ���
 //
-//						}
-                    }
-                } catch (IOException e) {
-                    //AppendText("dis.read() error");
-                    try {
-                        dos.close();
-                        dis.close();
-                        socket.close();
-                        break;
-                    } catch (Exception ee) {
-                        break;
-                    } // catch�� ��
-                } // �ٱ� catch����
-
-            }
-        }
-    }
-
-
-    public byte[] MakePacket(String msg) {
-        byte[] packet = new byte[BUF_LEN];
-        byte[] bb = null;
-        int i;
-        for (i = 0; i < BUF_LEN; i++)
-            packet[i] = 0;
-        try {
-            bb = msg.getBytes("euc-kr");
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            System.exit(0);
-        }
-        for (i = 0; i < bb.length; i++)
-            packet[i] = bb[i];
-        return packet;
-    }
-
-    public void SendMessage(String msg) {
-        try {
-            // dos.writeUTF(msg);
-            byte[] bb;
-            bb = MakePacket(msg);
-            dos.write(bb, 0, bb.length);
-        } catch (IOException e) {
-            //AppendText("dos.write() error");
-            try {
-                dos.close();
-                dis.close();
-                socket.close();
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-                System.exit(0);
-            }
-        }
-    }
+//                    if (args.length > 1) {
+//                        if (args[1].equals("/101")) {
+//                            userName = args[0];
+////							window = new ChattingListGUI(socket,args[0]);
+////							window.setVisible(true);
+////							setVisible(false);
+//                        }
+//
+//                        if (args[1].equals("pass")) {
+//                            System.out.println("PASSmsg:" + args[0]);
+////							user_info = new User(args[0]);
+//
+//
+//                        }
+//                        if (args[1].equals("/login")) {
+//
+//                            System.out.println("LOGINmsg:" + args[0]);
+////							User new_user = new User(args[0]);
+////							User_list.add(new_user);
+//                            for (int i = 0; i < User_list.size(); i++) {
+//                                System.out.println("list:" + User_list.get(i).getId());
+//                                System.out.println("->");
+//                            }
+//
+//                        }
+////						if(args[1].equals("/login")) {
+////
+////							System.out.println("msg:"+args[0]);
+//////						User new_user = new User(args[0]);
+//////						User_list.add(new_user);
+////							for(int i =0; i<User_list.size(); i++) {
+////								System.out.println("list:"+User_list.get(i).id);
+////								System.out.println("->");
+////							}
+////
+////						}
+//                    }
+//                } catch (IOException e) {
+//                    //AppendText("dis.read() error");
+//                    try {
+//                        dos.close();
+//                        dis.close();
+//                        socket.close();
+//                        break;
+//                    } catch (Exception ee) {
+//                        break;
+//                    } // catch�� ��
+//                } // �ٱ� catch����
+//
+//            }
+//        }
+//    }
+//
+//
+//    public byte[] MakePacket(String msg) {
+//        byte[] packet = new byte[BUF_LEN];
+//        byte[] bb = null;
+//        int i;
+//        for (i = 0; i < BUF_LEN; i++)
+//            packet[i] = 0;
+//        try {
+//            bb = msg.getBytes("euc-kr");
+//        } catch (UnsupportedEncodingException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//            System.exit(0);
+//        }
+//        for (i = 0; i < bb.length; i++)
+//            packet[i] = bb[i];
+//        return packet;
+//    }
+//
+//    public void SendMessage(String msg) {
+//        try {
+//            // dos.writeUTF(msg);
+//            byte[] bb;
+//            bb = MakePacket(msg);
+//            dos.write(bb, 0, bb.length);
+//        } catch (IOException e) {
+//            //AppendText("dos.write() error");
+//            try {
+//                dos.close();
+//                dis.close();
+//                socket.close();
+//            } catch (IOException e1) {
+//                // TODO Auto-generated catch block
+//                e1.printStackTrace();
+//                System.exit(0);
+//            }
+//        }
+//    }
 }

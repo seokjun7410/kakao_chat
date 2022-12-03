@@ -66,6 +66,8 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 	private JPanel chattingListPanel = new JPanel();
 	private String currentName;
 	private Login_Frame.ListenNetwork listenNetwork;
+	private String lastMsg = "";
+
 	public FriendsListGUI(Socket s, String name, Login_Frame.ListenNetwork listenNetwork) throws IOException {
 		currentName = name;
 		this.listenNetwork = listenNetwork;
@@ -221,7 +223,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 			public void mouseClicked(MouseEvent e) {
 				ArrayList <String> name = new ArrayList<String>();
 				name.add(Login_Frame.userName);
-				chat_Frame chatting = new chat_Frame(1,name,socket);
+				chat_Frame chatting = new chat_Frame(-1,0,name,socket);
 				}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -235,6 +237,12 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		    }
 			});
 		
+	}
+
+	public void setlastMsg(String msg){
+		this.lastMsg = msg;
+		chattingListPanel.repaint();
+		chattingListPanel.revalidate();
 	}
 
 	private void createFriendProfile(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel,String id,String profile_img) {
@@ -254,7 +262,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		
 		miniProfileManager = MiniProfileManager.getInstance();
 		miniProfileManager.setMiniProfileDesign_Friend(profile_img);
-		String chatName = miniProfileManager.makeMiniProfile(2,name,chattingPanel,chattingListHeight, chattingListIndex);
+		String chatName = miniProfileManager.makeMiniProfile(2,name,chattingPanel,chattingListHeight, chattingListIndex,lastMsg);
 		/*******************/
 		
 		
@@ -273,11 +281,6 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 				} catch (IOException e1) {
 					// TODO 자동 생성된 catch 블록
 					e1.printStackTrace();
-				}
-				try {
-					Profile_Frame Profile_Frame = new Profile_Frame(chatName,socket,currentName,listenNetwork);
-				} catch (IOException ex) {
-					throw new RuntimeException(ex);
 				}
 			}
 			@Override

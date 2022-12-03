@@ -322,7 +322,7 @@ public class JavaChatServer extends JFrame {
                             UserLoginInfo.add(new_user);
                             SignUp();
                         }
-                    } else if (args[0].matches("/200")) { // 친구 추가
+                    } else if (args[0].matches("/200")) { // 친구 추가 /200 " + id
                         System.out.println("Recv: 유저 \"" + args[1] + "\"의 프로필을 요청받음");
                         String id = args[1].trim();
                         if (SearchUserInfo(id) == -1) { // 유저 조회 실패

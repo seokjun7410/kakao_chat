@@ -7,42 +7,34 @@ import javax.swing.JPanel;
 
 import kakao_Chat.design.mini_profile.MiniProfileDesign;
 
-public class MiniProfileDesign_Chat extends MiniProfileDesign{
-	
-	protected String ProfileDesign(int size, ArrayList<String> members, JPanel chattingPanel, int chattingListHeight, int chattingListIndex) {
-		//String chattingName = "User"+(chattingListIndex+2);
-		StringBuffer name= new StringBuffer();
-//		System.out.println("*****************************");
-//		for (String member : members) {
-//			System.out.println("member = " + member);
-//		}
-//		System.out.println("*****************************");
+public class MiniProfileDesign_Chat extends MiniProfileDesign {
 
-		if(members.size() <= 2){
-			name.append(members.get(0));
-		}else {
-			for (int i = 0; i < members.size(); i++) {
-				name.append(" " + members.get(i));
-			}
-		}
-		String chattingName = name.toString();
-		JLabel userNameLabel = new JLabel(chattingName);
-		userNameLabel.setBounds(86, 16, 93, 15);
-		chattingPanel.add(userNameLabel);
-		
-		JLabel lastMassageLabel = new JLabel("last message left");
-		lastMassageLabel.setBounds(86, 42, 199, 15);
-		chattingPanel.add(lastMassageLabel);
-		
-		miniProfileMakeByNumber(chattingPanel);
-		
-		return chattingName;
-	}
+    protected String ProfileDesign(int size, ArrayList<String> members, JPanel chattingPanel, int chattingListHeight, int chattingListIndex, String lastMsg) {
 
-	public void miniProfileMakeByNumber(JPanel chattingPanel) {
-		// TODO Auto-generated method stub
-		
-	}
+
+        StringBuffer name = new StringBuffer();
+        for (int i = 0; i < members.size(); i++) {
+            name.append(" " + members.get(i));
+        }
+
+        String chattingName = name.toString();
+        JLabel userNameLabel = new JLabel(chattingName);
+        userNameLabel.setBounds(86, 16, 93, 15);
+        chattingPanel.add(userNameLabel);
+
+        JLabel lastMassageLabel = new JLabel(lastMsg);
+        lastMassageLabel.setBounds(86, 42, 199, 15);
+        chattingPanel.add(lastMassageLabel);
+
+        miniProfileMakeByNumber(chattingPanel);
+
+        return chattingName;
+    }
+
+    public void miniProfileMakeByNumber(JPanel chattingPanel) {
+        // TODO Auto-generated method stub
+
+    }
 
 
 }

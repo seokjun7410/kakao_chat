@@ -151,6 +151,7 @@ public class addFriendGUI extends Frame implements MouseListener, MouseMotionLis
 //				net.start();
 
 				SendMessage("/200 " + id);
+				dispose();
 			} catch (IOException ex) {
 				throw new RuntimeException(ex);
 			}

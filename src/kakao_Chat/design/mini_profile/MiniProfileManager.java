@@ -43,8 +43,8 @@ public class MiniProfileManager {
 
 	}
 	
-	public String makeMiniProfile(int size, ArrayList<String> members, JPanel chattingPanel, int chattingListHeight, int chattingListIndex) {
-		String chattingName = miniProfileDesign.ProfileDesign(size,members,chattingPanel,chattingListHeight,chattingListIndex);
+	public String makeMiniProfile(int size, ArrayList<String> members, JPanel chattingPanel, int chattingListHeight, int chattingListIndex,String lastMsg) {
+		String chattingName = miniProfileDesign.ProfileDesign(size,members,chattingPanel,chattingListHeight,chattingListIndex,lastMsg);
 		return chattingName;
 	}
 
