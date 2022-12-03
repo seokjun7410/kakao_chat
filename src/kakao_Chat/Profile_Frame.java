@@ -63,7 +63,7 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
         ImageIcon x_button = new ImageIcon(x);
 
         btn_exit = new JButton(x_button);
-        btn_exit.setBounds(277, 4, 25, 25);
+        btn_exit.setBounds(270, 4, 25, 25);
         btn_exit.setBackground(new Color(132, 139, 145));
         btn_exit.addActionListener(this);
         title_bar.add(btn_exit);

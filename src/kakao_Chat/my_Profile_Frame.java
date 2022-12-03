@@ -10,6 +10,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import static kakao_Chat.FriendsListGUI.ProfileEntered;
 import static kakao_Chat.Login_Frame.userName;
 
 public class my_Profile_Frame extends JFrame implements MouseListener, MouseMotionListener, ActionListener {
@@ -74,7 +75,7 @@ public class my_Profile_Frame extends JFrame implements MouseListener, MouseMoti
         ImageIcon x_button = new ImageIcon(x);
 
         btn_exit = new JButton(x_button);
-        btn_exit.setBounds(277, 4, 25, 25);
+        btn_exit.setBounds(270, 4, 25, 25);
         btn_exit.setBackground(new Color(132, 139, 145));
         btn_exit.addActionListener(this);
         title_bar.add(btn_exit);
@@ -93,13 +94,13 @@ public class my_Profile_Frame extends JFrame implements MouseListener, MouseMoti
         Profile_panel2.setPreferredSize(new Dimension(130, 170));
         Profile_panel2.setBackground(new Color(132, 139, 145));
         Profile_panel.add(Profile_panel2);
-        
-        //TODO 프로필 사진 이름 불러오기
+
         ImageIcon pi = PictureRound.setImageRound(profile_filename,80);
 //        Image p = new ImageIcon("img/user_default2.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
 //        ImageIcon p_img = new ImageIcon(p);
         profile_label = new JLabel(pi);
         profile_label.setBackground(new Color(132, 139, 145));
+        profile_label.setPreferredSize(new Dimension(130, 80));
         Profile_panel2.add(profile_label);
 
         JLabel name_label = new JLabel(user_name);
@@ -153,6 +154,8 @@ public class my_Profile_Frame extends JFrame implements MouseListener, MouseMoti
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(btn_exit)) {
+            System.out.println("프로필 나감: "+userName);
+            ProfileEntered.remove(userName);
             this.dispose();
         }
 

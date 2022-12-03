@@ -13,7 +13,7 @@ public abstract class MiniProfileDesign_Friend extends MiniProfileDesign{
 //		String chattingName = "User"+(chattingListIndex+2);
 		String chattingName = member.get(0);
 		JLabel userNameLabel = new JLabel(chattingName);
-		userNameLabel.setBounds(86, 14, 93, 15);
+		userNameLabel.setBounds(86, 25, 93, 15);
 		chattingPanel.add(userNameLabel);
 		
 //		JLabel lastMassageLabel = new JLabel("state massage");

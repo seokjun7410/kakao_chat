@@ -40,6 +40,8 @@ import kakao_Chat.design.mini_profile.MiniProfileManager;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import static kakao_Chat.FriendsListGUI.ChatRoomEntered;
+
 public class ChattingListGUI extends JFrame {
     int chattingListHeight = 71; // 채팅방 버튼을 담는 list의 크기
     static int chattingListIndex = -1; //채팅방이 생성될 때마다 +1
@@ -81,6 +83,7 @@ public class ChattingListGUI extends JFrame {
         this.room_list = listenNetwork.Room_list;
         setBackground(new Color(255, 255, 255));
         setBounds(900, 100, 400, 690);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
 
@@ -152,35 +155,11 @@ public class ChattingListGUI extends JFrame {
         creatChatting.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (chattingListIndex < 20) {
-                    //createChattingRoom(chattingButtonList,chattingListPanel); //chatingRoom 생성
-                    //chattingListPanel.setSize(317,chattingListHeight);
-                    chattingListPanel.setPreferredSize(new Dimension(317, chattingListHeight));
-                    revalidate();
-                    repaint();
-                } else {
-                    System.out.println("최대 방 개수를 초과했습니다.");
-                }
+                new addChattingGUI(socket, currentUserName);
             }
         });
         creatChatting.setBounds(279, 30, 25, 23);
         topBar.add(creatChatting);
-
-
-        JButton addChatting = new JButton("");
-        addChatting.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
-        addChatting.setBorderPainted(false);
-        addChatting.setBounds(244, 29, 25, 23);
-        addChatting.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                new addChattingGUI(socket, currentUserName);
-            }
-        });
-        topBar.add(addChatting);
 
 
         JPanel sideMenuPane = new JPanel();
@@ -354,26 +333,32 @@ public class ChattingListGUI extends JFrame {
             int index = -1;
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("clicked [" + chatName + "]");
-                for (int i = 0; i < chattingButtonList.size(); i++) {
-                    if(chattingButtonList.get(i) == (JPanel) e.getSource()){
-                        index = i;
-                    }
-                }
-                System.out.println("눌린 index = " + index);
                 int roomNum = ((RoomInfo) room_list.get(index)).getRoomNum();
-                for (int i = 0; i < room_list.size(); i++) {
-                    System.out.println("Room_List의 index:"+i+" 의 RoomNum은 "+((RoomInfo) room_list.get(i)).getRoomNum());
-                }
+                if(!ChatRoomEntered.contains(roomNum)) {
+                    System.out.println("clicked [" + chatName + "]");
+                    for (int i = 0; i < chattingButtonList.size(); i++) {
+                        if(chattingButtonList.get(i) == (JPanel) e.getSource()){
+                            index = i;
+                        }
+                    }
+                    System.out.println("눌린 index = " + index);
 
-                ArrayList<String> members = ((RoomInfo) room_list.get(index)).getMembers();
+                    for (int i = 0; i < room_list.size(); i++) {
+                        System.out.println("Room_List의 index:"+i+" 의 RoomNum은 "+((RoomInfo) room_list.get(i)).getRoomNum());
+                    }
+
+                    ArrayList<String> members = ((RoomInfo) room_list.get(index)).getMembers();
 //				chatting = new chat_Frame(roomNum,members,socket);
 //				chatting.setVisible(true);
 
-                //채팅방 생성 serverListener에게 위임
-                System.out.println("서버에게 방번호 : "+roomNum+" 오픈 요청을 합니다.");
-                Login_Frame.SendMessage("/310 " + roomNum + " " + currentUserName);
-                System.out.println("SEND : " + "/310 " + roomNum + " " + currentUserName);
+                    //채팅방 생성 serverListener에게 위임
+                    System.out.println("서버에게 방번호 : "+roomNum+" 오픈 요청을 합니다.");
+                    Login_Frame.SendMessage("/310 " + roomNum + " " + currentUserName);
+                    System.out.println("SEND : " + "/310 " + roomNum + " " + currentUserName);
+                    ChatRoomEntered.add(roomNum);
+                }
+
+
             }
 
             @Override

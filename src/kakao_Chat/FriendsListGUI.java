@@ -45,6 +45,7 @@ import javax.swing.JLabel;
 public class FriendsListGUI extends JFrame implements MouseListener{
 	int chattingListHeight = 77; // 채팅방 버튼을 담는 list의 크기
 	static int chattingListIndex = -1; //채팅방이 생성될 때마다 +1
+	public static int myChat = 0;
 	private MiniProfileManager miniProfileManager; //미니 프로필 디자인 동적 선택 생성 매니저
 	private JPanel chatPanel;
 	private JLabel profileButton;
@@ -59,10 +60,11 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 	private JLabel lblUserName;
 	private FriendsListGUI thisGUI = this;
 	private static final  int BUF_LEN = 128;
-	public static String userName;
 	public static ArrayList <User> User_list;
 	public int Size_list;
 	private ArrayList<JPanel> chattingButtonList = new ArrayList<JPanel>();
+	public static ArrayList<Integer> ChatRoomEntered = new ArrayList<Integer>();
+	public static ArrayList<String> ProfileEntered = new ArrayList<String>();
 	private JPanel chattingListPanel = new JPanel();
 	private String currentName;
 	private Login_Frame.ListenNetwork listenNetwork;
@@ -70,6 +72,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 
 	public FriendsListGUI(Socket s, String name, Login_Frame.ListenNetwork listenNetwork) throws IOException {
 		currentName = name;
+
 		this.listenNetwork = listenNetwork;
 		setBackground(new Color(255, 255, 255));
 		setBounds(400, 200, 400, 690);
@@ -137,25 +140,25 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		allReadProcessMenuItem.setBackground(new Color(255, 255, 255));
 		chattingLableAndMenu.add(allReadProcessMenuItem);
 		
-		JButton creatChatting = new JButton("");
-		creatChatting.setIcon(new ImageIcon("img/creatChat.PNG"));
-		creatChatting.setBorderPainted(false);
-		creatChatting.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(chattingListIndex < 20) {
-					createFriendProfile(chattingButtonList,chattingListPanel,"user","img/defult45.png"); //chatingRoom 생성
-					//chattingListPanel.setSize(317,chattingListHeight);
-					chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
-					revalidate();
-					repaint();
-				}else {
-					System.out.println("최대 방 개수를 초과했습니다.");
-				}
-			}
-		});
-		creatChatting.setBounds(279, 30, 25, 23);
-		topBar.add(creatChatting);
+//		JButton creatChatting = new JButton("");
+//		creatChatting.setIcon(new ImageIcon("img/creatChat.PNG"));
+//		creatChatting.setBorderPainted(false);
+//		creatChatting.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				if(chattingListIndex < 20) {
+//					createFriendProfile(chattingButtonList,chattingListPanel,"user","img/defult45.png"); //chatingRoom 생성
+//					//chattingListPanel.setSize(317,chattingListHeight);
+//					chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
+//					revalidate();
+//					repaint();
+//				}else {
+//					System.out.println("최대 방 개수를 초과했습니다.");
+//				}
+//			}
+//		});
+//		creatChatting.setBounds(279, 30, 25, 23);
+//		topBar.add(creatChatting);
 		
 		JButton addFriend = new JButton("");
 		Image af = new ImageIcon("img/add_friend.png").getImage().getScaledInstance(28,22,Image.SCALE_DEFAULT);
@@ -168,7 +171,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 			}
 		});
 		addFriend.setBorderPainted(false);
-		addFriend.setBounds(237, 29, 31, 25);
+		addFriend.setBounds(279, 30, 25, 23);
 		topBar.add(addFriend);
 	
 		
@@ -221,9 +224,12 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		myInfoPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ArrayList <String> name = new ArrayList<String>();
-				name.add(Login_Frame.userName);
-				chat_Frame chatting = new chat_Frame(-1,1,name,socket);
+				if(!ChatRoomEntered.contains(-1)) {
+					ArrayList<String> name = new ArrayList<String>();
+					name.add(Login_Frame.userName);
+					chat_Frame chatting = new chat_Frame(-1, 1, name, socket);
+					ChatRoomEntered.add(-1);
+				}
 				}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -261,7 +267,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		name.add(id);
 		
 		miniProfileManager = MiniProfileManager.getInstance();
-		miniProfileManager.setMiniProfileDesign_Friend(profile_img);
+		miniProfileManager.setMiniProfileDesign_Friend(profile_img,id);
 		String chatName = miniProfileManager.makeMiniProfile(2,name,chattingPanel,chattingListHeight, chattingListIndex,lastMsg);
 		/*******************/
 		
@@ -314,7 +320,11 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		//System.out.println("clicked ["+chatName+"]");
 		if (e.getSource().equals(profileButton)) {
 			try {
-				my_Profile_Frame profile_Frame = new my_Profile_Frame(Login_Frame.userName,socket,currentName, listenNetwork);
+				if(!ProfileEntered.contains(currentName)) {
+					my_Profile_Frame profile_Frame = new my_Profile_Frame(Login_Frame.userName, socket, currentName, listenNetwork);
+					ProfileEntered.add(currentName);
+					System.out.println("프로필 클릭: "+currentName);
+				}
 			} catch (IOException ex) {
 				throw new RuntimeException(ex);
 			}
@@ -345,120 +355,5 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		
 	}
 
-	class ListenNetwork extends Thread {
-		public void run() {
-			while (true) {
-				try {
-					// String msg = dis.readUTF();
-					byte[] b = new byte[BUF_LEN];
-					int ret;
-					ret = dis.read(b);
-					if (ret < 0) {
-						//AppendText("dis.read() < 0 error");
-						try {
-							dos.close();
-							dis.close();
-							socket.close();
-							break;
-						} catch (Exception ee) {
-							break;
-						}// catch�� ��
-					}
-					String	msg = new String(b, "euc-kr");
-					msg = msg.trim(); // �յ� blank NULL, \n ��� ����
 
-					String[] args = msg.split(" ");
-					System.out.println("fmsg:"+ msg); // server ȭ�鿡 ���
-
-					if(args.length >1) {
-						if(args[1].equals("/101")) {
-							userName = args[0];
-//							window = new ChattingListGUI(socket,args[0]);
-//							window.setVisible(true);
-//							setVisible(false);
-						}
-
-						if(args[1].equals("pass")) {
-							System.out.println("msg:"+args[0]);
-//							user_info = new User(args[0]);
-
-
-						}
-						if(args[1].equals("/login")) {
-
-							System.out.println("msg:"+args[0]);
-//							User new_user = new User(args[0]);
-//							User_list.add(new_user);
-							for(int i =0; i<User_list.size(); i++) {
-								System.out.println("list:"+User_list.get(i).getId());
-								System.out.println("->");
-							}
-
-						}
-						if(args[1].equals("/login")) {
-
-							System.out.println("msg:"+args[0]);
-//						User new_user = new User(args[0]);
-//						User_list.add(new_user);
-							for(int i =0; i<User_list.size(); i++) {
-								System.out.println("list:"+User_list.get(i).getId());
-								System.out.println("->");
-							}
-
-						}
-					}
-				} catch (IOException e) {
-					//AppendText("dis.read() error");
-					try {
-						dos.close();
-						dis.close();
-						socket.close();
-						break;
-					} catch (Exception ee) {
-						break;
-					} // catch�� ��
-				} // �ٱ� catch����
-
-			}
-		}
-	}
-
-
-	public byte[] MakePacket(String msg) {
-		byte[] packet = new byte[BUF_LEN];
-		byte[] bb = null;
-		int i;
-		for (i = 0; i < BUF_LEN; i++)
-			packet[i] = 0;
-		try {
-			bb = msg.getBytes("euc-kr");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(0);
-		}
-		for (i = 0; i < bb.length; i++)
-			packet[i] = bb[i];
-		return packet;
-	}
-
-	public void SendMessage(String msg) {
-		try {
-			// dos.writeUTF(msg);
-			byte[] bb;
-			bb = MakePacket(msg);
-			dos.write(bb, 0, bb.length);
-		} catch (IOException e) {
-			//AppendText("dos.write() error");
-			try {
-				dos.close();
-				dis.close();
-				socket.close();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				System.exit(0);
-			}
-		}
-	}
 }

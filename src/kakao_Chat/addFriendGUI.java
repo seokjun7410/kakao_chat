@@ -82,11 +82,14 @@ public class addFriendGUI extends Frame implements MouseListener, MouseMotionLis
 		
 		//상단바 X버튼
 		btn_exit = new JButton("x");
-		btn_exit.setBounds(255,2, 45, 30);
+		btn_exit.setBounds(258,2, 45, 30);
+		btn_exit.setFont(new Font("Arial", Font.PLAIN, 18));
+		btn_exit.setBackground(Color.white);
+		btn_exit.setBorderPainted(false);
 		btn_exit.setPreferredSize(new Dimension(30,30));
 		btn_exit.addActionListener(this);
 		title_bar.add(btn_exit);
-		
+		add(title_bar,BorderLayout.NORTH);
 		background_panel.add(title_bar,BorderLayout.NORTH);
 		
 		JPanel panel = new BottomDoubleDrawPanel();

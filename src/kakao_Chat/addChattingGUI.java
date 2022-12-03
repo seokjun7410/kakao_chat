@@ -95,7 +95,7 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 		//상단바 구성
 		title_bar = new TranslucentLabel();
 		title_bar.setPreferredSize(new Dimension(380,34));
-		title_bar.setBounds(0,0,300,35);
+		title_bar.setBounds(0,0,365,35);
 		title_bar.setLayout(null);
 		title_bar.setBackground(new Color(0, 0, 0, 0));
 		title_bar.addMouseListener(this);
@@ -103,11 +103,14 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 		
 		//상단바 X버튼
 		btn_exit = new JButton("x");
-		btn_exit.setBounds(255,2, 45, 30);
+		btn_exit.setFont(new Font("Arial", Font.PLAIN, 18));
+		btn_exit.setBackground(Color.white);
+		btn_exit.setBorderPainted(false);
+		btn_exit.setBounds(320,2, 45, 30);
 		btn_exit.setPreferredSize(new Dimension(30,30));
 		btn_exit.addActionListener(this);
 		title_bar.add(btn_exit);
-		
+		add(title_bar,BorderLayout.NORTH);
 		ArrayList<JPanel> chattingButtonList = new ArrayList<JPanel>();
 		setBackground(new Color(255, 255, 255));
 		setBounds(400, 200, 365, 690);

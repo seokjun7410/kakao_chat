@@ -248,9 +248,11 @@ public class JavaChatServer extends JFrame {
             for (int i = 0; i < UserVec.size(); i++) {
                 UserService user = (UserService) user_vc.elementAt(i);
                 if (user.getUserName().equals(name)) {
+                    user.os.flush();
                     ObjectOutputStream oos = new ObjectOutputStream(user.os);
                     oos.writeObject(img);
                     oos.close();
+                    user.dos = new DataOutputStream(user.os);
                     break;
                 }
             }
@@ -303,7 +305,7 @@ public class JavaChatServer extends JFrame {
 
                     String[] args = msg.split(" ");
 
-                    if (args[0].matches("/100")) { // 로그인 "/100 id pw"
+                    if (args[0].matches("/100") && args.length >= 3) { // 로그인 "/100 id pw"
                         System.out.println("Recv: 아이디 " + args[1] + ", 비밀번호 " + args[2]);
                         String id = args[1].trim();
                         String pw = args[2].trim();
@@ -413,6 +415,7 @@ public class JavaChatServer extends JFrame {
                         ObjectInputStream ois = new ObjectInputStream(is);
                         ImageIcon img = (ImageIcon)ois.readObject();
                         ois.close();
+                        dis = new DataInputStream(is);
                         JFrame jf = new JFrame();
                         JLabel jl = new JLabel();
                         jf.add(jl);

@@ -1,11 +1,6 @@
 package kakao_Chat;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Image;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -47,6 +42,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
     private static OutputStream os;
     private static DataInputStream dis;
     private static DataOutputStream dos;
+
     private static final int BUF_LEN = 128;
     public static String userName;
     public static ArrayList<User> User_list;
@@ -83,6 +79,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
         id_text.setEditable(true);
         id_text.setBounds(80, 100, 380, 26);
         id_text.setPreferredSize(new Dimension(380, 30));
+        id_text.setMargin(new Insets(0, 10, 0, 0));
         id_text.setColumns(17);
         id_panel.add(id_area);
         id_panel.add(id_text);
@@ -98,15 +95,16 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
         pw_text = new JPasswordField();
         pw_text.setEditable(true);
 
-        pw_text.setBounds(100, 100, 380, 26);
+        pw_text.setBounds(100, 110, 380, 26);
         pw_text.setPreferredSize(new Dimension(380, 30));
+        pw_text.setMargin(new Insets(0, 10, 0, 0));
         pw_text.setColumns(17);
         pw_panel.add(pw_area);
         pw_panel.add(pw_text);
         pw_panel.setBackground(new Color(254, 229, 0));
 
         JPanel user_panel = new JPanel();
-        user_panel.setBounds(-18, 220, 380, 100);
+        user_panel.setBounds(-22, 220, 380, 100);
         user_panel.setBackground(new Color(254, 229, 0));
         user_panel.setLayout(new FlowLayout());
         user_panel.add(id_panel);
@@ -123,10 +121,12 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
         add(panel, BorderLayout.CENTER);
         btn_login = new JButton("로그인");
         btn_login.addActionListener(this);
-        btn_login.setBounds(135, 330, 110, 35);
+        btn_login.setBackground(new Color(66,54,48));
+        btn_login.setBounds(100, 320, 185, 35);
+        btn_login.setForeground(Color.white);
         panel.add(btn_login);
         title_bar = new JPanel();
-        title_bar.setPreferredSize(new Dimension(380, 34));
+        title_bar.setPreferredSize(new Dimension(380, 40));
         title_bar.setLayout(null);
         title_bar.setBackground(new Color(254, 229, 0));
         title_bar.addMouseListener(this);
@@ -134,8 +134,10 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 
         //상단바 X버튼
         btn_exit = new JButton("x");
-        btn_exit.setBounds(338, 2, 40, 30);
-        btn_exit.setPreferredSize(new Dimension(30, 30));
+        btn_exit.setFont(new Font("Arial", Font.PLAIN, 17));
+        btn_exit.setBorderPainted(false);
+        btn_exit.setBackground(new Color(254, 229, 0));
+        btn_exit.setBounds(338, 2, 45, 40);
         btn_exit.addActionListener(this);
         title_bar.add(btn_exit);
         add(title_bar, BorderLayout.NORTH);
@@ -444,14 +446,20 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         System.out.println(msg);
                         System.out.println("/503");
                         ObjectInputStream ois = new ObjectInputStream(is);
-                        ImageIcon img = (ImageIcon)ois.readObject();
+                        ImageIcon img = new ImageIcon();
+                        while (ois.readObject() != null) {
+                            img = (ImageIcon)ois.readObject();
+                        }
+                        ois.reset();
                         ois.close();
-                        JFrame jf = new JFrame();
-                        JLabel jl = new JLabel();
-                        jf.add(jl);
-                        jl.setIcon(img);
-                        jf.setBounds(900, 100, img.getIconWidth(), img.getIconHeight());
-                        jf.setVisible(true);
+                        if(img != null){
+                            JFrame jf = new JFrame();
+                            JLabel jl = new JLabel();
+                            jf.add(jl);
+                            jl.setIcon(img);
+                            jf.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
+                            jf.setVisible(true);
+                        }
                     }
 
                     if (args[1].equals("/601")) {
@@ -590,9 +598,12 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
         System.out.println("sendImage:"+path);
         BufferedImage img = ImageIO.read(new File(path));
         ImageIcon ic =  new ImageIcon(img);
+        os.flush();
         ObjectOutputStream oos = new ObjectOutputStream(os);
         oos.writeObject(ic);
         oos.close();
+        os.flush();
+        dos = new DataOutputStream(os);
     }
 
     public static void main(String[] args) {

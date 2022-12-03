@@ -38,8 +38,8 @@ public class MiniProfileManager {
 		}
 	}
 	
-	public void setMiniProfileDesign_Friend(String profile_img) {
-		miniProfileDesign = new FriendMiniProfile(profile_img);
+	public void setMiniProfileDesign_Friend(String profile_img, String id) {
+		miniProfileDesign = new FriendMiniProfile(profile_img,id);
 
 	}
 	

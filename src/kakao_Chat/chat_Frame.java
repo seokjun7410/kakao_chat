@@ -11,6 +11,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import static kakao_Chat.FriendsListGUI.ChatRoomEntered;
 import static kakao_Chat.Login_Frame.sendImage;
 import static kakao_Chat.design.pictureEdit.FileSelector.ImageSeletor;
 import static kakao_Chat.design.pictureEdit.FileSelector.ImageSeletorByLink;
@@ -431,6 +432,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 				System.out.println("채팅방이 닫혔습니다. Chatting_List 에서 방번호 "+room_number+"를 제거요청 합니다.");
 				Login_Frame.SendMessage("/320 " +room_number+" "+Login_Frame.userName);
 				System.out.println("SEND /320 " +room_number+" "+Login_Frame.userName);
+				ChatRoomEntered.remove((Object)room_number);
 				this.dispose();
 			}
 			else if(e.getSource().equals(btn_send)) {
