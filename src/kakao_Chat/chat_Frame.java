@@ -27,6 +27,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 	public static ArrayList<User> User_list;
 	public int Size_list;
 	private int numOfPeople;
+	private JPanel chattingScrollPanel;
 
 	public int getRoom_number() {
 		return room_number;
@@ -123,15 +124,35 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		
 		
 		Panel_1.add(Profile_panel,BorderLayout.NORTH);
+
+
+
 		
 		//중간 채팅창 패널
+		
+		chattingScrollPanel = new JPanel();
+		chattingScrollPanel.setPreferredSize(new Dimension(380,70));
+		chattingScrollPanel.setBackground(new Color(186,206,224));
+		chattingScrollPanel.setLayout(new FlowLayout());
+		chattingScrollPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,10));
+	
+		//스크롤
 		chat_panel = new JPanel();
-		chat_panel.setPreferredSize(new Dimension(380,70));
+		chat_panel.setPreferredSize(new Dimension(380,10));
 		chat_panel.setBackground(new Color(186,206,224));
 		chat_panel.setLayout(new FlowLayout());
 		chat_panel.setBorder(BorderFactory.createEmptyBorder(20,20,20,10));
-	
-
+        
+        JScrollPane pane = new JScrollPane(chat_panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        pane.setBounds(0, 0, 380, 401);
+        pane.setPreferredSize(new Dimension(380,10));
+        pane.getVerticalScrollBar().setUnitIncrement(14);
+        chattingScrollPanel.setLayout(null);
+        pane.setBorder(null);
+        chattingScrollPanel.add(pane);
+       
+		
 		//JScrollPane scrollPane = new JScrollPane(chat_view, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 		//scrollPane.setBounds(12, 10, 352, 340);
@@ -142,7 +163,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 //		chat_text.setOpaque(true);
 //		chat_panel.add(chat_text);
 		
-		Panel_1.add(chat_panel,BorderLayout.CENTER);
+		Panel_1.add(chattingScrollPanel,BorderLayout.CENTER);
 		
 		//하단 텍스트 패널
 		JPanel text_panel = new JPanel();
