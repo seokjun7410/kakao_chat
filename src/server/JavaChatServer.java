@@ -421,14 +421,15 @@ public class JavaChatServer extends JFrame {
                         jf.setVisible(true);
                         String send_msg = "/503 " + args[2];
                         ArrayList<String> recvUsers = getRecvUser(args[1]);
-                        for (String recvUser : recvUsers) { // 보낸다는 메세지 먼저 전송
+                        ArrayList<String> recvUsers2 = getRecvUser(args[1]);
+                        for (String recvUser : recvUsers) { // 이미지를 전송할거라는 메세지 먼저 전송
                             if (!args[2].equals(recvUser)) {//송신유저가 아닐 경우만 전송
                                 sendTo(recvUser, send_msg);
                                 System.out.print(recvUser + ", ");
                             }
                         }
 
-                        for (String recvUser : recvUsers) { // 파일 전송
+                        for (String recvUser : recvUsers2) { // 파일 전송
                             if (!args[2].equals(recvUser)) {//송신유저가 아닐 경우만 전송
                                 sendImage(recvUser, img);
                                 System.out.print(recvUser + ", ");

@@ -440,6 +440,24 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 //                        System.out.println("args[1] = " + args[1]);
                         chatting.makeLeftBubble(message);
                     }
+                    if (args[0].matches("/503")) { //502 RoomNum UserName
+                        System.out.println(msg);
+                        System.out.println("/503");
+                        ObjectInputStream ois = new ObjectInputStream(is);
+                        ImageIcon img = (ImageIcon)ois.readObject();
+                        ois.close();
+                        JFrame jf = new JFrame();
+                        JLabel jl = new JLabel();
+                        jf.add(jl);
+                        jl.setIcon(img);
+                        jf.setBounds(900, 100, img.getIconWidth(), img.getIconHeight());
+                        jf.setVisible(true);
+                    }
+
+                    if (args[1].equals("/601")) {
+                        chattingListGUI.friendsListGUI.revalidate();
+                        chattingListGUI.friendsListGUI.repaint();
+                    }
 
                     if (args.length > 1) {
                         if (args[1].equals("/101")) {
@@ -476,7 +494,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 
 
                     }
-                } catch (IOException e) {
+                } catch (IOException | ClassNotFoundException e) {
                     //AppendText("dis.read() error");
                     try {
                         dos.close();
@@ -564,17 +582,6 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                 System.exit(0);
             }
         }
-    }
-
-    //이미지 전송 , "/501 방번호 사용자이름"을 보내준 뒤 파일을 보냄
-    public static void sendImage(String path) throws IOException {
-        //String file_name = userName+"_"+String.valueOf(file_num++)+".png";
-        System.out.println("sendImage:"+path);
-        BufferedImage img = ImageIO.read(new File(path));
-        ImageIcon ic =  new ImageIcon(img);
-        ObjectOutputStream oos = new ObjectOutputStream(os);
-        oos.writeObject(ic);
-        oos.close();
     }
 
     public static void main(String[] args) {
