@@ -19,9 +19,9 @@ import static kakao_Chat.Login_Frame.userName;
 public class FriendMiniProfile extends MiniProfileDesign_Friend implements ActionListener {
 	private String profile_img;
 	private String id;
-	public FriendMiniProfile(String profile_img, String id){
+	public FriendMiniProfile(String profile_img){
 		this.profile_img = profile_img;
-		this.id = id;
+
 	}
 
 	@Override

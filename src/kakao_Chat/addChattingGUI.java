@@ -81,6 +81,11 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 	}
 	private Socket socket;
 	private String currentName;
+	private String lastMsg= "";
+	private ArrayList<JPanel> chattingButtonList;
+	private JPanel chattingListPanel;
+	private Vector<String> selectedFriends = new Vector<>();
+	private JButton accpet;
 
 	public addChattingGUI(Socket s, String name) {
 		this.socket = s;
@@ -193,6 +198,7 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 		
 		JButton accpet = new JButton("확인");
 		accpet.setBounds(173, 20, 79, 34);
+		accpet.addActionListener(this);
 		bottmBarPanel.add(accpet);
 		
 		JButton cancle = new JButton("취소");
@@ -204,8 +210,8 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 				if(chattingListIndex < 20) {
 					//createChattingRoom(chattingButtonList,chattingListPanel); //chatingRoom 생성
 					//chattingListPanel.setSize(317,chattingListHeight);
-					chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
-					
+					createFriendPanel(chattingButtonList,chattingListPanel,"id","profile_img"); //chatingRoom 생성
+					chattingListPanel.setSize(317,chattingListHeight);
 					revalidate();
 					repaint();
 				}else {
@@ -213,10 +219,19 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 				}
 			}
 		});
+		for (String friendName : Login_Frame.Friends_List) {
+			loadFriends(friendName,"img/UserProfile/"+friendName+".png");
+		}
 		setVisible(true);
 		
 	}
-	
+
+
+	public void loadFriends(String id,String profile_img) {
+		createFriendPanel(chattingButtonList,chattingListPanel,id,profile_img); //친구 프로필 생성
+		//chattingListPanel.setSize(317,chattingListHeight);
+		chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
+	}
 //	private void createChattingRoom(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel) {
 //		
 //		JPanel chattingPanel = new JPanel();
@@ -268,7 +283,79 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 //			});
 //	}
 
-	
+	private void createFriendPanel(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel,String id,String profile_img) {
+
+		JPanel chattingPanel = new JPanel();
+		chattingPanel.setAutoscrolls(true);
+		chattingPanel.setBounds(67, 50, 317, chattingListHeight);
+		chattingPanel.setBackground(Color.white);
+		chattingPanel.setLayout(null);
+		chattingPanel.setPreferredSize(new Dimension(317,55));
+
+		/**** 채팅방 생성 ****/
+		int random = (int) ((Math.random() * (6 - 2)) + 2); //Random한 DummyData 생성
+		int DUMMY_NumberOfPeople = random;
+		ArrayList<String> name = new ArrayList<String>();
+		name.add(id);
+
+		miniProfileManager = MiniProfileManager.getInstance();
+		miniProfileManager.setMiniProfileDesign_Friend(profile_img);
+		String chatName = miniProfileManager.makeMiniProfile(2,name,chattingPanel,chattingListHeight, chattingListIndex,lastMsg);
+		/*******************/
+
+		//우측 체크박스 add
+		JCheckBox chckbxNewCheckBox = new JCheckBox("");
+		chckbxNewCheckBox.setBounds(260, 10, 40, 30);
+		chckbxNewCheckBox.setBackground(Color.white);
+		chckbxNewCheckBox.setIcon(new ImageIcon("img/checkBox.png"));
+		chckbxNewCheckBox.setSelectedIcon(new ImageIcon("img/checkBox_checked.PNG"));
+		chattingPanel.add(chckbxNewCheckBox);
+
+		chattingButtonList.add(chattingPanel);
+		chattingListPanel.setBounds(0, 0, 317, chattingListHeight);
+		chattingListPanel.add(chattingButtonList.get(++chattingListIndex));
+		chattingListHeight += 71;
+
+
+		chattingPanel.addMouseListener(new MouseAdapter() {
+			int index = -1;
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//눌린거 찾기
+				for (int i = 0; i < chattingButtonList.size(); i++) {
+					if(chattingButtonList.get(i) == (JPanel) e.getSource()){
+						index = i;
+					}
+				}
+				String id = Login_Frame.Friends_List.get(index);
+
+				if(chckbxNewCheckBox.isSelected()) {
+					chckbxNewCheckBox.setSelected(false);
+					selectedFriends.remove(id);
+				}
+				else {
+					chckbxNewCheckBox.setSelected(true);
+					selectedFriends.add(id);
+				}
+
+				System.out.print("현재 선택 : " );
+				for (String selectedFriend : selectedFriends) {
+					System.out.print(selectedFriend+", ");
+				}
+
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				JPanel b = (JPanel)e.getSource();
+				b.setBackground(new Color(245,245,245));
+			}
+			@Override//마우스가 버튼 밖으로 나가면 노란색으로 바뀜
+			public void mouseExited(MouseEvent e) {
+				JPanel b = (JPanel)e.getSource();
+				b.setBackground(Color.white);
+			}
+		});
+	}
 	public class TranslucentLabel extends JLabel {
 	       public TranslucentLabel() {
 	            super();
@@ -293,7 +380,27 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 		if(e.getSource().equals(btn_exit)) {
 			this.dispose();
 		}
-		
+		if(e.getSource().equals(accpet)) {
+			System.out.println("채팅생성 버튼이 눌렸습니다.");
+
+			int numOfPeople = selectedFriends.size()+1;
+			StringBuilder sb = new StringBuilder();
+
+			for (String selectedFriend : selectedFriends) {
+				sb.append(selectedFriend).append(" ");
+			}
+
+			//채팅방 생성
+			//chat_Frame 생성을 server에게 요청
+
+			Login_Frame.SendMessage("/300 "+numOfPeople+" " + sb +currentName);
+			System.out.println("SEND :"+" 인원수 "+numOfPeople+" " + "TO "+ sb + " " + "FROM"+ currentName);
+
+
+
+
+			dispose();
+		}
 	}
 
 	@Override
