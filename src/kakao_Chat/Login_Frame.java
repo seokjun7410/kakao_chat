@@ -1,5 +1,7 @@
 package kakao_Chat;
 
+import kakao_Chat.design.pictureEdit.PictureRound;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,6 +29,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import static kakao_Chat.FriendsListGUI.profileButton;
+import static kakao_Chat.Profile_Frame.profile_filename;
 import static kakao_Chat.design.pictureEdit.PictureRound.saveImageIcon;
 
 public class Login_Frame extends JFrame implements MouseListener, MouseMotionListener, ActionListener, KeyListener {
@@ -469,9 +473,17 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         }
                     }
 
-                    if (args[1].equals("/601")) {
-                        chattingListGUI.friendsListGUI.revalidate();
-                        chattingListGUI.friendsListGUI.repaint();
+                    if (args[0].equals("/601")) {
+                        profile_filename = "img/UserProfile/"+Login_Frame.userName+".png";
+                        try {
+                            ImageIcon pi = PictureRound.setImageRound(profile_filename,60);
+                            profileButton.setIcon(pi);
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+
+                        revalidate();
+                        repaint();
                     }
 
                     if (args.length > 1) {

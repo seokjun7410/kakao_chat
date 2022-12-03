@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import static kakao_Chat.FriendsListGUI.ProfileEntered;
+import static kakao_Chat.Login_Frame.SendMessage;
 import static kakao_Chat.Login_Frame.userName;
 
 public class my_Profile_Frame extends JFrame implements MouseListener, MouseMotionListener, ActionListener {
@@ -175,7 +176,7 @@ public class my_Profile_Frame extends JFrame implements MouseListener, MouseMoti
             System.out.println("pl clicked");
             try {
                 profile_label.setIcon(PictureRound.jFileChooserUtil(80));
-
+                SendMessage("/600 "+userName);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -199,7 +200,7 @@ public class my_Profile_Frame extends JFrame implements MouseListener, MouseMoti
             int roomNum = listenNetwork.check_RoomNum(User_name);
             if (roomNum < 0) { //채팅방이 없을경우
                 System.out.println("상대방과 존재하는 채팅이 없어 채팅방 생성을 요청합니다");
-                Login_Frame.SendMessage("/300 2 " + User_name + " "+currentName);
+                SendMessage("/300 2 " + User_name + " "+currentName);
                 System.out.println("SEND :"+" 인원수 2 " + "TO "+ User_name + " " + "FROM"+ currentName);
             }
         	else {//채팅방이 있을경우

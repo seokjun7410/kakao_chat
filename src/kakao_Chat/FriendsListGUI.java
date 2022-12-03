@@ -48,7 +48,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 	public static int myChat = 0;
 	private MiniProfileManager miniProfileManager; //미니 프로필 디자인 동적 선택 생성 매니저
 	private JPanel chatPanel;
-	private JLabel profileButton;
+	public static JLabel profileButton;
 	public JPanel get() {
 		return chatPanel;
 	}
@@ -69,6 +69,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 	private String currentName;
 	private Login_Frame.ListenNetwork listenNetwork;
 	private String lastMsg = "";
+	private String profile_filename;
 
 	public FriendsListGUI(Socket s, String name, Login_Frame.ListenNetwork listenNetwork) throws IOException {
 		currentName = name;
@@ -210,7 +211,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		chatPanel.add(myInfoPanel);
 		myInfoPanel.setLayout(null);
 
-        String profile_filename = "img/UserProfile/"+Login_Frame.userName+".png";
+        profile_filename = "img/UserProfile/"+Login_Frame.userName+".png";
         ImageIcon pi = PictureRound.setImageRound(profile_filename,60);
 		profileButton = new JLabel(pi); //본인 프로필 이미지
 		profileButton.setBounds(13, 8, 61, 61);

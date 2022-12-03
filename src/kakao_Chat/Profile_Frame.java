@@ -23,7 +23,8 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
     private DataInputStream dis;
     private DataOutputStream dos;
     private String currentName;
-    private String profile_filename;
+    public static String profile_filename;
+
     private static final int BUF_LEN = 128;
     private Login_Frame.ListenNetwork listenNetwork;
     public Profile_Frame(String user_name, Socket s, String name, Login_Frame.ListenNetwork listenNetwork) throws IOException {
