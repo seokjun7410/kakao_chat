@@ -407,7 +407,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 				else makeRightBubble(value);
 
 				Login_Frame.SendMessage("/500 " +room_number+" "+value +" "+Login_Frame.userName);
-				System.out.println("LOG.User_names " +room_number+" "+value);
+				System.out.println(Login_Frame.userName+"이(가) " +room_number+"번방에 "+value+"을 보내라고 요청합니다.");
 
 				// same value as
 //				text_area.setCaretPosition(len); // place caret at the end (with no selection)

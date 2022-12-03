@@ -25,11 +25,13 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
     private String currentName;
     private String profile_filename;
     private static final int BUF_LEN = 128;
-
-    public Profile_Frame(String user_name, Socket s, String name) throws IOException {
+    private Login_Frame.ListenNetwork listenNetwork;
+    public Profile_Frame(String user_name, Socket s, String name, Login_Frame.ListenNetwork listenNetwork) throws IOException {
         currentName = name;
         this.socket = s;
         this.User_name = user_name;
+        this.listenNetwork = listenNetwork;
+
         profile_filename = "img/UserProfile/"+User_name+".png";
         setResizable(false);
         setUndecorated(true);
@@ -164,7 +166,7 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
             System.out.println("1:1 채팅버튼이 눌렸습니다.");
 
             //채팅방 생성
-            int roomNum = Login_Frame.check_RoomNum(User_name);
+            int roomNum = listenNetwork.check_RoomNum(User_name);
             if (roomNum < 0) { //채팅방이 없을경우
                 System.out.println("상대방과 존재하는 채팅이 없어 채팅방 생성을 요청합니다");
                 Login_Frame.SendMessage("/300 2 " + User_name + " "+currentName);

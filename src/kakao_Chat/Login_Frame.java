@@ -52,7 +52,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
     private static final int BUF_LEN = 128;
     public static String userName;
     public static ArrayList<User> User_list;
-    public static Vector<RoomInfo> Room_list = new Vector();
+    public  Vector<RoomInfo> Room_list = new Vector();
     public  Vector<chat_Frame> Chatting_List = new Vector();
     public int Size_list;
 
@@ -234,16 +234,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 
     }
 
-    //채팅방 있으면 해당 채팅방 번호, 없으면 -1 반환
-    public static int check_RoomNum(String name) {
-        int result = -1;
-        for (int i = 0; i < Room_list.size(); i++) {
-            if (((RoomInfo) Room_list.get(i)).getMembersToString().equals(name)) {
-                result = i;
-            }
-        }
-        return result;
-    }
+
 
         public static int ChattingExist(String roomNum){
         return 0;
@@ -254,6 +245,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
         private FriendsListGUI friendsListGUI;
         private addFriendGUI addFriendGUI;
         private chat_Frame chatting;
+        public  Vector<RoomInfo> Room_list = new Vector();
         public void run() {
 
             while (true) {
@@ -301,19 +293,6 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         }
                         System.out.println("");
 
-//                        int argsSize = args.length;
-//                        int size = argsSize - 2;
-//                        int RoomNum = Integer.parseInt(args[1]);
-//                        ArrayList<String> members = new ArrayList<String>();
-//                        for (int i = 2; i < argsSize; i++) {
-//                            members.add(args[i]);
-//                        }
-//                        RoomInfo new_room = new RoomInfo(RoomNum, size, members, "lastMessga"); //클라이언트에 새로운 방 정보 저장
-//
-//                        Room_list.add(new_room); //벡터에 저장
-//                        System.out.println("Room_List.add(new_room) = " + new_room);
-//                        System.out.println("채팅방 생성 당함");
-//                        chattingListGUI.addChatting(new_room);
                         int argsSize = args.length; //인자 크기
                         int size = argsSize - 2; //인원수
                         int RoomNum = Integer.parseInt(args[1]); //방번호
@@ -329,6 +308,9 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 
                         //TODO 새로운 채팅방 생성 ->여기선 멤버 다 넣어주고 addchatting에서 제거하는 식으로 변경해야됨! 꼭!
                         RoomInfo new_room = new RoomInfo(RoomNum, size, membersNoCurrentUser, "lastMessage"); //클라이언트에 새로운 방 정보 저장
+                        System.out.println(RoomNum+"번 방에 대한 RoomInfo 가 생성되었습니다.");
+
+
                         Room_list.add(new_room); //벡터에 저장
                         System.out.print("방번호 : "+RoomNum+" 인원수 : "+size);
                         System.out.print(" 멤버 : ");
@@ -346,41 +328,6 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                     /* 채팅방 생성 요청한 User */
                     if (args[0].matches("/302")) { //msg : /302 방번호 이름1 이름2 ...
                         System.out.println("RECV: 1:1채팅을 요청한 나는 방띄우기를 지시받음");
-//                        int argsSize = args.length; //인자 크기
-//                        int size = argsSize - 2; //인원수
-//                        int RoomNum = Integer.parseInt(args[1]); //방번호
-//
-//                        //members에 member 이름 추가
-//                        ArrayList<String> members = new ArrayList<String>();
-//                        ArrayList<String> membersNoCurrentUser = new ArrayList<>();
-//                        for (int i = 2; i < argsSize; i++) {
-//                            members.add(args[i]);
-//                            if(i>2)
-//                                membersNoCurrentUser.add(args[i]); //나자신 뺴고 members
-//                        }
-//
-//                        //새로운 채팅방 생성 ->여기선 멤버 다 넣어주고 addchatting에서 제거하는 식으로 변경해야됨! 꼭!
-//                        RoomInfo new_room = new RoomInfo(RoomNum, size, membersNoCurrentUser, "lastMessage"); //클라이언트에 새로운 방 정보 저장
-//                        Room_list.add(new_room); //벡터에 저장
-//
-//                        System.out.print("방번호 : "+RoomNum+" 인원수 : "+size);
-//                        System.out.print("멤버 : ");
-//                        for (String s : membersNoCurrentUser) {
-//                            System.out.print(s+", ");
-//                        }
-//
-//                        System.out.println("의 채팅방이 목록에 생성되었습니다");
-//                        chattingListGUI.addChatting(new_room);   //GUI 채팅방 생성
-//
-//                        //채팅창 띄우기
-//                        chatting = new chat_Frame(RoomNum, membersNoCurrentUser, socket);
-//                        Chatting_List.add(chatting);
-//                        System.out.print("현재 열린 채팅창은 " + Chatting_List.size()+"개 입니다. 방 번호는 ");
-//                        for (int i = 0; i < Chatting_List.size(); i++) {
-//                            System.out.println(Chatting_List.get(i).getRoom_number()+", ");
-//                        }
-//
-//                        System.out.println("채팅방 생성 완료");
 
                         RoomInfo roominfo = getRoomInfoByRoomId(args[1]);
                         int RoomNum = roominfo.getRoomNum();
@@ -397,13 +344,14 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         for (int i = 0; i < Chatting_List.size(); i++) {
                             System.out.println(Chatting_List.get(i).getRoom_number()+", ");
                         }
+                        System.out.println(RoomNum+"번의 채팅 프레임이 관리됩니다.");
 
                         System.out.println("채팅방 생성 완료");
 
 
                     }/* 채팅리스트에서 채팅방을 열때 */
                     if(args[0].matches("/310")) { //msg: "/310 " + roomNum
-                        System.out.println("RECV 채팅방 생성 지시를 받음");
+                        System.out.println("RECV 방번호 :"+args[1]+"번 채팅방 오픈 지시를 받음");
 //                        int RoomNum = Integer.parseInt(args[1]);
 //
 //                        chatting = new chat_Frame(RoomNum, membersNoCurrentUser, socket);
@@ -424,7 +372,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         for (String s :roomInfo.getMembers()) {
                             System.out.print(s+", ");
                         }
-                        System.out.println("의 채팅방이 목록에 생성되었습니다");
+                        System.out.println("의 채팅방이 목록에 오픈되었습니다");
 
                         Chatting_List.add(chatting);
                         System.out.print("현재 열린 채팅창은 " + Chatting_List.size()+"개 입니다. 방 번호는 ");
@@ -452,7 +400,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 
 
                         for (User user : User_list) {
-                            System.out.println("user.id = " + user.id);
+                            System.out.println("user.id = " + user.getId());
                         }
                         for (RoomInfo roomInfo : Room_list) {
                             System.out.println("roomInfo.getRoomNum() = " + roomInfo.getRoomNum());
@@ -470,7 +418,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         if (args[1].equals("/101")) {
                             System.out.println("Recv: 서버로부터 로그인승인 받음");
                             userName = args[0];
-                            chattingListGUI = new ChattingListGUI(socket, args[0]);
+                            chattingListGUI = new ChattingListGUI(socket, args[0],this);
                             chattingListGUI.setVisible(true);
                             setVisible(false);
                         }
@@ -478,7 +426,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                             System.out.println("Recv: 서버로부터 로그인승인 받음");
                             userName = args[0];
                             saveImageIcon(userName,"img/dp.jpg");
-                            chattingListGUI = new ChattingListGUI(socket, args[0]);
+                            chattingListGUI = new ChattingListGUI(socket, args[0],this);
                             chattingListGUI.setVisible(true);
                             setVisible(false);
                         }
@@ -498,7 +446,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 //							User new_user = new User(args[0]);
 //							User_list.add(new_user);
                             for (int i = 0; i < User_list.size(); i++) {
-                                System.out.println("list:" + User_list.get(i).id);
+                                System.out.println("list:" + User_list.get(i).getId());
                                 System.out.println("->");
                             }
 
@@ -540,6 +488,16 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
             }
 
            return null;
+        }
+        //채팅방 있으면 해당 채팅방 번호, 없으면 -1 반환
+        public int check_RoomNum(String name) {
+            int result = -1;
+            for (int i = 0; i < Room_list.size(); i++) {
+                if (((RoomInfo) Room_list.get(i)).getMembersToString().equals(name)) {
+                    result = i;
+                }
+            }
+            return result;
         }
     }
 

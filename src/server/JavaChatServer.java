@@ -47,7 +47,7 @@ public class JavaChatServer extends JFrame {
     private Vector RoomVec = new Vector();
     private static final int BUF_LEN = 128;
     public int recent_Num = 0;
-    public int room_Num = -1;
+    public static int room_Num = -1;
 
     /**
      * Launch the application.
@@ -335,10 +335,11 @@ public class JavaChatServer extends JFrame {
                         /* 채팅방 생성요청  */
                     } else if (args[0].matches("/300")) { //msg: /300 2 " + User_name
                         System.out.println("Recv: 채팅방 생성요첨을 받음");
-                        System.out.println("RECV MSG: ");
+                        System.out.print("RECV MSG: ");
                         for (String arg : args) {
-                            System.out.println(arg + " ");
+                            System.out.print(arg + " ");
                         }
+                        System.out.println("");
                         RoomInfo new_Room; // 방 객체
                         int room_num = assign_RoomNum(); //방 번호 배정
                         System.out.println("생성된 방번호는 " + room_num);
@@ -373,7 +374,8 @@ public class JavaChatServer extends JFrame {
 
                         //요청한 사람에게 sendMessage
                         //WriteOne("/302 " + send_msg); //send_msg : /302 방번호 이름1 이름2 ...
-                        System.out.println("방생성 요청자 " + args[3] + " 에게 방생성 지시");
+                        System.out.println("방생성 요청자 " + args[3] + " 에게 "+ room_num+"번 방오픈 지시");
+                        System.out.println("SEND MSG: /302 "+send_msg);
                         sendTo(args[3], "/302 " + send_msg);
 //						WriteAll(send_msg);
 
@@ -472,9 +474,7 @@ public class JavaChatServer extends JFrame {
 
         public int assign_RoomNum() {
 
-            int num = room_Num + 1;
-            recent_Num = num;
-            return num;
+            return ++room_Num;
         }
 
         private User UserFindByName(String userName) {

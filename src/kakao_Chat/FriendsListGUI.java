@@ -65,9 +65,10 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 	private ArrayList<JPanel> chattingButtonList = new ArrayList<JPanel>();
 	private JPanel chattingListPanel = new JPanel();
 	private String currentName;
-	public FriendsListGUI(Socket s,String name) throws IOException {
+	private Login_Frame.ListenNetwork listenNetwork;
+	public FriendsListGUI(Socket s, String name, Login_Frame.ListenNetwork listenNetwork) throws IOException {
 		currentName = name;
-
+		this.listenNetwork = listenNetwork;
 		setBackground(new Color(255, 255, 255));
 		setBounds(400, 200, 400, 690);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -268,13 +269,13 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 				System.out.println("clicked ["+chatName+"] 프로필이 눌렸습니다.");
 				System.out.println("소켓포트 번호 : "+socket.getPort());
 				try {
-					Profile_Frame Profile_Frame = new Profile_Frame(chatName,socket,currentName);
+					Profile_Frame Profile_Frame = new Profile_Frame(chatName,socket,currentName,listenNetwork);
 				} catch (IOException e1) {
 					// TODO 자동 생성된 catch 블록
 					e1.printStackTrace();
 				}
 				try {
-					Profile_Frame Profile_Frame = new Profile_Frame(chatName,socket,currentName);
+					Profile_Frame Profile_Frame = new Profile_Frame(chatName,socket,currentName,listenNetwork);
 				} catch (IOException ex) {
 					throw new RuntimeException(ex);
 				}
@@ -310,7 +311,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		//System.out.println("clicked ["+chatName+"]");
 		if (e.getSource().equals(profileButton)) {
 			try {
-				my_Profile_Frame profile_Frame = new my_Profile_Frame(Login_Frame.userName,socket,currentName);
+				my_Profile_Frame profile_Frame = new my_Profile_Frame(Login_Frame.userName,socket,currentName, listenNetwork);
 			} catch (IOException ex) {
 				throw new RuntimeException(ex);
 			}
@@ -386,7 +387,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 //							User new_user = new User(args[0]);
 //							User_list.add(new_user);
 							for(int i =0; i<User_list.size(); i++) {
-								System.out.println("list:"+User_list.get(i).id);
+								System.out.println("list:"+User_list.get(i).getId());
 								System.out.println("->");
 							}
 
@@ -397,7 +398,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 //						User new_user = new User(args[0]);
 //						User_list.add(new_user);
 							for(int i =0; i<User_list.size(); i++) {
-								System.out.println("list:"+User_list.get(i).id);
+								System.out.println("list:"+User_list.get(i).getId());
 								System.out.println("->");
 							}
 

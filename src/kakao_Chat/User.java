@@ -5,12 +5,13 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class User {
-	String id;
-	String pw;
-	int userNum;
-	int chattingCount;
+	private String id;
+	private String pw;
+	private int userNum;
+	private int chattingCount;
 
 	public void setChattingCount(int chattingCount) {
+		System.out.println("채팅카운트가 변경되었습니다.");
 		this.chattingCount = chattingCount;
 	}
 

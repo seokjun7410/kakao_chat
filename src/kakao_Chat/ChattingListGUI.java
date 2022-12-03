@@ -1,6 +1,5 @@
 package kakao_Chat;
 
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
@@ -8,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 
 import javax.swing.JMenuItem;
@@ -17,11 +15,7 @@ import javax.swing.JMenu;
 import java.awt.Font;
 import java.awt.Graphics;
 
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextPane;
-import javax.swing.JList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -32,24 +26,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Vector;
-import java.awt.BorderLayout;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.ScrollPane;
 
-import javax.swing.JSplitPane;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.ScrollPaneLayout;
 import javax.swing.plaf.basic.BasicMenuBarUI;
 
-import kakao_Chat.design.friendslist_drawLine.BottomDrawPanel;
 import kakao_Chat.design.mini_profile.MiniProfileManager;
 
 import javax.swing.ImageIcon;
@@ -78,6 +63,7 @@ public class ChattingListGUI extends JFrame {
     private ArrayList<JPanel> chattingButtonList = new ArrayList<JPanel>();
     private JPanel chattingListPanel;
     private String currentUserName = "null";
+    private  Vector<RoomInfo> room_list;
 
     public FriendsListGUI getFriendsListGUI() {
         return friendsListGUI;
@@ -87,10 +73,10 @@ public class ChattingListGUI extends JFrame {
         this.currentUserName = currentUserName;
     }
 
-    public ChattingListGUI(Socket s, String currentUserName) throws IOException {
+    public ChattingListGUI(Socket s, String currentUserName, Login_Frame.ListenNetwork listenNetwork) throws IOException {
         this.socket = s;
         this.currentUserName = currentUserName;
-
+        this.room_list = listenNetwork.Room_list;
         setBackground(new Color(255, 255, 255));
         setBounds(900, 100, 400, 690);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -230,7 +216,7 @@ public class ChattingListGUI extends JFrame {
         moveMore.setBounds(22, 155, 22, 7);
         sideMenuPane.add(moveMore);
 
-        friendsListGUI = new FriendsListGUI(socket, currentUserName);
+        friendsListGUI = new FriendsListGUI(socket, currentUserName, listenNetwork);
         JPanel friendPanel = friendsListGUI.get();
         friendPanel.setBounds(67, 0, 317, 650);
         getContentPane().add(friendPanel);
@@ -308,7 +294,7 @@ public class ChattingListGUI extends JFrame {
 
     public void addChatting(RoomInfo roominfo) {
         if (chattingListIndex < 20) {
-            Login_Frame.Room_list.add(roominfo);
+
             createChattingRoom(roominfo, chattingButtonList, chattingListPanel); //chatingRoom 생성
             //chattingListPanel.setSize(317,chattingListHeight);
             chattingListPanel.setPreferredSize(new Dimension(317, chattingListHeight));
@@ -338,6 +324,7 @@ public class ChattingListGUI extends JFrame {
         miniProfileManager.setMiniProfileDesign_Chat(roominfo.getSize()); //룸 크기 설정
 
         String chatName = miniProfileManager.makeMiniProfile(size, members, chattingPanel, chattingListHeight, chattingListIndex);
+
         /*******************/
 
 
@@ -348,15 +335,27 @@ public class ChattingListGUI extends JFrame {
 
 
         chattingPanel.addMouseListener(new MouseAdapter() {
+            int index = -1;
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.out.println("clicked [" + chatName + "]");
-                int roomNum = ((RoomInfo) Login_Frame.Room_list.get(chattingListIndex)).getRoomNum();
-                ArrayList<String> members = ((RoomInfo) Login_Frame.Room_list.get(chattingListIndex)).getMembers();
+                for (int i = 0; i < chattingButtonList.size(); i++) {
+                    if(chattingButtonList.get(i) == (JPanel) e.getSource()){
+                        index = i;
+                    }
+                }
+                System.out.println("눌린 index = " + index);
+                int roomNum = ((RoomInfo) room_list.get(index)).getRoomNum();
+                for (int i = 0; i < room_list.size(); i++) {
+                    System.out.println("Room_List의 index:"+i+" 의 RoomNum은 "+((RoomInfo) room_list.get(i)).getRoomNum());
+                }
+
+                ArrayList<String> members = ((RoomInfo) room_list.get(index)).getMembers();
 //				chatting = new chat_Frame(roomNum,members,socket);
 //				chatting.setVisible(true);
 
                 //채팅방 생성 serverListener에게 위임
+                System.out.println("서버에게 방번호 : "+roomNum+" 오픈 요청을 합니다.");
                 Login_Frame.SendMessage("/310 " + roomNum + " " + currentUserName);
                 System.out.println("SEND : " + "/310 " + roomNum + " " + currentUserName);
             }
@@ -424,7 +423,7 @@ public class ChattingListGUI extends JFrame {
 //							User new_user = new User(args[0]);
 //							User_list.add(new_user);
                             for (int i = 0; i < User_list.size(); i++) {
-                                System.out.println("list:" + User_list.get(i).id);
+                                System.out.println("list:" + User_list.get(i).getId());
                                 System.out.println("->");
                             }
 
