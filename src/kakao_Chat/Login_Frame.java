@@ -13,16 +13,13 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -565,6 +562,16 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                 System.exit(0);
             }
         }
+    }
+    //이미지 전송 , "/501 방번호 사용자이름"을 보내준 뒤 파일을 보냄
+    public static void sendImage(String path) throws IOException {
+        //String file_name = userName+"_"+String.valueOf(file_num++)+".png";
+        System.out.println("sendImage:"+path);
+        BufferedImage img = ImageIO.read(new File(path));
+        ImageIcon ic =  new ImageIcon(img);
+        ObjectOutputStream oos = new ObjectOutputStream(os);
+        oos.writeObject(ic);
+        oos.close();
     }
 
     public static void main(String[] args) {

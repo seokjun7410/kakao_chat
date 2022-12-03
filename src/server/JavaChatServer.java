@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
@@ -293,6 +294,7 @@ public class JavaChatServer extends JFrame {
                             Logout();
                             break;
                         } catch (Exception ee) {
+                            ee.printStackTrace();
                             break;
                         } // catch�� ��
                     }
@@ -480,6 +482,10 @@ public class JavaChatServer extends JFrame {
                     }
                 } catch (IOException | ClassNotFoundException e) {
                     AppendText("dis.read() error");
+                    System.out.println("************************");
+                    e.printStackTrace();
+                    System.out.println("************************");
+
                     try {
                         dos.close();
                         dis.close();
