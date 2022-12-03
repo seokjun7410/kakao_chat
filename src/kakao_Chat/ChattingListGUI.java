@@ -333,14 +333,15 @@ public class ChattingListGUI extends JFrame {
             int index = -1;
             @Override
             public void mouseClicked(MouseEvent e) {
-                int roomNum = ((RoomInfo) room_list.get(index)).getRoomNum();
-                if(!ChatRoomEntered.contains(roomNum)) {
+
+
                     System.out.println("clicked [" + chatName + "]");
                     for (int i = 0; i < chattingButtonList.size(); i++) {
                         if(chattingButtonList.get(i) == (JPanel) e.getSource()){
                             index = i;
                         }
                     }
+                    int roomNum = ((RoomInfo) room_list.get(index)).getRoomNum();
                     System.out.println("눌린 index = " + index);
 
                     for (int i = 0; i < room_list.size(); i++) {
@@ -350,7 +351,7 @@ public class ChattingListGUI extends JFrame {
                     ArrayList<String> members = ((RoomInfo) room_list.get(index)).getMembers();
 //				chatting = new chat_Frame(roomNum,members,socket);
 //				chatting.setVisible(true);
-
+                if(!ChatRoomEntered.contains(roomNum)) {
                     //채팅방 생성 serverListener에게 위임
                     System.out.println("서버에게 방번호 : "+roomNum+" 오픈 요청을 합니다.");
                     Login_Frame.SendMessage("/310 " + roomNum + " " + currentUserName);

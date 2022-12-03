@@ -123,7 +123,6 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		chattingLableAndMenu.setBorder(BorderFactory.createEmptyBorder(0,0,5,0));
 		menuBar.add(chattingLableAndMenu);
 		chattingLableAndMenu.setFont(new Font("돋움", Font.BOLD, 17));
-		
 		JMenuItem recentSortMenuItem = new JMenuItem("최신 메시지 순");
 		recentSortMenuItem.setBackground(new Color(255, 255, 255));
 		chattingLableAndMenu.add(recentSortMenuItem);
@@ -267,7 +266,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		name.add(id);
 		
 		miniProfileManager = MiniProfileManager.getInstance();
-		miniProfileManager.setMiniProfileDesign_Friend(profile_img,id);
+		miniProfileManager.setMiniProfileDesign_Friend(profile_img);
 		String chatName = miniProfileManager.makeMiniProfile(2,name,chattingPanel,chattingListHeight, chattingListIndex,lastMsg);
 		/*******************/
 		

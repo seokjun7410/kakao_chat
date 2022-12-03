@@ -32,6 +32,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 	private String members;
 	private JTextArea text_area;
 	private JPanel chat_panel;
+	private int chat_panel_height;
 	private static final int BUF_LEN = 128;
 	public static ArrayList<User> User_list;
 	public int Size_list;
@@ -49,7 +50,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
 		StringBuffer names = new StringBuffer();
 		for(int i =0; i<un.size();i++) {
-			names.append(" "+un.get(i));
+			names.append(un.get(i)+" ");
 		}
 		this.members = names.toString();
 //		System.out.println("un = " + un);
@@ -143,6 +144,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		chattingScrollPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,10));
 	
 		//스크롤
+		chat_panel_height =0;
 		chat_panel = new JPanel();
 		chat_panel.setPreferredSize(new Dimension(380,10));
 		chat_panel.setBackground(new Color(186,206,224));
@@ -154,10 +156,9 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         pane.setBounds(0, 0, 380, 401);
         pane.setPreferredSize(new Dimension(380,10));
         pane.getVerticalScrollBar().setUnitIncrement(14);
-        chattingScrollPanel.setLayout(null);
+		chattingScrollPanel.setLayout(null);
         pane.setBorder(null);
-        chattingScrollPanel.add(pane);
-       
+		chattingScrollPanel.add(pane);
 		
 		//JScrollPane scrollPane = new JScrollPane(chat_view, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -244,6 +245,8 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			System.out.println(label.getPreferredSize()+""+height);
 			LeftArrowBubble.add(label);
 			chat_view.add(LeftArrowBubble);
+			chat_panel_height += (height +12);
+			chat_panel.setPreferredSize(new Dimension(380,chat_panel_height));
 			chat_panel.add(chat_view);
 
 
@@ -267,6 +270,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 	}
 	
 		public void printEmoticon(String text) {
+
 			ImageIcon emoticon;
 			switch(text) {
 			case "(ㅋㅋ)": emoticon= new ImageIcon("img/ㅋㅋ.png"); break;
@@ -280,13 +284,38 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			ImageIcon edit =editImage.EditImage( emoticon,70);
 			int height = edit.getIconHeight();
 			JPanel chat_view = new JPanel();
+
+			LocalTime time = LocalTime.now();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+			String currentTime = time.format(formatter);
+			String currentTime12;
+			if(Integer.parseInt(currentTime.substring(0,2)) >= 13)
+				currentTime12 = "오후"+(Integer.parseInt(currentTime.substring(0,2))-12)+":"+currentTime.substring(3,5);
+			else
+				currentTime12 = "오전"+currentTime;
+
+			JLabel timeLabel = new JLabel(currentTime12);
+			timeLabel.setBounds(0,5,50,50);
+			timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
+			JPanel time_view = new JPanel();
+			time_view.setLayout(new BorderLayout());
+			time_view.setBackground(new Color(186,206,224));
+			time_view.setPreferredSize(new Dimension(timeLabel.getWidth(),height));
+			time_view.add(timeLabel,BorderLayout.SOUTH);
+			chat_view.add(time_view);
+
+
 			chat_view.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			chat_view.setBackground(new Color(186,206,224));
 			chat_view.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
 			chat_view.setPreferredSize(new Dimension(380,height+5));
 			JLabel label = new JLabel(edit);
 			chat_view.add(label);
+			chat_panel_height += (height+17);
+			chat_panel.setPreferredSize(new Dimension(380,chat_panel_height));
 			chat_panel.add(chat_view);
+
+
 			revalidate();
 		}
 		public void printEmoticon_Left(String text) {
@@ -303,13 +332,36 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			ImageIcon edit =editImage.EditImage( emoticon,70);
 			int height = edit.getIconHeight();
 			JPanel chat_view = new JPanel();
-			chat_view.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			chat_view.setLayout(new FlowLayout(FlowLayout.LEFT));
 			chat_view.setBackground(new Color(186,206,224));
 			chat_view.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
 			chat_view.setPreferredSize(new Dimension(380,height+5));
 			JLabel label = new JLabel(edit);
 			chat_view.add(label);
+			chat_panel_height += (height +17);
+			chat_panel.setPreferredSize(new Dimension(380,chat_panel_height));
 			chat_panel.add(chat_view);
+
+			/* 시간 추가 */
+			LocalTime time = LocalTime.now();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+			String currentTime = time.format(formatter);
+			String currentTime12;
+			if(Integer.parseInt(currentTime.substring(0,2)) >= 13)
+				currentTime12 = "오후"+(Integer.parseInt(currentTime.substring(0,2))-12)+":"+currentTime.substring(3,5);
+			else
+				currentTime12 = "오전"+currentTime;
+
+			JLabel timeLabel = new JLabel(currentTime12);
+			timeLabel.setBounds(0,5,50,50);
+			timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
+			JPanel time_view = new JPanel();
+			time_view.setLayout(new BorderLayout());
+			time_view.setBackground(new Color(186,206,224));
+			time_view.setPreferredSize(new Dimension(timeLabel.getWidth(),height));
+			time_view.add(timeLabel,BorderLayout.SOUTH);
+			chat_view.add(time_view);
+
 			revalidate();
 		}
 	
@@ -352,6 +404,8 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 				System.out.print(label.getPreferredSize()+""+height);
 				RightArrowBubble.add(label);
 				chat_view.add(RightArrowBubble);
+				chat_panel_height += (height +12);
+				chat_panel.setPreferredSize(new Dimension(380,chat_panel_height));
 				chat_panel.add(chat_view);
 
 

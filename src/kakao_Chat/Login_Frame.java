@@ -442,7 +442,9 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         chat_Frame chatting = getChatFrameByRoomNum(args[1]);
 //                        System.out.println("args[1] = " + args[1]);
                         try {
-                            chatting.makeLeftBubble(message);
+                            if(message.equals("(등장)") || message.equals("(떼쓰기)") || message.equals("(우와)")|| message.equals("(축하)") || message.equals("(충성)") || message.equals("(ㅋㅋ)"))
+                                chatting.printEmoticon_Left(message);
+                            else chatting.makeLeftBubble(message);
                         }catch (NullPointerException e){
                             System.out.println(e.getMessage());
                         }

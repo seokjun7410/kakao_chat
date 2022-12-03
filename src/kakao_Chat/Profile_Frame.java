@@ -79,7 +79,7 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
         center_panel.add(Profile_panel, BorderLayout.SOUTH);
 
         JPanel Profile_panel2 = new JPanel();
-        Profile_panel2.setPreferredSize(new Dimension(130, 170));
+        Profile_panel2.setPreferredSize(new Dimension(300, 170));
         Profile_panel2.setBackground(new Color(132, 139, 145));
         Profile_panel.add(Profile_panel2);
         
@@ -87,6 +87,7 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
         ImageIcon pi = PictureRound.setImageRound(profile_filename,80);
         profile_label = new JLabel(pi);
         profile_label.setBackground(new Color(132, 139, 145));
+        profile_label.setPreferredSize(new Dimension(300, 80));
         Profile_panel2.add(profile_label);
 
         JLabel name_label = new JLabel(user_name);
