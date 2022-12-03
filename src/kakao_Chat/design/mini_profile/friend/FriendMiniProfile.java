@@ -6,6 +6,9 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import kakao_Chat.design.RoundedButton;
+import kakao_Chat.design.pictureEdit.PictureRound;
+
+import java.io.IOException;
 
 
 public class FriendMiniProfile extends MiniProfileDesign_Friend{
@@ -17,9 +20,15 @@ public class FriendMiniProfile extends MiniProfileDesign_Friend{
 
 	@Override
 	public void miniProfileMakeByNumber(JPanel chattingPanel) {
-		JButton profileButton = new RoundedButton("",new ImageIcon(profile_img));
-		profileButton.setBounds(18, 3, 46, 46);
-		chattingPanel.add(profileButton);
+		try {
+			ImageIcon pi = PictureRound.setImageRound(profile_img,60);
+			JButton profileButton = new RoundedButton("",pi);
+			profileButton.setBounds(13, 8, 60, 60);
+			chattingPanel.add(profileButton);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 
 }

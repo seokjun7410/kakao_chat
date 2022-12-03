@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 public class editImage {
  public static ImageIcon EditImage(ImageIcon image, int size) {
 	 double div = image.getIconHeight()/(double)image.getIconWidth();
-     Image ap = image.getImage().getScaledInstance( size,(int) Math.round(size*div), Image.SCALE_DEFAULT);
+     Image ap = image.getImage().getScaledInstance( size,(int) Math.round(size*div), Image.SCALE_SMOOTH);
      ImageIcon ic =  new ImageIcon(ap);
      return ic;
  }
