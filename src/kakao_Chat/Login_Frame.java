@@ -584,6 +584,17 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
         }
     }
 
+    //이미지 전송 , "/501 방번호 사용자이름"을 보내준 뒤 파일을 보냄
+    public static void sendImage(String path) throws IOException {
+        //String file_name = userName+"_"+String.valueOf(file_num++)+".png";
+        System.out.println("sendImage:"+path);
+        BufferedImage img = ImageIO.read(new File(path));
+        ImageIcon ic =  new ImageIcon(img);
+        ObjectOutputStream oos = new ObjectOutputStream(os);
+        oos.writeObject(ic);
+        oos.close();
+    }
+
     public static void main(String[] args) {
         Login_Frame frame = new Login_Frame();
 
