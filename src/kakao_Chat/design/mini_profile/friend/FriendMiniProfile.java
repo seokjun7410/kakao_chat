@@ -49,4 +49,5 @@ public class FriendMiniProfile extends MiniProfileDesign_Friend implements Actio
 
 		}
 	}
+
 }

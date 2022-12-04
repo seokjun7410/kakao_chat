@@ -29,12 +29,12 @@ public class MiniProfileManager {
 	        return LazyHolder.INSTANCE;
 	    }
 	
-	public void setMiniProfileDesign_Chat(int numberOfPeople) {
+	public void setMiniProfileDesign_Chat(int numberOfPeople,String[] imgNames) {
 		switch(numberOfPeople) {
-		case 2: miniProfileDesign = new TwoPeople(); break;
-		case 3: miniProfileDesign = new ThreePeople(); break;
-		case 4: miniProfileDesign = new FourPeople(); break;
-		default: miniProfileDesign = new MoreThanFivePeople(); break;
+		case 2: miniProfileDesign = new TwoPeople(imgNames); break;
+		case 3: miniProfileDesign = new ThreePeople(imgNames); break;
+		case 4: miniProfileDesign = new FourPeople(imgNames); break;
+		default: miniProfileDesign = new MoreThanFivePeople(imgNames); break;
 		}
 	}
 	
@@ -43,7 +43,7 @@ public class MiniProfileManager {
 
 	}
 	
-	public String makeMiniProfile(int size, ArrayList<String> members, JPanel chattingPanel, int chattingListHeight, int chattingListIndex,String lastMsg) {
+	public String makeMiniProfile(int size, ArrayList<String> members, JPanel chattingPanel, int chattingListHeight, int chattingListIndex,String lastMsg ) {
 		String chattingName = miniProfileDesign.ProfileDesign(size,members,chattingPanel,chattingListHeight,chattingListIndex,lastMsg);
 		return chattingName;
 	}
