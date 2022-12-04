@@ -156,7 +156,11 @@ public class ChattingListGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.out.println("채팅방 생성창 오픈합니다.");
-                new addChattingGUI(socket, currentUserName);
+                try {
+                    new addChattingGUI(socket, currentUserName);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         creatChatting.setBounds(279, 30, 25, 23);
@@ -274,7 +278,7 @@ public class ChattingListGUI extends JFrame {
         chatPanel.setVisible(false);
     }
 
-    public void addChatting(RoomInfo roominfo) {
+    public void addChatting(RoomInfo roominfo) throws IOException {
         if (chattingListIndex < 20) {
 
             createChattingRoom(roominfo, chattingButtonList, chattingListPanel); //chatingRoom 생성
@@ -293,7 +297,7 @@ public class ChattingListGUI extends JFrame {
         chattingListPanel.revalidate();
     }
 
-    private void createChattingRoom(RoomInfo roominfo, ArrayList<JPanel> chattingButtonList, JPanel chattingListPanel) {
+    private void createChattingRoom(RoomInfo roominfo, ArrayList<JPanel> chattingButtonList, JPanel chattingListPanel) throws IOException {
 
         JPanel chattingPanel = new JPanel();
         chattingPanel.setAutoscrolls(true);

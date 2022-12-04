@@ -396,8 +396,8 @@ public class JavaChatServer extends JFrame {
                         sendTo(args[2],"/320 "+args[1]);
                         System.out.println(args[2]+"에게 방번호 "+args[1]+"을 제거 지시");
 
-                    } else if (args[0].matches("/500")) { // 메세지 전송 //500 roomid message
-                        String send_msg = "/502 " + args[1] + " " + args[2]; // 502  roomid message
+                    } else if (args[0].matches("/500")) { // 메세지 전송 //500 roomid message username
+                        String send_msg = "/502 " + args[1] + " " + args[2]+ " "+ args[3]; // 502  roomid message username
                         System.out.println("RECV: 방번호" + args[1] + "번에 " + args[2] + " 를 방송요청");
 
                         //방번호에 속해있는 USER에게 메세지 전송

@@ -50,7 +50,10 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
 		StringBuffer names = new StringBuffer();
 		for(int i =0; i<un.size();i++) {
-			names.append(un.get(i)+" ");
+			if(i != un.size()-1)
+				names.append(un.get(i)+", ");
+			else
+				names.append(un.get(i));
 		}
 		this.members = names.toString();
 //		System.out.println("un = " + un);
@@ -221,10 +224,14 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 		setBounds(510, 130, 380, 635);
 		setVisible(true);
 	}
-		
-	
-	public void makeLeftBubble (String value) {
+
+
+
+	public void makeLeftBubble (String value, String Username) {
 		if(!value.equals("")) {
+
+			//ImageIcon user_profile =
+
 			JPanel chat_view = new JPanel();
 			chat_view.setLayout(new FlowLayout(FlowLayout.LEFT));
 			chat_view.setBackground(new Color(186,206,224));
@@ -318,7 +325,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
 			revalidate();
 		}
-		public void printEmoticon_Left(String text) {
+		public void printEmoticon_Left(String text, String Username) {
 			ImageIcon emoticon;
 			switch(text) {
 			case "(ㅋㅋ)": emoticon= new ImageIcon("img/ㅋㅋ.png"); break;

@@ -1,6 +1,7 @@
 package kakao_Chat.design.mini_profile;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -43,7 +44,7 @@ public class MiniProfileManager {
 
 	}
 	
-	public String makeMiniProfile(int size, ArrayList<String> members, JPanel chattingPanel, int chattingListHeight, int chattingListIndex,String lastMsg ) {
+	public String makeMiniProfile(int size, ArrayList<String> members, JPanel chattingPanel, int chattingListHeight, int chattingListIndex,String lastMsg ) throws IOException {
 		String chattingName = miniProfileDesign.ProfileDesign(size,members,chattingPanel,chattingListHeight,chattingListIndex,lastMsg);
 		return chattingName;
 	}

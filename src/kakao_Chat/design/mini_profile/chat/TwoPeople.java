@@ -8,6 +8,9 @@ import javax.swing.JPanel;
 import kakao_Chat.design.RoundedButton;
 
 import java.awt.*;
+import java.io.IOException;
+
+import static kakao_Chat.design.pictureEdit.PictureRound.setImageRound;
 
 
 public class TwoPeople extends MiniProfileDesign_Chat{
@@ -17,10 +20,9 @@ public class TwoPeople extends MiniProfileDesign_Chat{
 	}
 	
 	@Override
-	public void miniProfileMakeByNumber(JPanel chattingPanel) {
-		Image i0 = new ImageIcon(imgNames[0]).getImage().getScaledInstance(56, 56, Image.SCALE_DEFAULT);
-
-		JButton profileButton = new RoundedButton("",new ImageIcon(i0));
+	public void miniProfileMakeByNumber(JPanel chattingPanel) throws IOException {
+		ImageIcon i0 = setImageRound(imgNames[0],56);
+		JButton profileButton = new RoundedButton("",i0);
 		profileButton.setBounds(10, 8, 55, 56);
 		chattingPanel.add(profileButton);
 	}

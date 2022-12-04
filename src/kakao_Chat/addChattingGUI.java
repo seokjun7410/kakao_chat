@@ -517,13 +517,14 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 public class addChattingGUI extends JFrame implements MouseListener,MouseMotionListener,ActionListener{
-	int chattingListHeight = 71; // 채팅방 버튼을 담는 list의 크기
+	int chattingListHeight = 77; // 채팅방 버튼을 담는 list의 크기
 	int chattingListIndex = -1; //채팅방이 생성될 때마다 +1
 	private MiniProfileManager miniProfileManager; //미니 프로필 디자인 동적 선택 생성 매니저
 	private JPanel chatPanel;
 	private JTextField textField;
 	private TranslucentLabel title_bar;
-	private JButton btn_exit;
+	private JButton btn_exit, cancel;
+
 	private Point comPoint;
 	private JPanel menu_bar;
 	private JLabel empty_menu_bar[];
@@ -538,7 +539,7 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 	private JPanel chattingListPanel;
 	private Vector<String> selectedFriends = new Vector<>();
 	private JButton accpet;
-	public addChattingGUI(Socket s, String name) {
+	public addChattingGUI(Socket s, String name) throws IOException {
 		this.socket = s;
 		editFrist = true;
 		currentName = name;
@@ -653,19 +654,25 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 		bottmBarPanel.add(accpet);
 		accpet.addActionListener(this);
 
-		JButton cancle = new JButton("취소");
-		cancle.setBounds(264, 20, 79, 34);
-		bottmBarPanel.add(cancle);
+		cancel = new JButton("취소");
+		cancel.addActionListener(this);
+		cancel.setBounds(264, 20, 79, 34);
+		bottmBarPanel.add(cancel);
 		creatChatting.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(chattingListIndex < 20) {
-					createFriendPanel(chattingButtonList,chattingListPanel,"id","profile_img"); //chatingRoom 생성
-					chattingListPanel.setSize(317,chattingListHeight);
-					chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
+					try {
+						createFriendPanel(chattingButtonList,chattingListPanel,"id","profile_img"); //chatingRoom 생성
+						chattingListPanel.setSize(317,chattingListHeight);
+						chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
 
-					revalidate();
-					repaint();
+						revalidate();
+						repaint();
+					} catch (IOException ex) {
+						throw new RuntimeException(ex);
+					}
+
 				}else {
 					System.out.println("최대 방 개수를 초과했습니다.");
 				}
@@ -682,20 +689,20 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 
 	}
 
-	public void loadFriends(String id,String profile_img) {
+	public void loadFriends(String id,String profile_img) throws IOException {
 		createFriendPanel(chattingButtonList,chattingListPanel,id,profile_img); //친구 프로필 생성
 		//chattingListPanel.setSize(317,chattingListHeight);
 		chattingListPanel.setPreferredSize(new Dimension(317,chattingListHeight));
 	}
 
-	private void createFriendPanel(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel,String id,String profile_img) {
+	private void createFriendPanel(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel,String id,String profile_img) throws IOException {
 
 		JPanel chattingPanel = new JPanel();
 		chattingPanel.setAutoscrolls(true);
 		chattingPanel.setBounds(67, 50, 317, chattingListHeight);
 		chattingPanel.setBackground(Color.white);
 		chattingPanel.setLayout(null);
-		chattingPanel.setPreferredSize(new Dimension(317,55));
+		chattingPanel.setPreferredSize(new Dimension(317,77));
 
 		/**** 채팅방 생성 ****/
 		int random = (int) ((Math.random() * (6 - 2)) + 2); //Random한 DummyData 생성
@@ -710,7 +717,7 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 
 		//우측 체크박스 add
 		JCheckBox chckbxNewCheckBox = new JCheckBox("");
-		chckbxNewCheckBox.setBounds(260, 10, 40, 30);
+		chckbxNewCheckBox.setBounds(260, 25, 40, 30);
 		chckbxNewCheckBox.setBackground(Color.white);
 		chckbxNewCheckBox.setIcon(new ImageIcon("img/checkBox.png"));
 		chckbxNewCheckBox.setSelectedIcon(new ImageIcon("img/checkBox_checked.PNG"));
@@ -719,7 +726,7 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 		chattingButtonList.add(chattingPanel);
 		chattingListPanel.setBounds(0, 0, 317, chattingListHeight);
 		chattingListPanel.add(chattingButtonList.get(++chattingListIndex));
-		chattingListHeight += 71;
+		chattingListHeight += 77;
 
 
 		chattingPanel.addMouseListener(new MouseAdapter() {
@@ -784,7 +791,7 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource().equals(btn_exit)) {
+		if(e.getSource().equals(btn_exit)|| e.getSource().equals(cancel)) {
 			this.dispose();
 		}
 		if(e.getSource().equals(accpet)) {

@@ -251,7 +251,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		chattingListPanel.revalidate();
 	}
 
-	private void createFriendProfile(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel,String id,String profile_img) {
+	private void createFriendProfile(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel,String id,String profile_img) throws IOException {
 		
 		JPanel chattingPanel = new JPanel();
 		chattingPanel.setAutoscrolls(true);
@@ -302,7 +302,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 			});
 	}
 
-	public void addFriend(String id,String profile_img){
+	public void addFriend(String id,String profile_img) throws IOException {
 		if(chattingListIndex < 20) {
 			createFriendProfile(chattingButtonList,chattingListPanel,id,profile_img); //친구 프로필 생성
 			//chattingListPanel.setSize(317,chattingListHeight);

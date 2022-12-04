@@ -1,5 +1,6 @@
 package kakao_Chat.design.mini_profile.chat;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -9,12 +10,15 @@ import kakao_Chat.design.mini_profile.MiniProfileDesign;
 
 public class MiniProfileDesign_Chat extends MiniProfileDesign {
 
-    protected String ProfileDesign(int size, ArrayList<String> members, JPanel chattingPanel, int chattingListHeight, int chattingListIndex, String lastMsg) {
+    protected String ProfileDesign(int size, ArrayList<String> members, JPanel chattingPanel, int chattingListHeight, int chattingListIndex, String lastMsg) throws IOException {
 
 
         StringBuffer name = new StringBuffer();
         for (int i = 0; i < members.size(); i++) {
-            name.append(" " + members.get(i));
+            if(i!= members.size())
+                name.append(members.get(i)+", ");
+            else
+                name.append(members.get(i));
         }
 
         String chattingName = name.toString();
@@ -31,7 +35,7 @@ public class MiniProfileDesign_Chat extends MiniProfileDesign {
         return chattingName;
     }
 
-    public void miniProfileMakeByNumber(JPanel chattingPanel) {
+    public void miniProfileMakeByNumber(JPanel chattingPanel) throws IOException {
         // TODO Auto-generated method stub
 
     }

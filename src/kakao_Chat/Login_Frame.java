@@ -428,7 +428,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         }
                     }
                     /* 메세지 수신 */
-                    if (args[0].matches("/502")) { //502  roomid message
+                    if (args[0].matches("/502")) { //502  roomid message username
                         String message = args[2];
                         System.out.println("RECV message : " + message);
 
@@ -447,8 +447,8 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 //                        System.out.println("args[1] = " + args[1]);
                         try {
                             if(message.equals("(등장)") || message.equals("(떼쓰기)") || message.equals("(우와)")|| message.equals("(축하)") || message.equals("(충성)") || message.equals("(ㅋㅋ)"))
-                                chatting.printEmoticon_Left(message);
-                            else chatting.makeLeftBubble(message);
+                                chatting.printEmoticon_Left(message, args[3]);
+                            else chatting.makeLeftBubble(message, args[3]);
                         }catch (NullPointerException e){
                             System.out.println(e.getMessage());
                         }
