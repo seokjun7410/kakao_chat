@@ -1,16 +1,15 @@
-package kakao_Chat.design.mini_profile.chat;
+package kakao_Chat.design.mini_profile.chatroom.profile;
 
+import kakao_Chat.design.RoundedButton;
+import kakao_Chat.design.mini_profile.chatroom.MiniProfileDesign_chatroom;
+import kakao_Chat.design.pictureEdit.PictureRound;
+
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import kakao_Chat.design.RoundedButton;
-import kakao_Chat.design.pictureEdit.PictureRound;
 
-
-public class FourPeople extends MiniProfileDesign_Chat{
+public class FourPeople extends MiniProfileDesign_chatroom {
 	private String[] imgNames;
 	public FourPeople(String[] imgNames){
 		this.imgNames = imgNames;
@@ -23,8 +22,8 @@ public class FourPeople extends MiniProfileDesign_Chat{
 //		Image i0 = new ImageIcon(imgNames[0]).getImage().getScaledInstance(34, 33, Image.SCALE_DEFAULT);
 //		Image i1 = new ImageIcon(imgNames[1]).getImage().getScaledInstance(34, 33, Image.SCALE_DEFAULT);
 //		Image i2 = new ImageIcon(imgNames[2]).getImage().getScaledInstance(34, 33, Image.SCALE_DEFAULT);
-
-
+//
+//
 //		JButton profileButton_1 = new RoundedButton("",new ImageIcon(i0));
 //		profileButton_1.setBounds(22, 5, 34, 33);
 //		profileButton_1.setBackground(Color.white);
@@ -39,27 +38,36 @@ public class FourPeople extends MiniProfileDesign_Chat{
 //		profileButton_1_1.setBounds(9, 28, 34, 33);
 //		//profileButton_1_1_1.setBackground(Color.white);
 //		chattingPanel.add(profileButton_1_1);
-
 		try{
-			ImageIcon i0 = PictureRound.setImageRound(imgNames[0],33);
-			ImageIcon i1 = PictureRound.setImageRound(imgNames[1],33);
-			ImageIcon i2 = PictureRound.setImageRound(imgNames[2],33);
+			JPanel p = new JPanel();
+			p.setLayout(null);
+			p.setBackground(new Color(186,206,224));
+			p.setPreferredSize(new Dimension(50,50));
 
-			JButton profileButton1 = new RoundedButton("",i0);
-			profileButton1.setBounds(22, 5, 34, 33);
+			ImageIcon i0 = PictureRound.setImageRound(imgNames[0],23);
+			ImageIcon i1 = PictureRound.setImageRound(imgNames[1],23);
+			ImageIcon i2 = PictureRound.setImageRound(imgNames[2],23);
+
+			JLabel profileButton1 = new JLabel(i0);
+			profileButton1.setBounds(12, 0, 23, 23);
 			profileButton1.setToolTipText("0");
-			chattingPanel.add(profileButton1);
+			//chattingPanel.add(profileButton1, BorderLayout.WEST);
 
-			JButton profileButton = new RoundedButton("",i1);
-			profileButton.setBounds(35, 28, 34, 33);
+			JLabel profileButton = new JLabel(i1);
+			profileButton.setBounds(22, 20, 23, 23);
 			profileButton.setToolTipText("1");
-			chattingPanel.add(profileButton);
+			//chattingPanel.add(profileButton, BorderLayout.WEST);
 
-			JButton profileButton2 = new RoundedButton("",i2);
-			profileButton2.setBounds(9, 28, 34, 33);
+			JLabel profileButton2 = new JLabel(i2);
+			profileButton2.setBounds(0, 20, 23, 23);
 			profileButton2.setToolTipText("2");
-			chattingPanel.add(profileButton2);
+			//chattingPanel.add(profileButton2, BorderLayout.WEST);
 
+			p.add(profileButton);
+			p.add(profileButton1);
+			p.add(profileButton2);
+
+			chattingPanel.add(p, BorderLayout.WEST);
 
 		}catch (IOException ex){
 

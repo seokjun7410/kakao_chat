@@ -70,6 +70,15 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 	private Login_Frame.ListenNetwork listenNetwork;
 	private String lastMsg = "";
 	private String profile_filename;
+	private JScrollPane pane;
+
+	public ArrayList<JPanel> getChattingButtonList() {
+		return chattingButtonList;
+	}
+
+	public FriendsListGUI getFriendsListGUI(){
+		return this;
+	}
 
 	public FriendsListGUI(Socket s, String name, Login_Frame.ListenNetwork listenNetwork) throws IOException {
 		currentName = name;
@@ -89,7 +98,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		chattingListPanel.setBackground(Color.WHITE);
 		chattingListPanel.setBounds(67, 50, 317, 590);
 		chattingListPanel.setLayout(new FlowLayout());
-		JScrollPane pane = new JScrollPane (chattingListPanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		pane = new JScrollPane (chattingListPanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		pane.setBounds(0, 144, 317, 506);
 		pane.setPreferredSize(new Dimension(317,590));
@@ -251,7 +260,13 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		chattingListPanel.revalidate();
 	}
 
-	private void createFriendProfile(ArrayList<JPanel> chattingButtonList,JPanel chattingListPanel,String id,String profile_img) {
+	public void remveAllofFriends() {
+		chattingButtonList.clear();
+		chattingListHeight = 77;
+		chattingListIndex = -1;
+	}
+
+	private void createFriendProfile(ArrayList<JPanel> chattingButtonList, JPanel chattingListPanel, String id, String profile_img) {
 		
 		JPanel chattingPanel = new JPanel();
 		chattingPanel.setAutoscrolls(true);
@@ -259,7 +274,8 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		chattingPanel.setBackground(Color.white);
 		chattingPanel.setLayout(null);
 		chattingPanel.setPreferredSize(new Dimension(317,77));
-		
+
+
 		/**** 채팅방 생성 ****/
 		int random = (int) ((Math.random() * (6 - 2)) + 2); //Random한 DummyData 생성
 		int DUMMY_NumberOfPeople = random;

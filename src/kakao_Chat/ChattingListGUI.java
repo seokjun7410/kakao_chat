@@ -274,6 +274,10 @@ public class ChattingListGUI extends JFrame {
         chatPanel.setVisible(false);
     }
 
+    public ArrayList<JPanel> getChattingButtonList() {
+        return chattingButtonList;
+    }
+
     public void addChatting(RoomInfo roominfo) {
         if (chattingListIndex < 20) {
 
@@ -302,6 +306,8 @@ public class ChattingListGUI extends JFrame {
         chattingPanel.setLayout(null);
         chattingPanel.setPreferredSize(new Dimension(317, 71));
 
+        lastMsg = roominfo.getLastMessage();
+
         String[] imgNames = new String[4];
         int size = roominfo.getSize();
         ArrayList<String> members = roominfo.getMembers();
@@ -313,6 +319,7 @@ public class ChattingListGUI extends JFrame {
             if(!member.equals(currentUserName)) {
                 chatTitleMembers.add(member);
                 imgNames[i++] = "img/UserProfile/"+member+".png";
+                System.out.println("imgNames = " + imgNames[i]);
             }
         }
 

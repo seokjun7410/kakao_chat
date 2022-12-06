@@ -1,28 +1,30 @@
-package kakao_Chat.design.mini_profile.chat;
+package kakao_Chat.design.mini_profile.chatroom.profile;
 
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 
 import kakao_Chat.design.RoundedButton;
+import kakao_Chat.design.mini_profile.chatroom.MiniProfileDesign_chatroom;
 import kakao_Chat.design.pictureEdit.PictureRound;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
-public class ThreePeople extends MiniProfileDesign_Chat{
+public class ThreePeople extends MiniProfileDesign_chatroom {
 
 	private String[] imgNames;
 	public ThreePeople(String[] imgNames){
 		this.imgNames = imgNames;
 	}
+
 	//"img/defaultProfile50.png"
 	@Override
 	public void miniProfileMakeByNumber(JPanel chattingPanel) {
 //		Image i0 = new ImageIcon(imgNames[0]).getImage().getScaledInstance(41, 38, Image.SCALE_DEFAULT);
 //		Image i1 = new ImageIcon(imgNames[1]).getImage().getScaledInstance(41, 38, Image.SCALE_DEFAULT);
+//
+//
 //
 //		JButton profileButton2 = new RoundedButton("",new ImageIcon(i0));
 //		profileButton2.setBounds(25, 30, 41, 38);
@@ -31,26 +33,35 @@ public class ThreePeople extends MiniProfileDesign_Chat{
 //		JButton profileButton1 = new RoundedButton("",new ImageIcon(i1));
 //		profileButton1.setBounds(10, 10, 41, 38);
 //		chattingPanel.add(profileButton1);
-
 		try{
-			ImageIcon i0 = PictureRound.setImageRound(imgNames[0],40);
-			ImageIcon i1 = PictureRound.setImageRound(imgNames[1],40);
+			JPanel p = new JPanel();
+			p.setLayout(null);
+			p.setBackground(new Color(186,206,224));
+			p.setPreferredSize(new Dimension(50,50));
 
-			JButton profileButton1 = new RoundedButton("",i1);
+			ImageIcon i0 = PictureRound.setImageRound(imgNames[0],30);
+			ImageIcon i1 = PictureRound.setImageRound(imgNames[1],30);
+
+			JLabel profileButton1 = new JLabel(i1);
+			profileButton1.setBounds(15, 15, 30, 30);
 			profileButton1.setToolTipText("1");
-			profileButton1.setBounds(25, 30, 41, 38);
-			chattingPanel.add(profileButton1);
+			//chattingPanel.add(profileButton1, BorderLayout.WEST);
 
-			JButton profileButton = new RoundedButton("",i0);
-			profileButton.setBounds(10, 10, 41, 38);
+			JLabel profileButton = new JLabel(i0);
+			profileButton.setBounds(5, 0, 30, 30);
 			profileButton.setToolTipText("0");
-			chattingPanel.add(profileButton);
+
+			//chattingPanel.add(profileButton, BorderLayout.WEST);
 
 
+			p.add(profileButton1);;
+			p.add(profileButton);
+
+			chattingPanel.add(p, BorderLayout.WEST);
 		}catch (IOException ex){
 
 		}
-
 	}
+
 
 }

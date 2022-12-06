@@ -695,7 +695,7 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 		chattingPanel.setBounds(67, 50, 317, chattingListHeight);
 		chattingPanel.setBackground(Color.white);
 		chattingPanel.setLayout(null);
-		chattingPanel.setPreferredSize(new Dimension(317,55));
+		chattingPanel.setPreferredSize(new Dimension(317,77));
 
 		/**** 채팅방 생성 ****/
 		int random = (int) ((Math.random() * (6 - 2)) + 2); //Random한 DummyData 생성
@@ -800,8 +800,8 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 			//채팅방 생성
 			//chat_Frame 생성을 server에게 요청
 
-			Login_Frame.SendMessage("/300 "+numOfPeople+" " + sb +currentName);
-			System.out.println("SEND :"+" 인원수 "+numOfPeople+" " + "TO "+ sb + " " + "FROM"+ currentName);
+			Login_Frame.SendMessage("/300 "+numOfPeople+" " +currentName+" "+ sb );
+			System.out.println("SEND :"+"/300 "+numOfPeople+" " +currentName+" "+ sb);
 
 
 
