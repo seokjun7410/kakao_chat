@@ -169,7 +169,8 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
 
             //채팅방 생성
             int roomNum = listenNetwork.check_RoomNum(User_name+" "+Login_Frame.userName);
-            if (roomNum < 0) { //채팅방이 없을경우
+            int roomNum2 = listenNetwork.check_RoomNum(Login_Frame.userName+" "+User_name);
+            if (roomNum < 0 && roomNum2 <0) { //채팅방이 없을경우
                 System.out.println("상대방과 존재하는 채팅이 없어 채팅방 오픈을 요청합니다");
                 Login_Frame.SendMessage("/300 2 " + Login_Frame.userName+" "+ User_name );
                 System.out.println("SEND :"+" 인원수 2 " + "TO "+ User_name + " " + "FROM"+ Login_Frame.userName);
@@ -178,9 +179,13 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
         		ArrayList<String> name = new ArrayList<String>();
             	name.add(User_name);
 
-
-                System.out.println("상대방과의 채팅이 이미 존재하여 "+roomNum+"번 방 클라이언트가 직접 오픈합니다.");
-        		chat_Frame chatting = new chat_Frame(roomNum,2, name, socket);
+                if(roomNum>=0) {
+                    System.out.println("상대방과의 채팅이 이미 존재하여 " + roomNum + "번 방 클라이언트가 직접 오픈합니다.");
+                    chat_Frame chatting = new chat_Frame(roomNum, 2, name, socket);
+                }else {
+                    System.out.println("상대방과의 채팅이 이미 존재하여 " + roomNum2 + "번 방 클라이언트가 직접 오픈합니다.");
+                    chat_Frame chatting = new chat_Frame(roomNum2, 2, name, socket);
+                }
             }
             //chat_Frame 생성을 server에게 요청
 

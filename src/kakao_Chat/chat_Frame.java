@@ -58,6 +58,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         this.room_number = roomNum;
         this.numOfPeople = numOfPeople;
 
+
         System.out.println("room_number = " + room_number);
         roomInfo = Login_Frame.ListenNetwork.getRoomInfoByRoomId(String.valueOf(roomNum));
 

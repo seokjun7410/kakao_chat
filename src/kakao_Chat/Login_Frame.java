@@ -300,10 +300,16 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 
                     if (args[0].matches("/201")) { //친구추가 지시 msg : /201 id imageURL
 
+                        //나 자신을 친구추가 했다면 return
+                        if(args[1].equals(userName)){
+                            System.out.println("나 자신은 추가할 수 없습니다.");
+                            return;
+                        }
+
                         //친구가 이미 존재한다면 return
                         for (String friend : Friends_List) {
                             if (friend.equals(args[1])) {
-                                System.out.println("이미 존재하는 친구 입니다.");
+                                System.out.println("이미 존재하는 친구입니다...");
                                 return;
                             }
                         }
@@ -581,10 +587,10 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                                 System.out.println("numOfpeople = " + numOfpeople);
 
                                 switch (numOfpeople){
-                                    case 1: pi = PictureRound.setImageRound(profile_filename, 60); break;
-                                    case 2: pi = PictureRound.setImageRound(profile_filename, 40); break;
-                                    case 3: pi = PictureRound.setImageRound(profile_filename, 33); break;
-                                    case 4: pi = PictureRound.setImageRound(profile_filename, 30); break;
+                                    case 2: pi = PictureRound.setImageRound(profile_filename, 60); break;
+                                    case 3: pi = PictureRound.setImageRound(profile_filename, 40); break;
+                                    case 4: pi = PictureRound.setImageRound(profile_filename, 33); break;
+                                    case 5: pi = PictureRound.setImageRound(profile_filename, 30); break;
                                 }
 
                                 System.out.println("index = " + index);
