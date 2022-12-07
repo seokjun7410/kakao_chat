@@ -15,7 +15,7 @@ public class MiniProfileDesign_Chat extends MiniProfileDesign {
 
         StringBuffer name = new StringBuffer();
         for (int i = 0; i < members.size(); i++) {
-            if(i!= members.size())
+            if(i!= members.size()-1)
                 name.append(members.get(i)+", ");
             else
                 name.append(members.get(i));
