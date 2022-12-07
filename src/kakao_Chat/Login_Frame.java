@@ -525,7 +525,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         chattingListGUI.revalidate();
                         chattingListGUI.repaint();
                     }
-                    if (args[0].matches("/503")) { //503 RoomNum UserName
+                    if (args[0].matches("/503")) { // RoomNum UserName
                         System.out.println(msg);
                         System.out.println("/503");
                         int arrlen = dis.readInt();
@@ -544,7 +544,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 //                        ImageIcon img = (ImageIcon)ois.readObject();
 //                        if(img != null){
 //                            JFrame jf = new JFrame();
-//                            JLabel jl = new JLabel();
+//                          503  JLabel jl = new JLabel();
 //                            jf.add(jl);
 //                            jl.setIcon(img);
 //                            jf.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
@@ -594,10 +594,10 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                                 System.out.println("numOfpeople = " + numOfpeople);
 
                                 switch (numOfpeople){
-                                    case 1: pi = PictureRound.setImageRound(profile_filename, 60); break;
-                                    case 2: pi = PictureRound.setImageRound(profile_filename, 40); break;
-                                    case 3: pi = PictureRound.setImageRound(profile_filename, 33); break;
-                                    case 4: pi = PictureRound.setImageRound(profile_filename, 30); break;
+                                    case 2: pi = PictureRound.setImageRound(profile_filename, 60); break;
+                                    case 3: pi = PictureRound.setImageRound(profile_filename, 40); break;
+                                    case 4: pi = PictureRound.setImageRound(profile_filename, 33); break;
+                                    case 5: pi = PictureRound.setImageRound(profile_filename, 30); break;
                                 }
 
                                 System.out.println("index = " + index);

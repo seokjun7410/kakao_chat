@@ -94,6 +94,8 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         //상단바 X버튼
         btn_exit = new JButton("x");
         btn_exit.setBounds(338, 2, 40, 35);
+        btn_exit.setBackground(new Color(186, 206, 224));
+        btn_exit.setBorderPainted(false);
         btn_exit.setFont(new Font("Arial", Font.PLAIN, 14));
         btn_exit.setPreferredSize(new Dimension(30, 30));
         btn_exit.addActionListener(this);
@@ -358,7 +360,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
 			JLabel timeLabel = new JLabel(currentTime12);
 			timeLabel.setBounds(0,5,50,50);
-			timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
+			timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 10));
 			chat_view.add(timeLabel);
 
             revalidate();
@@ -406,7 +408,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
         JLabel timeLabel = new JLabel(currentTime12);
         timeLabel.setBounds(0, 5, 50, 50);
-        timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
+        timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 10));
         JPanel time_view = new JPanel();
         time_view.setLayout(new BorderLayout());
         time_view.setBackground(new Color(186, 206, 224));
@@ -460,7 +462,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
         JLabel timeLabel = new JLabel(time);
         timeLabel.setBounds(0, 5, 50, 50);
-        timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
+        timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 10));
         JPanel time_view = new JPanel();
         time_view.setLayout(new BorderLayout());
         time_view.setBackground(new Color(186, 206, 224));
@@ -564,7 +566,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
 			JLabel timeLabel = new JLabel(currentTime12);
 			timeLabel.setBounds(0,5,50,50);
-			timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
+			timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 10));
 			JPanel time_view = new JPanel();
 			time_view.setLayout(new BorderLayout());
 			time_view.setBackground(new Color(186,206,224));
@@ -646,7 +648,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
         JLabel timeLabel = new JLabel(time);
         timeLabel.setBounds(0,5,50,50);
-        timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
+        timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 10));
         JPanel time_view = new JPanel();
         time_view.setLayout(new BorderLayout());
         time_view.setBackground(new Color(186,206,224));
@@ -667,7 +669,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
         JLabel timeLabel = new JLabel(time);
         timeLabel.setBounds(0, 5, 50, 50);
-        timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
+        timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 10));
         chat_view.add(timeLabel);
 
         JLabel label = new JLabel(value);
@@ -747,7 +749,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
             JLabel timeLabel = new JLabel(time);
             timeLabel.setBounds(0, 5, 50, 50);
-            timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
+            timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 10));
             JPanel time_view = new JPanel();
             time_view.setLayout(new BorderLayout());
             time_view.setBackground(new Color(186, 206, 224));
@@ -780,7 +782,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
             JLabel timeLabel = new JLabel(currentTime12);
             timeLabel.setBounds(0, 5, 50, 50);
-            timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
+            timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 10));
             chat_view.add(timeLabel);
 
             JLabel label = new JLabel(value);
@@ -847,6 +849,17 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         chat_view.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
         parent_panel.setPreferredSize(new Dimension(380,height+18));
         JLabel imoticon_label = new JLabel(edit);
+        imoticon_label.addMouseListener(new MouseAdapter()
+        {
+            public void mouseClicked(MouseEvent e)
+            {
+                ImageFrame image_frame = new ImageFrame(img);
+                JLabel ImageLabel = new JLabel();
+                ImageLabel.setIcon(img);
+                image_frame.add(ImageLabel,BorderLayout.CENTER);
+                image_frame.setVisible(true);
+            }
+        });
         chat_view.add(imoticon_label,BorderLayout.WEST);
         JPanel time_panel = new JPanel();
         time_panel.setLayout(new BorderLayout());
@@ -866,7 +879,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
         JLabel timeLabel = new JLabel(currentTime12);
         timeLabel.setBounds(0,5,50,50);
-        timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
+        timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 10));
         JPanel time_view = new JPanel();
         time_view.setLayout(new BorderLayout());
         time_view.setBackground(new Color(186,206,224));
@@ -894,7 +907,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
         JLabel timeLabel = new JLabel(currentTime12);
         timeLabel.setBounds(0, 5, 50, 50);
-        timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
+        timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 10));
         JPanel time_view = new JPanel();
         time_view.setLayout(new BorderLayout());
         time_view.setBackground(new Color(186, 206, 224));
@@ -908,6 +921,17 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         chat_view.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
         chat_view.setPreferredSize(new Dimension(380, height + 5));
         JLabel label = new JLabel(edit);
+        label.addMouseListener(new MouseAdapter()
+        {
+            public void mouseClicked(MouseEvent e)
+            {
+                ImageFrame image_frame = new ImageFrame(img);
+                JLabel ImageLabel = new JLabel();
+                ImageLabel.setIcon(img);
+                image_frame.add(ImageLabel,BorderLayout.CENTER);
+                image_frame.setVisible(true);
+            }
+        });
         chat_view.add(label);
         chat_panel_height += (height + 17);
         chat_panel.setPreferredSize(new Dimension(380, chat_panel_height));
