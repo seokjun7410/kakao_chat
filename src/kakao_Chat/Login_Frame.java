@@ -531,7 +531,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         chattingListGUI.revalidate();
                         chattingListGUI.repaint();
                     }
-                    if (args[0].matches("/503")) { //503 RoomNum UserName
+                    if (args[0].matches("/503")) { // RoomNum UserName
                         System.out.println(msg);
                         System.out.println("/503");
                         int arrlen = dis.readInt();
@@ -550,7 +550,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 //                        ImageIcon img = (ImageIcon)ois.readObject();
 //                        if(img != null){
 //                            JFrame jf = new JFrame();
-//                            JLabel jl = new JLabel();
+//                          503  JLabel jl = new JLabel();
 //                            jf.add(jl);
 //                            jl.setIcon(img);
 //                            jf.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
