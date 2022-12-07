@@ -372,13 +372,13 @@ public class ChattingListGUI extends JFrame {
                     ArrayList<String> members = ((RoomInfo) room_list.get(index)).getMembers();
 //				chatting = new chat_Frame(roomNum,members,socket);
 //				chatting.setVisible(true);
-                if(!ChatRoomEntered.contains(roomNum)) {
+                //if(!ChatRoomEntered.contains(roomNum)) {
                     //채팅방 생성 serverListener에게 위임
                     System.out.println("서버에게 방번호 : "+roomNum+" 오픈 요청을 합니다.");
                     Login_Frame.SendMessage("/310 " + roomNum + " " + currentUserName);
                     System.out.println("SEND : " + "/310 " + roomNum + " " + currentUserName);
                     ChatRoomEntered.add(roomNum);
-                }
+                //}
 
 
             }

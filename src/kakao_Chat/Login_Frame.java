@@ -17,6 +17,7 @@ import java.net.Socket;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.Vector;
 
@@ -531,22 +532,47 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         chattingListGUI.revalidate();
                         chattingListGUI.repaint();
                     }
-                    if (args[0].matches("/503")) { // RoomNum UserName
+                    if (args[0].matches("/503")) { //  UserName RoomNum
                         System.out.println(msg);
                         System.out.println("/503");
                         int arrlen = dis.readInt();
                         byte[] bytes = new byte[arrlen];
+
+                        /* 이미지 byte 저장 */
+
+                        /* 현재시간 */
+                        System.out.println("bytes = " + bytes);
+                        String message = bytes.toString();
+                        message = "*23#" + message;
+                        LocalTime time = LocalTime.now();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                        String currentTime = time.format(formatter);
+                        String currentTime12;
+                        if(Integer.parseInt(currentTime.substring(0,2)) >= 13)
+                            currentTime12 = "오후"+(Integer.parseInt(currentTime.substring(0,2))-12)+":"+currentTime.substring(3,5);
+                        else
+                            currentTime12 = "오전"+currentTime;
+                        Message m = new Message(message,args[1],currentTime12);
+                        RoomInfo roomInfoByRoomId = getRoomInfoByRoomId(args[2]);
+                        roomInfoByRoomId.setMessages(m);
+
                         dis.readFully(bytes);
                         ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
                         BufferedImage bufferedImage = ImageIO.read(inputStream);
                         System.out.println("파일 받음");
+
+
 
 //                        ObjectInputStream ois = new ObjectInputStream(is);
                         ImageIcon img = new ImageIcon(bufferedImage);
 //                        while(img ==null){
 //                             img = (ImageIcon)ois.readObject();
 //                        }
-                        chatting.printImage_Left(img, args[1]);
+                        try {
+                            chatting.printImage_Left(img, args[1]);
+                        }catch (NullPointerException e){
+                            System.out.println("채팅방이 안열려 있음");
+                        }
 //                        ImageIcon img = (ImageIcon)ois.readObject();
 //                        if(img != null){
 //                            JFrame jf = new JFrame();
