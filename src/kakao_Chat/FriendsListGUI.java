@@ -266,7 +266,7 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 		chattingListIndex = -1;
 	}
 
-	private void createFriendProfile(ArrayList<JPanel> chattingButtonList, JPanel chattingListPanel, String id, String profile_img) {
+	private void createFriendProfile(ArrayList<JPanel> chattingButtonList, JPanel chattingListPanel, String id, String profile_img) throws IOException {
 		
 		JPanel chattingPanel = new JPanel();
 		chattingPanel.setAutoscrolls(true);

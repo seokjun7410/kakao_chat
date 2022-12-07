@@ -276,9 +276,9 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 								|| message.getBody().equals("(축하)")
 								|| message.getBody().equals("(충성)")
 								|| message.getBody().equals("(ㅋㅋ)"))
-							printEmoticonInHistory_Left(message.getBody(),message.getTime());
+							printEmoticonInHistory_Left(message.getBody(),message.getSendFrom(),message.getTime());
 						else
-							makeLeftBubbleInHistory(message.getBody(), message.getTime());
+							makeLeftBubbleInHistory(message.getBody(), message.getSendFrom(),message.getTime());
 
 					}
 				}
@@ -286,9 +286,11 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			}
 		} catch (NullPointerException e) {
 			System.out.println("메세지를 불러올게 없습니다.");
-		}
+		} catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-		setVisible(true);
+        setVisible(true);
 	}
 
 
@@ -424,7 +426,62 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
 			revalidate();
 		}
-		public void printEmoticon_Left(String text, String Username) throws IOException {
+    public void printEmoticonInHistory(String text,String time) {
+
+        ImageIcon emoticon;
+        switch (text) {
+            case "(ㅋㅋ)":
+                emoticon = new ImageIcon("img/ㅋㅋ.png");
+                break;
+            case "(등장)":
+                emoticon = new ImageIcon("img/등장.png");
+                break;
+            case "(떼쓰기)":
+                emoticon = new ImageIcon("img/떼쓰기.png");
+                break;
+            case "(우와)":
+                emoticon = new ImageIcon("img/우와.png");
+                break;
+            case "(축하)":
+                emoticon = new ImageIcon("img/축하.png");
+                break;
+            case "(충성)":
+                emoticon = new ImageIcon("img/충성.png");
+                break;
+            default:
+                emoticon = new ImageIcon();
+                break;
+        }
+        ImageIcon edit = editImage.EditImage(emoticon, 70);
+        int height = edit.getIconHeight();
+        JPanel chat_view = new JPanel();
+
+        JLabel timeLabel = new JLabel(time);
+        timeLabel.setBounds(0, 5, 50, 50);
+        timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
+        JPanel time_view = new JPanel();
+        time_view.setLayout(new BorderLayout());
+        time_view.setBackground(new Color(186, 206, 224));
+        time_view.setPreferredSize(new Dimension(timeLabel.getWidth(), height));
+        time_view.add(timeLabel, BorderLayout.SOUTH);
+        chat_view.add(time_view);
+
+
+        chat_view.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        chat_view.setBackground(new Color(186, 206, 224));
+        chat_view.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+        chat_view.setPreferredSize(new Dimension(380, height + 5));
+        JLabel label = new JLabel(edit);
+        chat_view.add(label);
+        chat_panel_height += (height + 17);
+        chat_panel.setPreferredSize(new Dimension(380, chat_panel_height));
+        chat_panel.add(chat_view);
+
+
+        revalidate();
+    }
+
+    public void printEmoticon_Left(String text, String Username) throws IOException {
 			ImageIcon emoticon;
 			switch (text) {
 				case "(ㅋㅋ)":
@@ -477,7 +534,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			chat_view.setBackground(new Color(186,206,224));
 			chat_view2.setBackground(new Color(186,206,224));
 			parent_panel.setBackground(new Color(186,206,224));
-			parent_panel.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
+			parent_panel.setBorder(BorderFactory.createEmptyBorder(0,10,0,5));
 
 			ImageIcon edit =editImage.EditImage( emoticon,70);
 			int height = edit.getIconHeight();
@@ -516,7 +573,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         revalidate();
     }
 
-    public void printEmoticonInHistory_Left(String text,String time) {
+    public void printEmoticonInHistory_Left(String text,String Username,String time) throws IOException {
         ImageIcon emoticon;
         switch (text) {
             case "(ㅋㅋ)":
@@ -541,29 +598,59 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
                 emoticon = new ImageIcon();
                 break;
         }
-        ImageIcon edit = editImage.EditImage(emoticon, 70);
+        JPanel profile_panel = new JPanel();
+        profile_panel.setBackground(new Color(186,206,224));
+        profile_panel.setLayout(null);
+        ImageIcon user_profile = setImageRound("img/UserProfile/"+Username+".png",50);
+        JLabel user_icon = new JLabel(user_profile);
+        user_icon.setBounds(0,0,50,50);
+        profile_panel.setPreferredSize(new Dimension(50,60));
+        profile_panel.add(user_icon);
+
+        //전체를 포함하는 패널
+        JPanel parent_panel = new JPanel();
+        parent_panel.setLayout(new BorderLayout());
+        JPanel chat_view2 = new JPanel(); // 프로필 사진을 제외한 패널
+        parent_panel.add(chat_view2,BorderLayout.CENTER);
+        parent_panel.add(profile_panel,BorderLayout.WEST);
+        chat_view2.setLayout(new BorderLayout());
+        JLabel name_label = new JLabel(Username);
+        name_label.setFont(new Font("나눔고딕", Font.PLAIN, 12));
+        name_label.setBackground(new Color(186,206,224));
+        chat_view2.add(name_label,BorderLayout.NORTH);
+        name_label.setBorder(BorderFactory.createEmptyBorder(0,10,5,0));
+        JPanel chat_view = new JPanel(); // 말풍선 + 시간 패널
+        chat_view2.add(chat_view,BorderLayout.CENTER);
+        chat_view.setLayout(new BorderLayout());
+        chat_view.setBackground(new Color(186,206,224));
+        chat_view2.setBackground(new Color(186,206,224));
+        parent_panel.setBackground(new Color(186,206,224));
+        parent_panel.setBorder(BorderFactory.createEmptyBorder(0,10,0,5));
+
+        ImageIcon edit =editImage.EditImage( emoticon,70);
         int height = edit.getIconHeight();
-        JPanel chat_view = new JPanel();
-        chat_view.setLayout(new FlowLayout(FlowLayout.LEFT));
-        chat_view.setBackground(new Color(186, 206, 224));
-        chat_view.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
-        chat_view.setPreferredSize(new Dimension(380, height + 5));
-        JLabel label = new JLabel(edit);
-        chat_view.add(label);
-        chat_panel_height += (height + 17);
-        chat_panel.setPreferredSize(new Dimension(380, chat_panel_height));
-        chat_panel.add(chat_view);
+        chat_view.setLayout(new BorderLayout());
+        chat_view.setBackground(new Color(186,206,224));
+        chat_view.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
+        parent_panel.setPreferredSize(new Dimension(380,height+18));
+        JLabel imoticon_label = new JLabel(edit);
+        chat_view.add(imoticon_label,BorderLayout.WEST);
+        JPanel time_panel = new JPanel();
+        time_panel.setLayout(new BorderLayout());
+        chat_panel_height += (height +28);
+        chat_panel.setPreferredSize(new Dimension(380,chat_panel_height));
+        chat_panel.add(parent_panel);
 
 
         JLabel timeLabel = new JLabel(time);
-        timeLabel.setBounds(0, 5, 50, 50);
+        timeLabel.setBounds(0,5,50,50);
         timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
         JPanel time_view = new JPanel();
         time_view.setLayout(new BorderLayout());
-        time_view.setBackground(new Color(186, 206, 224));
-        time_view.setPreferredSize(new Dimension(timeLabel.getWidth(), height));
-        time_view.add(timeLabel, BorderLayout.SOUTH);
-        chat_view.add(time_view);
+        time_view.setBackground(new Color(186,206,224));
+        time_view.setPreferredSize(new Dimension(timeLabel.getWidth(),height));
+        time_view.add(timeLabel,BorderLayout.SOUTH);
+        chat_view.add(time_view,BorderLayout.CENTER);
 
         revalidate();
     }
@@ -604,40 +691,67 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         revalidate();
     }
 
-    public void makeLeftBubbleInHistory(String value, String time) {
+    public void makeLeftBubbleInHistory(String value,String Username, String time) throws IOException {
         System.out.println("make");
         System.out.println("value = " + value);
         if (!value.equals("")) {
-            System.out.println("생성");
-            JPanel chat_view = new JPanel();
+            JPanel profile_panel = new JPanel();
+            profile_panel.setBackground(new Color(186,206,224));
+            profile_panel.setLayout(null);
+            ImageIcon user_profile = setImageRound("img/UserProfile/"+Username+".png",50);
+            JLabel user_icon = new JLabel(user_profile);
+            user_icon.setBounds(0,0,50,50);
+            profile_panel.setPreferredSize(new Dimension(50,60));
+            profile_panel.add(user_icon);
+
+            JPanel parent_panel = new JPanel();
+            parent_panel.setLayout(new BorderLayout());
+            JPanel chat_view2 = new JPanel(); // 프로필 사진을 제외한 패널
+            parent_panel.add(chat_view2,BorderLayout.CENTER);
+            parent_panel.add(profile_panel,BorderLayout.WEST);
+            chat_view2.setLayout(new BorderLayout());
+            JLabel name_label = new JLabel(Username);
+            name_label.setFont(new Font("나눔고딕", Font.PLAIN, 12));
+            name_label.setBackground(new Color(186,206,224));
+            chat_view2.add(name_label,BorderLayout.NORTH);
+            name_label.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
+            JPanel chat_view = new JPanel(); // 말풍선 + 시간 패널
+            chat_view2.add(chat_view,BorderLayout.CENTER);
             chat_view.setLayout(new FlowLayout(FlowLayout.LEFT));
-            chat_view.setBackground(new Color(186, 206, 224));
-            chat_view.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+            chat_view.setBackground(new Color(186,206,224));
+            chat_view2.setBackground(new Color(186,206,224));
+            parent_panel.setBackground(new Color(186,206,224));
+            parent_panel.setBorder(BorderFactory.createEmptyBorder(0,10,0,5));
             JLabel label = new JLabel(value);
             label.setFont(new Font("나눔고딕", Font.PLAIN, 12));
-            label.setBorder(BorderFactory.createEmptyBorder(0, 11, 0, 0));
+            label.setBorder(BorderFactory.createEmptyBorder(0,8,0,0));
             LeftArrowBubble LeftArrowBubble = new LeftArrowBubble();
-            int width = (int) label.getPreferredSize().getWidth() + 15;
+            int width =(int) label.getPreferredSize().getWidth()+15;
             int height = 27;
-            if (width > 208) {
+            if(width > 208) {
                 width = 208;
-                height = (int) ((width / 208) + 1) * 27;
+                height = (int)((width /208) +1)*27;
             }
-            chat_view.setPreferredSize(new Dimension(380, height + 5));
-            LeftArrowBubble.setPreferredSize(new Dimension(width, height));
-            LeftArrowBubble.setBackground(new Color(255, 255, 255));
-            System.out.println(label.getPreferredSize() + "" + height);
+            parent_panel.setPreferredSize(new Dimension(380,60));
+            LeftArrowBubble.setPreferredSize(new Dimension(width,height));
+            LeftArrowBubble.setBackground(new Color(255,255,255));
+            System.out.println(label.getPreferredSize()+""+height);
             LeftArrowBubble.add(label);
             chat_view.add(LeftArrowBubble);
-            chat_panel_height += (height + 12);
-            chat_panel.setPreferredSize(new Dimension(380, chat_panel_height));
-            chat_panel.add(chat_view);
+            chat_panel_height += 68;
+            chat_panel.setPreferredSize(new Dimension(380,chat_panel_height));
+            chat_panel.add(parent_panel);
 
 
             JLabel timeLabel = new JLabel(time);
             timeLabel.setBounds(0, 5, 50, 50);
             timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 9));
-            chat_view.add(timeLabel);
+            JPanel time_view = new JPanel();
+            time_view.setLayout(new BorderLayout());
+            time_view.setBackground(new Color(186, 206, 224));
+            time_view.setPreferredSize(new Dimension(timeLabel.getWidth(), height));
+            time_view.add(timeLabel, BorderLayout.SOUTH);
+            chat_view.add(time_view);
 
             revalidate();
         }
