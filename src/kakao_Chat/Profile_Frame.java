@@ -171,8 +171,8 @@ public class Profile_Frame extends JFrame implements MouseListener, MouseMotionL
             int roomNum = listenNetwork.check_RoomNum(User_name+" "+Login_Frame.userName);
             if (roomNum < 0) { //채팅방이 없을경우
                 System.out.println("상대방과 존재하는 채팅이 없어 채팅방 오픈을 요청합니다");
-                Login_Frame.SendMessage("/300 2 " + User_name + " "+currentName);
-                System.out.println("SEND :"+" 인원수 2 " + "TO "+ User_name + " " + "FROM"+ currentName);
+                Login_Frame.SendMessage("/300 2 " + Login_Frame.userName+" "+ User_name );
+                System.out.println("SEND :"+" 인원수 2 " + "TO "+ User_name + " " + "FROM"+ Login_Frame.userName);
             }
         	else {//채팅방이 있을경우
         		ArrayList<String> name = new ArrayList<String>();

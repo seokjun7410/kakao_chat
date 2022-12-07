@@ -807,8 +807,8 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 			//채팅방 생성
 			//chat_Frame 생성을 server에게 요청
 
-			Login_Frame.SendMessage("/300 "+numOfPeople+" " + sb +currentName);
-			System.out.println("SEND :"+" 인원수 "+numOfPeople+" " + "TO "+ sb + " " + "FROM"+ currentName);
+			Login_Frame.SendMessage("/300 "+numOfPeople+" " +currentName+" "+ sb );
+			System.out.println("SEND :"+"/300 "+numOfPeople+" " +currentName+" "+ sb);
 
 
 

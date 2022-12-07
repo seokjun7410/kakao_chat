@@ -177,6 +177,7 @@ public class my_Profile_Frame extends JFrame implements MouseListener, MouseMoti
             try {
                 profile_label.setIcon(PictureRound.jFileChooserUtil(80));
                 SendMessage("/600 "+userName);
+                System.out.println(userName+"의 프로필 변경요청");
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -200,7 +201,7 @@ public class my_Profile_Frame extends JFrame implements MouseListener, MouseMoti
             int roomNum = listenNetwork.check_RoomNum(User_name);
             if (roomNum < 0) { //채팅방이 없을경우
                 System.out.println("상대방과 존재하는 채팅이 없어 채팅방 생성을 요청합니다");
-                SendMessage("/300 2 " + User_name + " "+currentName);
+                SendMessage("/300 2 " + currentName + " "+User_name);
                 System.out.println("SEND :"+" 인원수 2 " + "TO "+ User_name + " " + "FROM"+ currentName);
             }
         	else {//채팅방이 있을경우

@@ -35,7 +35,6 @@ public class JavaChatServer extends JFrame {
     private Vector UserVec = new Vector();
     private Vector RoomVec = new Vector();
     private static final int BUF_LEN = 128;
-    byte buffer[] = new byte[2048];
     public int recent_Num = 0;
     public static int room_Num = -1;
 
@@ -373,7 +372,7 @@ public class JavaChatServer extends JFrame {
                         send_msg = temp.toString(); //= "roomID currentUser user1 user2 ..."
 
                         //채팅방 객체 생성 => 방번호, 인원수, 유저이름들, 마지막메시지
-                        new_Room = new RoomInfo(room_num, size, members, "lastMessage");
+                        new_Room = new RoomInfo(room_num, size, members, "");
                         RoomVec.add(new_Room);
 
                         //속해있는 유저에게 sendMessage
@@ -387,9 +386,9 @@ public class JavaChatServer extends JFrame {
 
                         //요청한 사람에게 sendMessage
                         //WriteOne("/302 " + send_msg); //send_msg : /302 방번호 이름1 이름2 ...
-                        System.out.println("방생성 요청자 " + args[3] + " 에게 "+ room_num+"번 방오픈 지시");
+                        System.out.println("방생성 요청자 " + args[2] + " 에게 "+ room_num+"번 방오픈 지시");
                         System.out.println("SEND MSG: /302 "+send_msg);
-                        sendTo(args[3], "/302 " + send_msg);
+                        sendTo(args[2], "/302 " + send_msg);
 //						WriteAll(send_msg);
 
 
@@ -405,9 +404,9 @@ public class JavaChatServer extends JFrame {
                         sendTo(args[2],"/320 "+args[1]);
                         System.out.println(args[2]+"에게 방번호 "+args[1]+"을 제거 지시");
 
-                    } else if (args[0].matches("/500")) { // 메세지 전송 //500 roomid message username
-                        String send_msg = "/502 " + args[1] + " " + args[2]+ " "+ args[3]; // 502  roomid message username
-                        System.out.println("RECV: 방번호" + args[1] + "번에 " + args[2] + " 를 방송요청");
+                    } else if (args[0].matches("/500")) { // 메세지 전송 //500 roomid message Senduser
+                        String send_msg = "/502 " + args[1] + " " + args[2]+" "+ args[3]; // 502  roomid message
+                        System.out.println("RECV: 방번호" + args[1] + "번에 " + args[2] +" "+ args[3]+" 를 방송요청");
 
                         //방번호에 속해있는 USER에게 메세지 전송
                         ArrayList<String> recvUsers = getRecvUser(args[1]);
@@ -417,6 +416,8 @@ public class JavaChatServer extends JFrame {
                             if (!args[3].equals(recvUser)) {//송신유저가 아닐 경우만 전송
                                 sendTo(recvUser, send_msg);
                                 System.out.print(recvUser + ", ");
+                            }else{ //송신유저일경우 lastmessage 업데이트
+                                sendTo(recvUser, "/555 "+args[1]);
                             }
                         }
                         System.out.println("에게 방송합니다.");
@@ -457,7 +458,9 @@ public class JavaChatServer extends JFrame {
                     }
 
                         else if (args[0].matches("/600")) { // 프로필 변경 전송
+                        System.out.println("프로필 변경요청 =");
                         String send_msg = "/601 " + getUserName();
+                        System.out.println("SEND : "+send_msg); //msg : 601 username
                         WriteOne(send_msg); // 친구화면 새로고침을 위해 본인에게도 전송
                         WriteAll(send_msg);
                     }

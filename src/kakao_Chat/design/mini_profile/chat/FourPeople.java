@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import kakao_Chat.design.RoundedButton;
+import kakao_Chat.design.pictureEdit.PictureRound;
 
 import static kakao_Chat.design.pictureEdit.PictureRound.setImageRound;
 

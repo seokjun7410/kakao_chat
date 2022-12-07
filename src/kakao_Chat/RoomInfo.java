@@ -1,6 +1,7 @@
 package kakao_Chat;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class RoomInfo {
 	private int roomNum;
@@ -8,11 +9,14 @@ public class RoomInfo {
 	/* HSJ 채팅리스트 만들때 마지막 메시지 필요해서 추가 */
 	private String lastMessage;
 	private ArrayList<String> members;
+	private ArrayList<Message> messages = new ArrayList<>();
+
 	public RoomInfo (int RoomNum, int size, ArrayList<String> members, String lastMessage) {
 		this.roomNum = RoomNum;
 		this.size= size ;
 		this.members =members;
 		this.lastMessage = lastMessage;
+
 	}
 	public ArrayList<String> getMembers() {
 		return members;
@@ -40,6 +44,16 @@ public class RoomInfo {
 	}
 	public void setRoomNum(int roomNum) {
 		this.roomNum = roomNum;
+	}
+	public void setMessages(Message message){
+		messages.add(message);
+		lastMessage = message.getBody();
+
+		System.out.println("메시지 저장!");
+		System.out.println("message.getBody() = " + message.getBody());
+	}
+	public ArrayList<Message> getMessages(){
+		return (this.messages);
 	}
 
 	/* HSJ 채팅리스트 만들때 마지막 메시지 필요해서 추가 */

@@ -28,6 +28,7 @@ public class MiniProfileDesign_Chat extends MiniProfileDesign {
 
         JLabel lastMassageLabel = new JLabel(lastMsg);
         lastMassageLabel.setBounds(86, 42, 199, 15);
+        lastMassageLabel.setToolTipText("lastMessageLabel");
         chattingPanel.add(lastMassageLabel);
 
         miniProfileMakeByNumber(chattingPanel);
