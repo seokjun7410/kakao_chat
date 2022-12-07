@@ -257,7 +257,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			chat_view.setBackground(new Color(186,206,224));
 			chat_view2.setBackground(new Color(186,206,224));
 			parent_panel.setBackground(new Color(186,206,224));
-			parent_panel.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
+			parent_panel.setBorder(BorderFactory.createEmptyBorder(0,10,0,5));
 			JLabel label = new JLabel(value);
 			label.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 			label.setBorder(BorderFactory.createEmptyBorder(0,8,0,0));
@@ -643,7 +643,8 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 					chat_panel.add(chat_view);
 					revalidate();
 					Login_Frame.SendMessage("/501 " +room_number+" "+Login_Frame.userName);
-					sendImage(path);
+
+					//sendImage(path);
 				} catch (IOException ex) {
 					throw new RuntimeException(ex);
 				}

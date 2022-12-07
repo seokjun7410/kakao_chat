@@ -35,6 +35,7 @@ public class JavaChatServer extends JFrame {
     private Vector UserVec = new Vector();
     private Vector RoomVec = new Vector();
     private static final int BUF_LEN = 128;
+    byte buffer[] = new byte[2048];
     public int recent_Num = 0;
     public static int room_Num = -1;
 
@@ -249,13 +250,21 @@ public class JavaChatServer extends JFrame {
             for (int i = 0; i < UserVec.size(); i++) {
                 UserService user = (UserService) user_vc.elementAt(i);
                 if (user.getUserName().equals(name)) {
-                    user.os.flush();
-                    ObjectOutputStream oos = new ObjectOutputStream(user.os);
-                    oos.writeObject(img);
-                    oos.close();
-                    user.dos = new DataOutputStream(user.os);
+                    user.sendOneImg(img);
                     break;
                 }
+            }
+        }
+
+        public void sendOneImg(ImageIcon img) {
+            try {
+                ObjectOutputStream oos = new ObjectOutputStream(os);
+                oos.writeObject(img);
+                oos.flush();
+                oos.close();
+            }
+            catch (IOException e) {
+                    e.printStackTrace();
             }
         }
 
@@ -414,32 +423,36 @@ public class JavaChatServer extends JFrame {
 
 
                     } else if (args[0].matches("/501")) { // 사진, 파일 전송
-                        ObjectInputStream ois = new ObjectInputStream(is);
-                        ImageIcon img = (ImageIcon)ois.readObject();
-                        ois.close();
-                        dis = new DataInputStream(is);
-                        JFrame jf = new JFrame();
-                        JLabel jl = new JLabel();
-                        jf.add(jl);
-                        jl.setIcon(img);
-                        jf.setBounds(900, 100, img.getIconWidth(), img.getIconHeight());
-                        jf.setVisible(true);
+//                        ObjectInputStream ois = new ObjectInputStream(is);
+//                        ImageIcon img = null;
+//                        while(img ==null){
+//                             img = (ImageIcon)ois.readObject();
+//                        }
+//                        JFrame jf = new JFrame();
+//                        JLabel jl = new JLabel();
+//                        jf.add(jl);
+//                        jl.setIcon(img);
+//                        jf.setBounds(900, 100, img.getIconWidth(), img.getIconHeight());
+//                        jf.setVisible(true);
+//                        ois.close();
                         String send_msg = "/503 " + args[2];
                         ArrayList<String> recvUsers = getRecvUser(args[1]);
                         ArrayList<String> recvUsers2 = getRecvUser(args[1]);
                         for (String recvUser : recvUsers) { // 이미지를 전송할거라는 메세지 먼저 전송
                             if (!args[2].equals(recvUser)) {//송신유저가 아닐 경우만 전송
                                 sendTo(recvUser, send_msg);
-                                System.out.print(recvUser + ", ");
+                                System.out.print(recvUser + "img send !!");
                             }
                         }
 
-                        for (String recvUser : recvUsers2) { // 파일 전송
-                            if (!args[2].equals(recvUser)) {//송신유저가 아닐 경우만 전송
-                                sendImage(recvUser, img);
-                                System.out.print(recvUser + ", ");
-                            }
-                        }
+                        //oos.writeObject(img);
+//
+//                        for (String recvUser : recvUsers2) { // 파일 전송
+//                            if (!args[2].equals(recvUser)) {//송신유저가 아닐 경우만 전송
+//                                sendImage(recvUser, img);
+//                                System.out.print(recvUser + ", ");
+//                            }
+//                        }
 
                     }
 
@@ -483,7 +496,7 @@ public class JavaChatServer extends JFrame {
 //						UserStatus = "O";
                         WriteAll(msg + "\n"); // Write All
                     }
-                } catch (IOException | ClassNotFoundException e) {
+                } catch (IOException e) {
                     AppendText("dis.read() error");
                     System.out.println("************************");
                     e.printStackTrace();

@@ -47,6 +47,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
     private static DataInputStream dis;
     private static DataOutputStream dos;
 
+
     private static final int BUF_LEN = 128;
     public static String userName;
     public static ArrayList<User> User_list;
@@ -55,6 +56,8 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
     public int Size_list;
     public static Vector<String> Friends_List = new Vector<>();
     private static int file_num =0;
+
+    private static FileInputStream fin;
 
     public Login_Frame() {
 
@@ -181,7 +184,6 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                 dis = new DataInputStream(is);
                 os = socket.getOutputStream();
                 dos = new DataOutputStream(os);
-
                 SendMessage("/100 " + Name + " " + PW);
                 ListenNetwork net = new ListenNetwork();
                 net.start();
@@ -456,21 +458,15 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                     if (args[0].matches("/503")) { //503 RoomNum UserName
                         System.out.println(msg);
                         System.out.println("/503");
-                        ObjectInputStream ois = new ObjectInputStream(is);
-                        ImageIcon img = new ImageIcon();
-                        while (ois.readObject() != null) {
-                            img = (ImageIcon)ois.readObject();
-                        }
-                        ois.reset();
-                        ois.close();
-                        if(img != null){
-                            JFrame jf = new JFrame();
-                            JLabel jl = new JLabel();
-                            jf.add(jl);
-                            jl.setIcon(img);
-                            jf.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
-                            jf.setVisible(true);
-                        }
+//                        ImageIcon img = (ImageIcon)ois.readObject();
+//                        if(img != null){
+//                            JFrame jf = new JFrame();
+//                            JLabel jl = new JLabel();
+//                            jf.add(jl);
+//                            jl.setIcon(img);
+//                            jf.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
+//                            jf.setVisible(true);
+//                        }
                     }
 
                     if (args[0].equals("/601")) {
@@ -521,7 +517,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 
 
                     }
-                } catch (IOException | ClassNotFoundException e) {
+                } catch (IOException e) {
                     //AppendText("dis.read() error");
                     try {
                         dos.close();
@@ -613,16 +609,14 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 
     //이미지 전송 , "/501 방번호 사용자이름"을 보내준 뒤 파일을 보냄
     public static void sendImage(String path) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(os);
         //String file_name = userName+"_"+String.valueOf(file_num++)+".png";
         System.out.println("sendImage:"+path);
         BufferedImage img = ImageIO.read(new File(path));
         ImageIcon ic =  new ImageIcon(img);
-        os.flush();
-        ObjectOutputStream oos = new ObjectOutputStream(os);
         oos.writeObject(ic);
-        oos.close();
-        os.flush();
-        dos = new DataOutputStream(os);
+        oos.flush();
+
     }
 
     public static void main(String[] args) {
