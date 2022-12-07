@@ -32,7 +32,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
     private JPanel Panel_1;
     private JLabel chat_text;
     private JButton btn_exit, btn_send, image_send;
-
+    public JScrollPane pane;
     private Point comPoint;
     private int room_number;
     private String members;
@@ -183,7 +183,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         chat_panel.setLayout(new FlowLayout());
         chat_panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 10));
 
-        JScrollPane pane = new JScrollPane(chat_panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+        pane = new JScrollPane(chat_panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         pane.setBounds(0, 0, 380, 401);
         pane.setPreferredSize(new Dimension(380, 10));
@@ -1080,14 +1080,18 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
             // same value as
 //				text_area.setCaretPosition(len); // place caret at the end (with no selection)
 //		 		textArea.replaceSelection(msg + "\n");
-			}
+            JScrollBar vertical = pane.getVerticalScrollBar();
+            vertical.setValue( vertical.getMaximum() );
+
+        }
 			else if(e.getSource().equals(image_send)) {  //이미지 첨부 버튼을 누를 경우
 				try {
 					String path =ImageSeletor();   // 파일 선택해서 파일 위치를 저장
 					ImageIcon img = ImageSeletorByLink(path,200);  //가로 200 크기로 변환
                     printImage(img);
 					Login_Frame.SendMessage("/501 " +room_number+" "+Login_Frame.userName);
-
+                    JScrollBar vertical = pane.getVerticalScrollBar();
+                    vertical.setValue( vertical.getMaximum() );
 					sendImage(path);
 				} catch (IOException ex) {
 					throw new RuntimeException(ex);

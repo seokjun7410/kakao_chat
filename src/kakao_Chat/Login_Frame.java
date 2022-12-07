@@ -22,16 +22,7 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 import static kakao_Chat.FriendsListGUI.profileButton;
 import static kakao_Chat.Profile_Frame.profile_filename;
@@ -503,9 +494,12 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                             if(message.equals("(등장)") || message.equals("(떼쓰기)") || message.equals("(우와)")|| message.equals("(축하)") || message.equals("(충성)") || message.equals("(ㅋㅋ)"))
                                 chatting.printEmoticon_Left(message, args[3]);
                             else chatting.makeLeftBubble(message, args[3]);
+                            JScrollBar vertical = chatting.pane.getVerticalScrollBar();
+                            vertical.setValue( vertical.getMaximum() );
                         }catch (NullPointerException e){
                             System.out.println(e.getMessage());
                         }
+
                     }
                     if (args[0].matches("/555")) { // msg : /555 rommid
                         /* 마지막 메시지 */
@@ -547,6 +541,8 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 //                             img = (ImageIcon)ois.readObject();
 //                        }
                         chatting.printImage_Left(img, args[1]);
+                        JScrollBar vertical = chatting.pane.getVerticalScrollBar();
+                        vertical.setValue( vertical.getMaximum() );
 //                        ImageIcon img = (ImageIcon)ois.readObject();
 //                        if(img != null){
 //                            JFrame jf = new JFrame();
@@ -595,8 +591,12 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                                 //채팅방 이름을 통해 미니프로필 index 구하기
                                 int index = -1;
                                 System.out.println("nameLableString = " + nameLableString.replace(" ",""));
-                                index = nameLableString.replace(" ","").indexOf(args[1]);
-                                int numOfpeople = nameLableString.replace(" ","").length();
+                                String peoplestr = nameLableString.replace(" ","");
+                                String[] split = peoplestr.split(",");
+                                for(int i =0; i<split.length; i++){
+                                    if(split[i].equals(args[1])) index =i;
+                                }
+                                int numOfpeople = split.length+1;
                                 System.out.println("numOfpeople = " + numOfpeople);
 
                                 switch (numOfpeople){

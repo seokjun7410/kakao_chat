@@ -91,7 +91,7 @@ public class RoundedButton extends JButton {
  
   public RoundedButton(String label,ImageIcon icon) {
     super(label,icon);
- 
+    setBorderPainted(false);
     //setBackground(Color.lightGray);
     setFocusable(false);
  
@@ -112,7 +112,7 @@ public class RoundedButton extends JButton {
  
   protected void paintComponent(Graphics g) {
     if (getModel().isArmed()) {
-      g.setColor(Color.gray);
+      g.setColor(Color.white);
     } else {
       g.setColor(getBackground());
     }

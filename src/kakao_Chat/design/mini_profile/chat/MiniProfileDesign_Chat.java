@@ -1,5 +1,6 @@
 package kakao_Chat.design.mini_profile.chat;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -23,11 +24,14 @@ public class MiniProfileDesign_Chat extends MiniProfileDesign {
 
         String chattingName = name.toString();
         JLabel userNameLabel = new JLabel(chattingName);
-        userNameLabel.setBounds(86, 16, 93, 15);
+        userNameLabel.setFont(new Font("나눔고딕", Font.BOLD, 13));
+        userNameLabel.setBounds(75, 16, 93, 15);
         chattingPanel.add(userNameLabel);
 
         JLabel lastMassageLabel = new JLabel(lastMsg);
-        lastMassageLabel.setBounds(86, 42, 199, 15);
+        lastMassageLabel.setFont(new Font("나눔고딕", Font.PLAIN, 12));
+        lastMassageLabel.setForeground(new Color(168,168,168));
+        lastMassageLabel.setBounds(75, 38, 199, 15);
         lastMassageLabel.setToolTipText("lastMessageLabel");
         chattingPanel.add(lastMassageLabel);
 

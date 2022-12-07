@@ -562,6 +562,8 @@ public class addChattingGUI extends JFrame implements MouseListener,MouseMotionL
 		btn_exit = new JButton("x");
 		btn_exit.setBounds(310,2, 45, 30);
 		btn_exit.setPreferredSize(new Dimension(30,30));
+		btn_exit.setBackground(Color.white);
+		btn_exit.setBorderPainted(false);
 		btn_exit.addActionListener(this);
 		title_bar.add(btn_exit);
 

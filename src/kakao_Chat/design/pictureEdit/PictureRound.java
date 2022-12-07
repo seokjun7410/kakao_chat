@@ -41,7 +41,7 @@ public class PictureRound {
         chooser.setDialogTitle("타이틀"); // 창의 제목
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES); // 파일 선택 모드
         
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("png", "jpg"); // filter 확장자 추가
+        FileNameExtensionFilter filter =  new FileNameExtensionFilter("Image Files", new String[]{"png", "jpg"}); // filter 확장자 추가
         chooser.setFileFilter(filter); // 파일 필터를 추가
         
         int returnVal = chooser.showOpenDialog(null); // 열기용 창 오픈
