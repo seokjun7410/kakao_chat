@@ -61,7 +61,13 @@ public class FileSelector {
     public static ImageIcon ImageSeletorByLink(String path, int size) throws IOException {
         BufferedImage master = ImageIO.read(new File(path));
         double div = master.getHeight()/(double)master.getWidth() ;
-        Image ap = new ImageIcon(master).getImage().getScaledInstance( size,(int) Math.round(size*div), Image.SCALE_DEFAULT);
+        Image ap;
+        if( master.getWidth()<=size){
+            ap = new ImageIcon(master).getImage();
+        }
+        else {
+            ap = new ImageIcon(master).getImage().getScaledInstance(size, (int) Math.round(size * div), Image.SCALE_DEFAULT);
+        }
         ImageIcon ic =  new ImageIcon(ap);
         return ic;
     }

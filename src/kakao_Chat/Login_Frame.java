@@ -528,6 +528,19 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                     if (args[0].matches("/503")) { //503 RoomNum UserName
                         System.out.println(msg);
                         System.out.println("/503");
+                        int arrlen = dis.readInt();
+                        byte[] bytes = new byte[arrlen];
+                        dis.readFully(bytes);
+                        ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+                        BufferedImage bufferedImage = ImageIO.read(inputStream);
+                        System.out.println("파일 받음");
+
+//                        ObjectInputStream ois = new ObjectInputStream(is);
+                        ImageIcon img = new ImageIcon(bufferedImage);
+//                        while(img ==null){
+//                             img = (ImageIcon)ois.readObject();
+//                        }
+                        chatting.printImage_Left(img, args[1]);
 //                        ImageIcon img = (ImageIcon)ois.readObject();
 //                        if(img != null){
 //                            JFrame jf = new JFrame();
@@ -773,14 +786,22 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 
     //이미지 전송 , "/501 방번호 사용자이름"을 보내준 뒤 파일을 보냄
     public static void sendImage(String path) throws IOException {
-        ObjectOutputStream oos = new ObjectOutputStream(os);
-        //String file_name = userName+"_"+String.valueOf(file_num++)+".png";
-        System.out.println("sendImage:" + path);
-        BufferedImage img = ImageIO.read(new File(path));
-        ImageIcon ic =  new ImageIcon(img);
-        oos.writeObject(ic);
-        oos.flush();
+//        ObjectOutputStream oos = new ObjectOutputStream(os);
+//        //String file_name = userName+"_"+String.valueOf(file_num++)+".png";
+//        System.out.println("sendImage:" + path);
+//        BufferedImage img = ImageIO.read(new File(path));
+//        ImageIcon ic =  new ImageIcon(img);
+//        oos.writeObject(ic);
+//        oos.flush();
 
+        File file = new File(path);
+        byte[] b = new byte[(int) file.length()];
+        FileInputStream fis = new FileInputStream(file);
+        fis.read(b);
+        fis.close();dos.writeInt((int) file.length());
+        dos.flush();
+        dos.write(b, 0, b.length);
+        dos.flush();
     }
 
     public static void main(String[] args) {

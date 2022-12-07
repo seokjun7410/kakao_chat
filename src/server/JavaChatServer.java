@@ -4,18 +4,18 @@ package server;
 
 import java.awt.EventQueue;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import kakao_Chat.Login_Frame;
 import kakao_Chat.RoomInfo;
 import kakao_Chat.User;
 
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
@@ -245,26 +245,29 @@ public class JavaChatServer extends JFrame {
             }
         }
 
-        public void sendImage(String name, ImageIcon img) throws IOException {
+        public void sendImage(String name, byte[] bytes) throws IOException {
             for (int i = 0; i < UserVec.size(); i++) {
                 UserService user = (UserService) user_vc.elementAt(i);
                 if (user.getUserName().equals(name)) {
-                    user.sendOneImg(img);
+                    user.sendOneImg(bytes);
                     break;
                 }
             }
         }
 
-        public void sendOneImg(ImageIcon img) {
-            try {
-                ObjectOutputStream oos = new ObjectOutputStream(os);
-                oos.writeObject(img);
-                oos.flush();
-                oos.close();
-            }
-            catch (IOException e) {
-                    e.printStackTrace();
-            }
+        public void sendOneImg(byte[] bytes) throws IOException {
+//        ObjectOutputStream oos = new ObjectOutputStream(os);
+//        //String file_name = userName+"_"+String.valueOf(file_num++)+".png";
+//        System.out.println("sendImage:" + path);
+//        BufferedImage img = ImageIO.read(new File(path));
+//        ImageIcon ic =  new ImageIcon(img);
+//        oos.writeObject(ic);
+//        oos.flush();
+            byte[] b = bytes;
+            dos.writeInt(b.length);
+            dos.flush();
+            dos.write(b, 0, b.length);
+            dos.flush();
         }
 
         public void WriteOne(String msg) {
@@ -424,18 +427,19 @@ public class JavaChatServer extends JFrame {
 
 
                     } else if (args[0].matches("/501")) { // 사진, 파일 전송
+                        int arrlen = dis.readInt();
+                        byte[] bytes = new byte[arrlen];
+                        dis.readFully(bytes);
+                        ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+                        BufferedImage bufferedImage = ImageIO.read(inputStream);
+                        System.out.println("파일 받음");
+
 //                        ObjectInputStream ois = new ObjectInputStream(is);
-//                        ImageIcon img = null;
+                        ImageIcon img = new ImageIcon(bufferedImage);
 //                        while(img ==null){
 //                             img = (ImageIcon)ois.readObject();
 //                        }
-//                        JFrame jf = new JFrame();
-//                        JLabel jl = new JLabel();
-//                        jf.add(jl);
-//                        jl.setIcon(img);
-//                        jf.setBounds(900, 100, img.getIconWidth(), img.getIconHeight());
-//                        jf.setVisible(true);
-//                        ois.close();
+
                         String send_msg = "/503 " + args[2];
                         ArrayList<String> recvUsers = getRecvUser(args[1]);
                         ArrayList<String> recvUsers2 = getRecvUser(args[1]);
@@ -448,12 +452,12 @@ public class JavaChatServer extends JFrame {
 
                         //oos.writeObject(img);
 //
-//                        for (String recvUser : recvUsers2) { // 파일 전송
-//                            if (!args[2].equals(recvUser)) {//송신유저가 아닐 경우만 전송
-//                                sendImage(recvUser, img);
-//                                System.out.print(recvUser + ", ");
-//                            }
-//                        }
+                        for (String recvUser : recvUsers2) { // 파일 전송
+                            if (!args[2].equals(recvUser)) {//송신유저가 아닐 경우만 전송
+                                sendImage(recvUser, bytes);
+                                System.out.print(recvUser + ", ");
+                            }
+                        }
 
                     }
 
