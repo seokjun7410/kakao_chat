@@ -24,6 +24,7 @@ import static kakao_Chat.Login_Frame.userName;
 import static kakao_Chat.design.pictureEdit.FileSelector.ImageSeletor;
 import static kakao_Chat.design.pictureEdit.FileSelector.ImageSeletorByLink;
 import static kakao_Chat.design.pictureEdit.PictureRound.setImageRound;
+import static kakao_Chat.design.pictureEdit.editImage.EditImage;
 
 public class chat_Frame extends JFrame implements MouseListener, MouseMotionListener, ActionListener, KeyListener {
     private Point initialClick;
@@ -390,7 +391,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
                 emoticon = new ImageIcon();
                 break;
         }
-        ImageIcon edit = editImage.EditImage(emoticon, 70);
+        ImageIcon edit = EditImage(emoticon, 70);
         int height = edit.getIconHeight();
         JPanel chat_view = new JPanel();
 
@@ -453,7 +454,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
                 emoticon = new ImageIcon();
                 break;
         }
-        ImageIcon edit = editImage.EditImage(emoticon, 70);
+        ImageIcon edit = EditImage(emoticon, 70);
         int height = edit.getIconHeight();
         JPanel chat_view = new JPanel();
 
@@ -537,7 +538,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			parent_panel.setBackground(new Color(186,206,224));
 			parent_panel.setBorder(BorderFactory.createEmptyBorder(0,10,0,5));
 
-			ImageIcon edit =editImage.EditImage( emoticon,70);
+			ImageIcon edit = EditImage( emoticon,70);
 			int height = edit.getIconHeight();
 			chat_view.setLayout(new BorderLayout());
 			chat_view.setBackground(new Color(186,206,224));
@@ -628,7 +629,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         parent_panel.setBackground(new Color(186,206,224));
         parent_panel.setBorder(BorderFactory.createEmptyBorder(0,10,0,5));
 
-        ImageIcon edit =editImage.EditImage( emoticon,70);
+        ImageIcon edit = EditImage( emoticon,70);
         int height = edit.getIconHeight();
         chat_view.setLayout(new BorderLayout());
         chat_view.setBackground(new Color(186,206,224));
@@ -808,7 +809,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
     }
 
     public void printImage_Left(ImageIcon img, String Username) throws IOException {
-        ImageIcon Image = img;
+        ImageIcon Image = EditImage(img,200);
         //프로필 사진 패널
         JPanel profile_panel = new JPanel();
         profile_panel.setBackground(new Color(186,206,224));
@@ -839,7 +840,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         parent_panel.setBackground(new Color(186,206,224));
         parent_panel.setBorder(BorderFactory.createEmptyBorder(0,10,0,5));
 
-        ImageIcon edit =editImage.EditImage( Image,70);
+        ImageIcon edit = EditImage( Image,70);
         int height = edit.getIconHeight();
         chat_view.setLayout(new BorderLayout());
         chat_view.setBackground(new Color(186,206,224));
