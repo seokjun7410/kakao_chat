@@ -92,9 +92,14 @@ public class PictureRound {
         BufferedImage orginalImage = ImageIO.read(new File(image));
         ImageIO.write( orginalImage, "png", new File("img/UserProfile/"+username+".png"));
     }
-  public static ImageIcon setImageRound(String image, int size) throws IOException {
-	  BufferedImage master = ImageIO.read(new File(image));
-	  int diameter = Math.min(master.getWidth(), master.getHeight());
+  public static ImageIcon setImageRound(String image, int size) {
+      BufferedImage master = null;
+      try {
+          master = ImageIO.read(new File(image));
+      } catch (IOException e) {
+          throw new RuntimeException(e);
+      }
+      int diameter = Math.min(master.getWidth(), master.getHeight());
       BufferedImage mask = new BufferedImage(master.getWidth(), master.getHeight(), BufferedImage.TYPE_INT_ARGB);
   	
       Graphics2D g2d = mask.createGraphics();

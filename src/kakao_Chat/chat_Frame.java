@@ -4,6 +4,7 @@ import javax.swing.*;
 import kakao_Chat.design.mini_profile.chatroom.MiniProfileDesign_chatroom;
 import kakao_Chat.design.mini_profile.chatroom.MiniProfileManager_chatroom;
 import kakao_Chat.design.mini_profile.chatroom.profile.TwoPeople;
+import kakao_Chat.design.pictureEdit.PictureRound;
 import kakao_Chat.design.pictureEdit.editImage;
 
 import java.awt.*;
@@ -22,6 +23,7 @@ import java.util.Vector;
 import static kakao_Chat.FriendsListGUI.ChatRoomEntered;
 import static kakao_Chat.Login_Frame.sendImage;
 import static kakao_Chat.Login_Frame.userName;
+import static kakao_Chat.Profile_Frame.profile_filename;
 import static kakao_Chat.design.pictureEdit.FileSelector.ImageSeletor;
 import static kakao_Chat.design.pictureEdit.FileSelector.ImageSeletorByLink;
 import static kakao_Chat.design.pictureEdit.PictureRound.setImageRound;
@@ -45,8 +47,13 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
     public int Size_list;
     private int numOfPeople;
     private JPanel chattingScrollPanel;
+    private ArrayList<String> members_array;
     private String[] imgNames = new String[4];
     private ArrayList<Message> messages = new ArrayList<>();
+    public static ArrayList<JPanel> chat_list = new ArrayList<>();
+    private JPanel Profile_panel;
+
+    private MiniProfileManager_chatroom manager;
     private ArrayList<String> userName;
 
     public int getRoom_number() {
@@ -63,6 +70,10 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         return userName;
     }
 
+    public ArrayList<String> getMembers(){
+        return members_array;
+    }
+
     private RoomInfo roomInfo;
     private MiniProfileManager_chatroom manager;
     public chat_Frame(int roomNum, int numOfPeople, ArrayList<String> un, Socket s) {
@@ -71,6 +82,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         this.room_number = roomNum;
         this.numOfPeople = numOfPeople;
         this.userName = un;
+        this.members_array = un;
 
         System.out.println("room_number = " + room_number);
         roomInfo = Login_Frame.ListenNetwork.getRoomInfoByRoomId(String.valueOf(roomNum));
@@ -124,20 +136,14 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         //상단 프로필 패널
         JPanel Profile_panel = new JPanel();
         Profile_panel.setToolTipText("profile_panel");
+        Profile_panel = new JPanel();
         Profile_panel.setPreferredSize(new Dimension(380, 50));
         Profile_panel.setLayout(new BorderLayout());
         Profile_panel.setBackground(new Color(186, 206, 224));
-        //유저 이미지
-        ImageIcon user_icon = new ImageIcon("img/user2.png");
-        Image user = user_icon.getImage().getScaledInstance(45, 45, Image.SCALE_DEFAULT);
-        ImageIcon user_icon2 = new ImageIcon(user);
-//		JLabel img = new JLabel(user_icon);
 
         //유저 프로필 패널
         manager = MiniProfileManager_chatroom.getInstance();
         manager.setMiniProfileDesign_Chat(un.size() + 1, imgNames);
-//		JPanel imgPanel = new JPanel();
-//		imgPanel.setBackground(new Color(186,206,224));
         manager.makeMiniProfile(Profile_panel);
 
 
@@ -325,6 +331,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			profile_panel.add(user_icon);
 
 			JPanel parent_panel = new JPanel();
+            parent_panel.setName(Username);
 			parent_panel.setLayout(new BorderLayout());
 			JPanel chat_view2 = new JPanel(); // 프로필 사진을 제외한 패널
 			parent_panel.add(chat_view2,BorderLayout.CENTER);
@@ -361,7 +368,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			chat_panel_height += 68;
 			chat_panel.setPreferredSize(new Dimension(380,chat_panel_height));
 			chat_panel.add(parent_panel);
-
+            chat_list.add(parent_panel);
 
             /* 시간 추가 */
             LocalTime time = LocalTime.now();
@@ -441,6 +448,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         chat_panel_height += (height + 17);
         chat_panel.setPreferredSize(new Dimension(380, chat_panel_height));
         chat_panel.add(chat_view);
+
 
 
 			revalidate();
@@ -537,6 +545,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
 			//전체를 포함하는 패널
 			JPanel parent_panel = new JPanel();
+            parent_panel.setName(Username);
 			parent_panel.setLayout(new BorderLayout());
 			JPanel chat_view2 = new JPanel(); // 프로필 사진을 제외한 패널
 			parent_panel.add(chat_view2,BorderLayout.CENTER);
@@ -568,7 +577,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			chat_panel_height += (height +28);
 			chat_panel.setPreferredSize(new Dimension(380,chat_panel_height));
 			chat_panel.add(parent_panel);
-
+            chat_list.add(parent_panel);
         /* 시간 추가 */
         LocalTime time = LocalTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -628,6 +637,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
         //전체를 포함하는 패널
         JPanel parent_panel = new JPanel();
+        parent_panel.setName(Username);
         parent_panel.setLayout(new BorderLayout());
         JPanel chat_view2 = new JPanel(); // 프로필 사진을 제외한 패널
         parent_panel.add(chat_view2,BorderLayout.CENTER);
@@ -659,7 +669,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         chat_panel_height += (height +28);
         chat_panel.setPreferredSize(new Dimension(380,chat_panel_height));
         chat_panel.add(parent_panel);
-
+        chat_list.add(parent_panel);
 
         JLabel timeLabel = new JLabel(time);
         timeLabel.setBounds(0,5,50,50);
@@ -724,6 +734,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
             profile_panel.add(user_icon);
 
             JPanel parent_panel = new JPanel();
+            parent_panel.setName(Username);
             parent_panel.setLayout(new BorderLayout());
             JPanel chat_view2 = new JPanel(); // 프로필 사진을 제외한 패널
             parent_panel.add(chat_view2,BorderLayout.CENTER);
@@ -760,7 +771,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
             chat_panel_height += 68;
             chat_panel.setPreferredSize(new Dimension(380,chat_panel_height));
             chat_panel.add(parent_panel);
-
+            chat_list.add(parent_panel);
 
             JLabel timeLabel = new JLabel(time);
             timeLabel.setBounds(0, 5, 50, 50);
@@ -841,6 +852,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         JPanel parent_panel = new JPanel();
         parent_panel.setLayout(new BorderLayout());
         JPanel chat_view2 = new JPanel(); // 프로필 사진을 제외한 패널
+        parent_panel.setName(Username);
         parent_panel.add(chat_view2,BorderLayout.CENTER);
         parent_panel.add(profile_panel,BorderLayout.WEST);
         chat_view2.setLayout(new BorderLayout());
@@ -881,7 +893,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         chat_panel_height += (height +28);
         chat_panel.setPreferredSize(new Dimension(380,chat_panel_height));
         chat_panel.add(parent_panel);
-
+        chat_list.add(parent_panel);
         /* 시간 추가 */
         LocalTime time = LocalTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -1112,6 +1124,39 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 				}
 			}
 
+    }
+
+    public void refreshTopProfile(){
+        manager.setMiniProfileDesign_Chat(members_array.size() + 1, imgNames);
+        manager.makeMiniProfile(Profile_panel);
+        revalidate();
+        repaint();
+    }
+    public ArrayList<Integer> findChatPanel(String userName){
+        ArrayList<Integer> chat = new ArrayList<>();
+        for(int i=0; i < chat_list.size(); i++){
+            JPanel jp =  chat_list.get(i);
+            if(jp.getName().equals(userName)) {
+                chat.add(i);
+            }
+        }
+        return chat;
+    }
+
+    public void refreshProfile(ArrayList <Integer> chat,String userName) throws IOException {
+        String profile_filename = "img/UserProfile/" + userName + ".png";
+        ImageIcon pi = PictureRound.setImageRound(profile_filename, 50);
+        for(int i=0; i<chat.size(); i++ ){
+            Component component = chat_list.get(chat.get(i)).getComponent(1);
+            if(component instanceof JPanel){
+                Component profile_img = ((JPanel) component).getComponent(0);
+                if(profile_img instanceof JLabel){
+                    ((JLabel) profile_img).setIcon(pi);
+                    revalidate();
+                    repaint();
+                }
+            }
+        }
     }
 
     @Override

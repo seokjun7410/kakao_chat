@@ -31,6 +31,7 @@ import javax.swing.*;
 
 import static kakao_Chat.FriendsListGUI.profileButton;
 import static kakao_Chat.Profile_Frame.profile_filename;
+import static kakao_Chat.chat_Frame.chat_list;
 import static kakao_Chat.design.pictureEdit.PictureRound.saveImageIcon;
 
 public class Login_Frame extends JFrame implements MouseListener, MouseMotionListener, ActionListener, KeyListener {
@@ -601,8 +602,8 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                                 System.out.println("nameLableString = " + nameLableString.replace(" ", ""));
                                 String peoplestr = nameLableString.replace(" ", "");
                                 String[] split = peoplestr.split(",");
-                                for (int i = 0; i < split.length; i++) {
-                                    if (split[i].equals(args[1])) index = i;
+                                for(int i =0; i<split.length; i++){
+                                    if(split[i].equals(args[1])) index =i;
                                 }
                                 int numOfpeople = split.length + 1;
                                 System.out.println("numOfpeople = " + numOfpeople);
@@ -653,146 +654,21 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                                 }
                             }
 
-//                            /* chat_room 미니프로필 변경 */
-//                            for (chat_Frame chat_frame : Chatting_List) {
-//                                System.out.println("err?");
-//                                //SwingUtilities.updateComponentTreeUI(chat_frame);
-//                                System.out.println("no eerr");
-//                                for (Component component : chat_frame.getComponents()) {
-//                                    if(component instanceof JPanel) {
-//                                        JPanel component1 = (JPanel) component;
-//                                        System.out.println("jpanel");
-//                                        for (Component component1Component : component1.getComponents()) {
-//                                            System.out.println("jlavel");
-//                                            JLabel component1Component1 = (JLabel) component1Component;
-//                                            if(component1Component1.getToolTipText().equals("name")) {
-//                                                String chatTitle = component1Component1.getText();
-//                                                System.out.println("*****************");
-//                                                System.out.println("chatTitle = " + chatTitle);
-//                                                System.out.println("*****************");
-//
-//                                                String peoplestr = chatTitle.replace(" ","");
-//                                                String[] split = peoplestr.split(",");
-//                                                for(int i =0; i<split.length; i++){
-//                                                    if(split[i].equals(args[1])) index =i;
-//                                                }
-//                                                int numOfpeople = split.length+1;
-//                                                System.out.println("numOfpeople = " + numOfpeople);
-//
-//                                                switch (numOfpeople){
-//                                                    case 2: pi = PictureRound.setImageRound(profile_filename, 60); break;
-//                                                    case 3: pi = PictureRound.setImageRound(profile_filename, 40); break;
-//                                                    case 4: pi = PictureRound.setImageRound(profile_filename, 33); break;
-//                                                    case 5: pi = PictureRound.setImageRound(profile_filename, 30); break;
-//                                                }
-//
-//                                                System.out.println("index = " + index);
-//
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//
-//                                Component[] components = chat_frame.getComponents();
-//                                for (Component component : components) {
-//                                    if (component instanceof JPanel) {
-//                                        JPanel component1 = (JPanel) component;
-//                                        if(component1.getToolTipText().equals("profile_panel"))
-//                                            for (Component component1Component : component1.getComponents()) {
-//                                                Optional<String> toolTipText = Optional.ofNullable(((RoundedButton) component).getToolTipText()); //nullable 함.
-//                                                if(toolTipText.isPresent()){ //null이 아니라면
-//                                                    System.out.println(" 진입");
-//                                                    String text = toolTipText.get(); //해당 button의 toolTipText를 확인하고
-//                                                    System.out.println("text = " + text);
-//                                                    if(text.equals(String.valueOf(index))) { // tooTipText와 index가 일치한다면
-//                                                        System.out.println("toolTipText = " + toolTipText);
-//                                                        ((RoundedButton) component).setIcon(pi); //아이콘을 변경한다.
-//                                                        System.out.println("change profile");
-//                                                    }
-//                                                }
-//                                            }
-//
-//                                    }
-//                                }
-//
-//
-//                                chat_frame.getContentPane().revalidate();
-//                                chat_frame.getContentPane().repaint();
-//                                chat_frame.invalidate();
-//                                chat_frame.revalidate();
-//                                chat_frame.repaint();
-//
-//                            }
-                            for (chat_Frame chat_frame : Chatting_List) {
-                                MiniProfileManager_chatroom designManager = chat_frame.getDesignManager();
-                                ArrayList userNames = chat_frame.getUserName();
-                                int numOfPeople = chat_frame.getNumOfPeople();
-                                String name = args[1];
-                                switch (numOfPeople) {
-                                    case 2:
-                                        pi = PictureRound.setImageRound(profile_filename, 50);
-                                        break;
-                                    case 3:
-                                        pi = PictureRound.setImageRound(profile_filename, 30);
-                                        break;
-                                    case 4:
-                                        pi = PictureRound.setImageRound(profile_filename, 23);
-                                        break;
-                                    case 5:
-                                        pi = PictureRound.setImageRound(profile_filename, 20);
-                                        break;
-                                }
 
-
-                                int index2 = -1;
-
-                                for (int i = 0; i < userNames.size(); i++) {
-                                    String userName = (String) userNames.get(i);
-                                    if (userName.equals(name)) {
-                                        index2 = i;
+                            for(chat_Frame cf : Chatting_List) {
+                                int index = -1;
+                                ArrayList<String> ma = cf.getMembers();
+                                for(int i=0; i<ma.size(); i++){
+                                    if(ma.get(i).equals(args[1])) {
+                                        index = i;
                                     }
                                 }
 
-                                System.out.println("******************");
-                                System.out.println("index 2 = " + index2);
-                                System.out.println("numOfPeople = " + numOfPeople);
-                                System.out.println("******************");
-                                JLabel changeProfileButton = null;
-                                if(numOfPeople == 2) {
-                                    changeProfileButton = designManager.getMiniProfileDesign().getProfileButton();
-                                }else if(numOfPeople == 3) {
-
-                                    if (index2 == 1) {
-                                        changeProfileButton = designManager.getMiniProfileDesign().getProfileButton1();
-                                    } else if (index2 == 0) {
-                                        changeProfileButton = designManager.getMiniProfileDesign().getProfileButton();
-                                    }
-                                }else if(numOfPeople == 4) {
-                                    if (index2 == 0) {
-                                        changeProfileButton = designManager.getMiniProfileDesign().getProfileButton();
-                                    } else if (index2 == 1) {
-                                        changeProfileButton = designManager.getMiniProfileDesign().getProfileButton1();
-                                    } else if (index2 == 2) {
-                                        changeProfileButton = designManager.getMiniProfileDesign().getProfileButton2();
-                                    }
-                                }else if(numOfPeople>=5) {
-                                    if (index2 == 0) {
-                                        changeProfileButton = designManager.getMiniProfileDesign().getProfileButton();
-                                    } else if (index2 == 1) {
-                                        changeProfileButton = designManager.getMiniProfileDesign().getProfileButton1();
-                                    } else if (index2 == 2) {
-                                        changeProfileButton = designManager.getMiniProfileDesign().getProfileButton2();
-                                    } else if (index2 == 3) {
-                                        changeProfileButton = designManager.getMiniProfileDesign().getProfileButton3();
-                                    }
+                                if(index != -1){
+                                    ArrayList<Integer> user_chatlist = cf.findChatPanel(args[1]);
+                                    cf.refreshProfile(user_chatlist,args[1]);
+                                    cf.refreshTopProfile();
                                 }
-
-                                changeProfileButton.setIcon(pi);
-                                chat_frame.getContentPane().revalidate();
-                                chat_frame.getContentPane().repaint();
-                                chat_frame.invalidate();
-                                chat_frame.revalidate();
-                                chat_frame.repaint();
                             }
 
                         } catch (IOException ex) {
@@ -806,15 +682,11 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                     if (args[0].equals("/601")) { //프로필 변경지시
                         System.out.println(args[1] + "의 프로필 변경지시 받았습니다");
                         profile_filename = "img/UserProfile/" + Login_Frame.userName + ".png";
-                        try {
-                            ImageIcon pi = PictureRound.setImageRound(profile_filename, 60);
-                            profileButton.setIcon(pi);
-                            System.out.println("프로필 변경완료");
-                            chattingListGUI.friendsListGUI.getFriendsListGUI().repaint();
-                            chattingListGUI.friendsListGUI.getFriendsListGUI().revalidate();
-                        } catch (IOException ex) {
-                            throw new RuntimeException(ex);
-                        }
+                        ImageIcon pi = PictureRound.setImageRound(profile_filename, 60);
+                        profileButton.setIcon(pi);
+                        System.out.println("프로필 변경완료");
+                        chattingListGUI.friendsListGUI.getFriendsListGUI().repaint();
+                        chattingListGUI.friendsListGUI.getFriendsListGUI().revalidate();
 
                         revalidate();
                         repaint();

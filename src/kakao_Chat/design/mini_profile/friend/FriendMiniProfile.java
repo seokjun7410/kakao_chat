@@ -26,17 +26,12 @@ public class FriendMiniProfile extends MiniProfileDesign_Friend implements Actio
 
 	@Override
 	public void miniProfileMakeByNumber(JPanel chattingPanel) {
-		try {
-			ImageIcon pi = PictureRound.setImageRound(profile_img,60);
-			JButton profileButton = new RoundedButton("",pi);
-			profileButton.setBorderPainted(false);
-			profileButton.setBounds(13, 8, 60, 60);
-			profileButton.addActionListener(this);
-			chattingPanel.add(profileButton);
-
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		ImageIcon pi = PictureRound.setImageRound(profile_img,60);
+		JButton profileButton = new RoundedButton("",pi);
+		profileButton.setBorderPainted(false);
+		profileButton.setBounds(13, 8, 60, 60);
+		profileButton.addActionListener(this);
+		chattingPanel.add(profileButton);
 
 	}
 

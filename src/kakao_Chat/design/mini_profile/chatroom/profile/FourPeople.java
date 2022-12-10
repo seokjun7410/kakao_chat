@@ -58,15 +58,14 @@ public class FourPeople extends MiniProfileDesign_chatroom {
 //		profileButton_1_1.setBounds(9, 28, 34, 33);
 //		//profileButton_1_1_1.setBackground(Color.white);
 //		chattingPanel.add(profileButton_1_1);
-		try{
-			JPanel p = new JPanel();
-			p.setLayout(null);
-			p.setBackground(new Color(186,206,224));
-			p.setPreferredSize(new Dimension(50,50));
+		JPanel p = new JPanel();
+		p.setLayout(null);
+		p.setBackground(new Color(186,206,224));
+		p.setPreferredSize(new Dimension(50,50));
 
-			ImageIcon i0 = PictureRound.setImageRound(imgNames[0],23);
-			ImageIcon i1 = PictureRound.setImageRound(imgNames[1],23);
-			ImageIcon i2 = PictureRound.setImageRound(imgNames[2],23);
+		ImageIcon i0 = PictureRound.setImageRound(imgNames[0],23);
+		ImageIcon i1 = PictureRound.setImageRound(imgNames[1],23);
+		ImageIcon i2 = PictureRound.setImageRound(imgNames[2],23);
 
 			 profileButton1 = new JLabel(i0);
 			profileButton1.setBounds(12, 0, 23, 23);
@@ -83,15 +82,12 @@ public class FourPeople extends MiniProfileDesign_chatroom {
 			profileButton2.setToolTipText("2");
 			//chattingPanel.add(profileButton2, BorderLayout.WEST);
 
-			p.add(profileButton);
-			p.add(profileButton1);
-			p.add(profileButton2);
+		p.add(profileButton);
+		p.add(profileButton1);
+		p.add(profileButton2);
 
-			chattingPanel.add(p, BorderLayout.WEST);
+		chattingPanel.add(p, BorderLayout.WEST);
 
-		}catch (IOException ex){
-
-		}
 	}
 
 }

@@ -54,14 +54,13 @@ public class ThreePeople extends MiniProfileDesign_chatroom {
 //		JButton profileButton1 = new RoundedButton("",new ImageIcon(i1));
 //		profileButton1.setBounds(10, 10, 41, 38);
 //		chattingPanel.add(profileButton1);
-		try{
-			JPanel p = new JPanel();
-			p.setLayout(null);
-			p.setBackground(new Color(186,206,224));
-			p.setPreferredSize(new Dimension(50,50));
+		JPanel p = new JPanel();
+		p.setLayout(null);
+		p.setBackground(new Color(186,206,224));
+		p.setPreferredSize(new Dimension(50,50));
 
-			ImageIcon i0 = PictureRound.setImageRound(imgNames[0],30);
-			ImageIcon i1 = PictureRound.setImageRound(imgNames[1],30);
+		ImageIcon i0 = PictureRound.setImageRound(imgNames[0],30);
+		ImageIcon i1 = PictureRound.setImageRound(imgNames[1],30);
 
 			profileButton1 = new JLabel(i1);
 			profileButton1.setBounds(15, 15, 30, 30);
@@ -75,13 +74,10 @@ public class ThreePeople extends MiniProfileDesign_chatroom {
 			//chattingPanel.add(profileButton, BorderLayout.WEST);
 
 
-			p.add(profileButton1);;
-			p.add(profileButton);
+		p.add(profileButton1);;
+		p.add(profileButton);
 
-			chattingPanel.add(p, BorderLayout.WEST);
-		}catch (IOException ex){
-
-		}
+		chattingPanel.add(p, BorderLayout.WEST);
 	}
 
 
