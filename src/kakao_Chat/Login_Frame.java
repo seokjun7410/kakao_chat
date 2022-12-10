@@ -654,6 +654,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                                 if(index != -1){
                                     ArrayList<Integer> user_chatlist = cf.findChatPanel(args[1]);
                                     cf.refreshProfile(user_chatlist,args[1]);
+                                    cf.refreshTopProfile();
                                 }
                             }
 

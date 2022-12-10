@@ -177,7 +177,7 @@ public class my_Profile_Frame extends JFrame implements MouseListener, MouseMoti
             try {
                 ImageIcon ic = PictureRound.jFileChooserUtil(80);
                 if(ic != null) {
-                    profile_label.setIcon(PictureRound.jFileChooserUtil(80));
+                    profile_label.setIcon(ic);
                     SendMessage("/600 " + userName);
                     System.out.println(userName + "의 프로필 변경요청");
                 }

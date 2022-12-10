@@ -50,7 +50,9 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
     private String[] imgNames = new String[4];
     private ArrayList<Message> messages = new ArrayList<>();
     public static ArrayList<JPanel> chat_list = new ArrayList<>();
+    private JPanel Profile_panel;
 
+    private MiniProfileManager_chatroom manager;
 
     public int getRoom_number() {
         return room_number;
@@ -119,21 +121,14 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         Panel_1.setLayout(new BorderLayout());
 
         //상단 프로필 패널
-        JPanel Profile_panel = new JPanel();
+        Profile_panel = new JPanel();
         Profile_panel.setPreferredSize(new Dimension(380, 50));
         Profile_panel.setLayout(new BorderLayout());
         Profile_panel.setBackground(new Color(186, 206, 224));
-        //유저 이미지
-        ImageIcon user_icon = new ImageIcon("img/user2.png");
-        Image user = user_icon.getImage().getScaledInstance(45, 45, Image.SCALE_DEFAULT);
-        ImageIcon user_icon2 = new ImageIcon(user);
-//		JLabel img = new JLabel(user_icon);
 
         //유저 프로필 패널
-        MiniProfileManager_chatroom manager = MiniProfileManager_chatroom.getInstance();
+        manager = MiniProfileManager_chatroom.getInstance();
         manager.setMiniProfileDesign_Chat(un.size() + 1, imgNames);
-//		JPanel imgPanel = new JPanel();
-//		imgPanel.setBackground(new Color(186,206,224));
         manager.makeMiniProfile(Profile_panel);
 
 
@@ -1115,6 +1110,12 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
     }
 
+    public void refreshTopProfile(){
+        manager.setMiniProfileDesign_Chat(members_array.size() + 1, imgNames);
+        manager.makeMiniProfile(Profile_panel);
+        revalidate();
+        repaint();
+    }
     public ArrayList<Integer> findChatPanel(String userName){
         ArrayList<Integer> chat = new ArrayList<>();
         for(int i=0; i < chat_list.size(); i++){
