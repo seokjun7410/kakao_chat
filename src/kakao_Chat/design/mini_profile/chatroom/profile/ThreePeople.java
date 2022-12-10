@@ -18,7 +18,28 @@ public class ThreePeople extends MiniProfileDesign_chatroom {
 		this.imgNames = imgNames;
 	}
 
+	private JLabel profileButton1;
+	private JLabel profileButton;
 	//"img/defaultProfile50.png"
+
+	public JLabel getProfileButton1() {
+		return profileButton1;
+	}
+
+	@Override
+	public JLabel getProfileButton2() {
+		return null;
+	}
+
+	@Override
+	public JLabel getProfileButton3() {
+		return null;
+	}
+
+	public JLabel getProfileButton() {
+		return profileButton;
+	}
+
 	@Override
 	public void miniProfileMakeByNumber(JPanel chattingPanel) {
 //		Image i0 = new ImageIcon(imgNames[0]).getImage().getScaledInstance(41, 38, Image.SCALE_DEFAULT);
@@ -42,12 +63,12 @@ public class ThreePeople extends MiniProfileDesign_chatroom {
 			ImageIcon i0 = PictureRound.setImageRound(imgNames[0],30);
 			ImageIcon i1 = PictureRound.setImageRound(imgNames[1],30);
 
-			JLabel profileButton1 = new JLabel(i1);
+			profileButton1 = new JLabel(i1);
 			profileButton1.setBounds(15, 15, 30, 30);
 			profileButton1.setToolTipText("1");
 			//chattingPanel.add(profileButton1, BorderLayout.WEST);
 
-			JLabel profileButton = new JLabel(i0);
+			profileButton = new JLabel(i0);
 			profileButton.setBounds(5, 0, 30, 30);
 			profileButton.setToolTipText("0");
 

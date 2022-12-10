@@ -24,7 +24,7 @@ public class MiniProfileManager_chatroom {
 	    }
 	
 	public static MiniProfileManager_chatroom getInstance() {
-	        return LazyHolder.INSTANCE;
+	        return new MiniProfileManager_chatroom();//LazyHolder.INSTANCE;
 	    }
 	
 	public void setMiniProfileDesign_Chat(int numberOfPeople,String[] imgNames) {
@@ -42,5 +42,7 @@ public class MiniProfileManager_chatroom {
 
 	}
 
-
+	public MiniProfileDesign_chatroom getMiniProfileDesign() {
+		return miniProfileDesign;
+	}
 }

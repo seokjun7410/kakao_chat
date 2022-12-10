@@ -234,10 +234,10 @@ public class FriendsListGUI extends JFrame implements MouseListener{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(!ChatRoomEntered.contains(-1)) {
-					ArrayList<String> name = new ArrayList<String>();
-					name.add(Login_Frame.userName);
-					chat_Frame chatting = new chat_Frame(-1, 1, name, socket);
-					ChatRoomEntered.add(-1);
+//					ArrayList<String> name = new ArrayList<String>();
+//					name.add(Login_Frame.userName);
+//					chat_Frame chatting = new chat_Frame(-1, 1, name, socket);
+//					ChatRoomEntered.add(-1);
 				}
 				}
 			@Override

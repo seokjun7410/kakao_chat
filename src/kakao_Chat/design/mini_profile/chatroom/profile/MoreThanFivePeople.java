@@ -16,6 +16,26 @@ public class MoreThanFivePeople extends MiniProfileDesign_chatroom {
     public MoreThanFivePeople(String[] imgNames) {
         this.imgNames = imgNames;
     }
+    private JLabel profileButton2;
+    private JLabel profileButton1;
+    private JLabel profileButton3;
+    private JLabel profileButton;
+
+    public JLabel getProfileButton2() {
+        return profileButton2;
+    }
+
+    public JLabel getProfileButton1() {
+        return profileButton;
+    }
+
+    public JLabel getProfileButton3() {
+        return profileButton3;
+    }
+
+    public JLabel getProfileButton() {
+        return profileButton1;
+    }
 
     //"img/defaultProfile40.png")
     @Override
@@ -52,22 +72,22 @@ public class MoreThanFivePeople extends MiniProfileDesign_chatroom {
 			p.setBackground(new Color(186,206,224));
 			p.setPreferredSize(new Dimension(50,50));
 
-			JLabel profileButton1 = new JLabel(i0);
+            profileButton1 = new JLabel(i0);
             profileButton1.setBounds(0, 0, 25, 25);
             profileButton1.setToolTipText("0");
             //chattingPanel.add(profileButton1, BorderLayout.WEST);
 
-			JLabel profileButton = new JLabel(i1);
+            profileButton = new JLabel(i1);
             profileButton.setBounds(24, 0, 25, 25);
             profileButton.setToolTipText("1");
             //chattingPanel.add(profileButton, BorderLayout.WEST);
 
-			JLabel profileButton2 = new JLabel(i2);
+            profileButton2 = new JLabel(i2);
             profileButton2.setBounds(0, 23, 25, 25);
             profileButton2.setToolTipText("2");
             //chattingPanel.add(profileButton2, BorderLayout.WEST);
 
-            JLabel profileButton3 = new JLabel(i3);
+            profileButton3 = new JLabel(i3);
             profileButton3.setBounds(24, 23, 25, 25);
             profileButton3.setToolTipText("3");
             //chattingPanel.add(profileButton3, BorderLayout.WEST);

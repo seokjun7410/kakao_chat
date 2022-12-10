@@ -3,6 +3,7 @@ import javax.swing.*;
 
 import kakao_Chat.design.mini_profile.chatroom.MiniProfileDesign_chatroom;
 import kakao_Chat.design.mini_profile.chatroom.MiniProfileManager_chatroom;
+import kakao_Chat.design.mini_profile.chatroom.profile.TwoPeople;
 import kakao_Chat.design.pictureEdit.editImage;
 
 import java.awt.*;
@@ -46,19 +47,30 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
     private JPanel chattingScrollPanel;
     private String[] imgNames = new String[4];
     private ArrayList<Message> messages = new ArrayList<>();
+    private ArrayList<String> userName;
 
     public int getRoom_number() {
         return room_number;
     }
+    public MiniProfileManager_chatroom getDesignManager(){
+        return manager;
+    }
+
+    public int getNumOfPeople() {
+        return numOfPeople;
+    }
+    public ArrayList getUserName (){
+        return userName;
+    }
 
     private RoomInfo roomInfo;
-
+    private MiniProfileManager_chatroom manager;
     public chat_Frame(int roomNum, int numOfPeople, ArrayList<String> un, Socket s) {
 
         System.out.println("챗프레임이 생성되려고 합니다.");
         this.room_number = roomNum;
         this.numOfPeople = numOfPeople;
-
+        this.userName = un;
 
         System.out.println("room_number = " + room_number);
         roomInfo = Login_Frame.ListenNetwork.getRoomInfoByRoomId(String.valueOf(roomNum));
@@ -111,6 +123,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 
         //상단 프로필 패널
         JPanel Profile_panel = new JPanel();
+        Profile_panel.setToolTipText("profile_panel");
         Profile_panel.setPreferredSize(new Dimension(380, 50));
         Profile_panel.setLayout(new BorderLayout());
         Profile_panel.setBackground(new Color(186, 206, 224));
@@ -121,7 +134,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 //		JLabel img = new JLabel(user_icon);
 
         //유저 프로필 패널
-        MiniProfileManager_chatroom manager = MiniProfileManager_chatroom.getInstance();
+        manager = MiniProfileManager_chatroom.getInstance();
         manager.setMiniProfileDesign_Chat(un.size() + 1, imgNames);
 //		JPanel imgPanel = new JPanel();
 //		imgPanel.setBackground(new Color(186,206,224));
@@ -143,6 +156,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         user_name.setLayout(new BorderLayout());
         //유저이름 Label 설정
         JLabel name = new JLabel(members);
+        name.setToolTipText("name");
         name.setFont(new Font("맑은 고딕", Font.BOLD, 14));
         user_name.add(name, BorderLayout.WEST);
 

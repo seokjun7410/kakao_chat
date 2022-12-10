@@ -27,6 +27,7 @@ public class FourPeople extends MiniProfileDesign_Chat{
 		ImageIcon i2 = setImageRound(imgNames[2],33);
 
 		JButton profileButton_1 = new RoundedButton("",i0);
+		profileButton_1.setToolTipText("1");
 		profileButton_1.setBounds(22, 5, 34, 33);
 		profileButton_1.setBackground(Color.white);
 		chattingPanel.add(profileButton_1);
@@ -34,10 +35,12 @@ public class FourPeople extends MiniProfileDesign_Chat{
 		JButton profileButton_1_1_1 = new RoundedButton("",i1);
 		profileButton_1_1_1.setBounds(35, 28, 34, 33);
 		profileButton_1_1_1.setBackground(Color.white);
+		profileButton_1_1_1.setToolTipText("2");
 		chattingPanel.add(profileButton_1_1_1);
 		
 		JButton profileButton_1_1 = new RoundedButton("",i2);
 		profileButton_1_1.setBounds(9, 28, 34, 33);
+		profileButton_1_1.setToolTipText("0");
 		//profileButton_1_1_1.setBackground(Color.white);
 		chattingPanel.add(profileButton_1_1);
 	}

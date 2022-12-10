@@ -14,9 +14,29 @@ public class FourPeople extends MiniProfileDesign_chatroom {
 	public FourPeople(String[] imgNames){
 		this.imgNames = imgNames;
 	}
-
+	private JLabel profileButton2;
+	private JLabel profileButton1;
+	private JLabel profileButton;
 	//new ImageIcon("img/sampleProfile.jpg")
 	//"img/Profile30.png"
+
+	public JLabel getProfileButton2() {
+		return profileButton2;
+	}
+
+	@Override
+	public JLabel getProfileButton3() {
+		return null;
+	}
+
+	public JLabel getProfileButton1() {
+		return profileButton;
+	}
+
+	public JLabel getProfileButton() {
+		return profileButton1;
+	}
+
 	@Override
 	public void miniProfileMakeByNumber(JPanel chattingPanel) {
 //		Image i0 = new ImageIcon(imgNames[0]).getImage().getScaledInstance(34, 33, Image.SCALE_DEFAULT);
@@ -48,17 +68,17 @@ public class FourPeople extends MiniProfileDesign_chatroom {
 			ImageIcon i1 = PictureRound.setImageRound(imgNames[1],23);
 			ImageIcon i2 = PictureRound.setImageRound(imgNames[2],23);
 
-			JLabel profileButton1 = new JLabel(i0);
+			 profileButton1 = new JLabel(i0);
 			profileButton1.setBounds(12, 0, 23, 23);
 			profileButton1.setToolTipText("0");
 			//chattingPanel.add(profileButton1, BorderLayout.WEST);
 
-			JLabel profileButton = new JLabel(i1);
+			 profileButton = new JLabel(i1);
 			profileButton.setBounds(22, 20, 23, 23);
 			profileButton.setToolTipText("1");
 			//chattingPanel.add(profileButton, BorderLayout.WEST);
 
-			JLabel profileButton2 = new JLabel(i2);
+			 profileButton2 = new JLabel(i2);
 			profileButton2.setBounds(0, 20, 23, 23);
 			profileButton2.setToolTipText("2");
 			//chattingPanel.add(profileButton2, BorderLayout.WEST);
