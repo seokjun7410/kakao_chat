@@ -26,6 +26,7 @@ import javax.swing.*;
 
 import static kakao_Chat.FriendsListGUI.profileButton;
 import static kakao_Chat.Profile_Frame.profile_filename;
+import static kakao_Chat.chat_Frame.chat_list;
 import static kakao_Chat.design.pictureEdit.PictureRound.saveImageIcon;
 
 public class Login_Frame extends JFrame implements MouseListener, MouseMotionListener, ActionListener, KeyListener {
@@ -640,6 +641,22 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                                 }
                             }
 
+
+                            for(chat_Frame cf : Chatting_List) {
+                                int index = -1;
+                                ArrayList<String> ma = cf.getMembers();
+                                for(int i=0; i<ma.size(); i++){
+                                    if(ma.get(i).equals(args[1])) {
+                                        index = i;
+                                    }
+                                }
+
+                                if(index != -1){
+                                    ArrayList<Integer> user_chatlist = cf.findChatPanel(args[1]);
+                                    cf.refreshProfile(user_chatlist,args[1]);
+                                }
+                            }
+
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
@@ -651,15 +668,11 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                     if (args[0].equals("/601")) { //프로필 변경지시
                         System.out.println(args[1] + "의 프로필 변경지시 받았습니다");
                         profile_filename = "img/UserProfile/" + Login_Frame.userName + ".png";
-                        try {
-                            ImageIcon pi = PictureRound.setImageRound(profile_filename, 60);
-                            profileButton.setIcon(pi);
-                            System.out.println("프로필 변경완료");
-                            chattingListGUI.friendsListGUI.getFriendsListGUI().repaint();
-                            chattingListGUI.friendsListGUI.getFriendsListGUI().revalidate();
-                        } catch (IOException ex) {
-                            throw new RuntimeException(ex);
-                        }
+                        ImageIcon pi = PictureRound.setImageRound(profile_filename, 60);
+                        profileButton.setIcon(pi);
+                        System.out.println("프로필 변경완료");
+                        chattingListGUI.friendsListGUI.getFriendsListGUI().repaint();
+                        chattingListGUI.friendsListGUI.getFriendsListGUI().revalidate();
 
                         revalidate();
                         repaint();

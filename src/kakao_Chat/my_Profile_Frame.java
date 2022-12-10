@@ -175,9 +175,12 @@ public class my_Profile_Frame extends JFrame implements MouseListener, MouseMoti
     	if (e.getComponent().equals(pl)) {
             System.out.println("pl clicked");
             try {
-                profile_label.setIcon(PictureRound.jFileChooserUtil(80));
-                SendMessage("/600 "+userName);
-                System.out.println(userName+"의 프로필 변경요청");
+                ImageIcon ic = PictureRound.jFileChooserUtil(80);
+                if(ic != null) {
+                    profile_label.setIcon(PictureRound.jFileChooserUtil(80));
+                    SendMessage("/600 " + userName);
+                    System.out.println(userName + "의 프로필 변경요청");
+                }
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
