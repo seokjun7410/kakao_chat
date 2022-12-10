@@ -290,11 +290,14 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 								|| message.getBody().equals("(충성)")
 								|| message.getBody().equals("(ㅋㅋ)"))
 							printEmoticonInHistory(message.getBody(),message.getTime());
+                        else if(message.getBody().equals("/img")){
+                            printImage(message.getImg(),message.getTime());
+                        }
 						else
 							makeRightBubbleInHistory(message.getBody(), message.getTime());
 
-
 					} else {
+                        System.out.println(message.getBody());
 						if (message.getBody().equals("(등장)")
 								|| message.getBody().equals("(떼쓰기)")
 								|| message.getBody().equals("(우와)")
@@ -302,6 +305,10 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 								|| message.getBody().equals("(충성)")
 								|| message.getBody().equals("(ㅋㅋ)"))
 							printEmoticonInHistory_Left(message.getBody(),message.getSendFrom(),message.getTime());
+                        else if(message.getBody().equals("/img")){
+
+                            printImage_Left_InHistory(message.getImg(),message.getSendFrom(),message.getTime());
+                        }
 						else
 							makeLeftBubbleInHistory(message.getBody(), message.getSendFrom(),message.getTime());
 
@@ -835,8 +842,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
             revalidate();
         }
     }
-
-    public void printImage_Left(ImageIcon img, String Username) throws IOException {
+    public void printImage_Left_InHistory(ImageIcon img, String Username,String time) throws IOException {
         ImageIcon Image = EditImage(img,200);
         //프로필 사진 패널
         JPanel profile_panel = new JPanel();
@@ -869,13 +875,12 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         parent_panel.setBackground(new Color(186,206,224));
         parent_panel.setBorder(BorderFactory.createEmptyBorder(0,10,0,5));
 
-        ImageIcon edit = EditImage( Image,70);
-        int height = edit.getIconHeight();
+        int height = Image.getIconHeight();
         chat_view.setLayout(new BorderLayout());
         chat_view.setBackground(new Color(186,206,224));
         chat_view.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
-        parent_panel.setPreferredSize(new Dimension(380,height+18));
-        JLabel imoticon_label = new JLabel(edit);
+        parent_panel.setPreferredSize(new Dimension(380,height+25));
+        JLabel imoticon_label = new JLabel(Image);
         imoticon_label.addMouseListener(new MouseAdapter()
         {
             public void mouseClicked(MouseEvent e)
@@ -890,21 +895,85 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         chat_view.add(imoticon_label,BorderLayout.WEST);
         JPanel time_panel = new JPanel();
         time_panel.setLayout(new BorderLayout());
-        chat_panel_height += (height +28);
+        chat_panel_height += (height +33);
+        chat_panel.setPreferredSize(new Dimension(380,chat_panel_height));
+        chat_panel.add(parent_panel);
+        chat_list.add(parent_panel);
+
+        JLabel timeLabel = new JLabel(time);
+        timeLabel.setBounds(0,5,50,50);
+        timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 10));
+        JPanel time_view = new JPanel();
+        time_view.setLayout(new BorderLayout());
+        time_view.setBackground(new Color(186,206,224));
+        time_view.setPreferredSize(new Dimension(timeLabel.getWidth(),height));
+        time_view.add(timeLabel,BorderLayout.SOUTH);
+        chat_view.add(time_view,BorderLayout.CENTER);
+
+        revalidate();
+    }
+
+    public void printImage_Left(ImageIcon img, String Username, String time) throws IOException {
+        ImageIcon Image = EditImage(img,200);
+        //프로필 사진 패널
+        JPanel profile_panel = new JPanel();
+        profile_panel.setBackground(new Color(186,206,224));
+        profile_panel.setLayout(null);
+        ImageIcon user_profile = setImageRound("img/UserProfile/"+Username+".png",50);
+        JLabel user_icon = new JLabel(user_profile);
+        user_icon.setBounds(0,0,50,50);
+        profile_panel.setPreferredSize(new Dimension(50,60));
+        profile_panel.add(user_icon);
+
+        //전체를 포함하는 패널
+        JPanel parent_panel = new JPanel();
+        parent_panel.setLayout(new BorderLayout());
+        JPanel chat_view2 = new JPanel(); // 프로필 사진을 제외한 패널
+        parent_panel.setName(Username);
+        parent_panel.add(chat_view2,BorderLayout.CENTER);
+        parent_panel.add(profile_panel,BorderLayout.WEST);
+        chat_view2.setLayout(new BorderLayout());
+        JLabel name_label = new JLabel(Username);
+        name_label.setFont(new Font("나눔고딕", Font.PLAIN, 12));
+        name_label.setBackground(new Color(186,206,224));
+        chat_view2.add(name_label,BorderLayout.NORTH);
+        name_label.setBorder(BorderFactory.createEmptyBorder(0,10,5,0));
+        JPanel chat_view = new JPanel(); // 말풍선 + 시간 패널
+        chat_view2.add(chat_view,BorderLayout.CENTER);
+        chat_view.setLayout(new BorderLayout());
+        chat_view.setBackground(new Color(186,206,224));
+        chat_view2.setBackground(new Color(186,206,224));
+        parent_panel.setBackground(new Color(186,206,224));
+        parent_panel.setBorder(BorderFactory.createEmptyBorder(0,10,0,5));
+
+
+        int height = Image.getIconHeight();
+        chat_view.setLayout(new BorderLayout());
+        chat_view.setBackground(new Color(186,206,224));
+        chat_view.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
+        parent_panel.setPreferredSize(new Dimension(380,height+25));
+        JLabel imoticon_label = new JLabel(Image);
+        imoticon_label.addMouseListener(new MouseAdapter()
+        {
+            public void mouseClicked(MouseEvent e)
+            {
+                ImageFrame image_frame = new ImageFrame(img);
+                JLabel ImageLabel = new JLabel();
+                ImageLabel.setIcon(img);
+                image_frame.add(ImageLabel,BorderLayout.CENTER);
+                image_frame.setVisible(true);
+            }
+        });
+        chat_view.add(imoticon_label,BorderLayout.WEST);
+        JPanel time_panel = new JPanel();
+        time_panel.setLayout(new BorderLayout());
+        chat_panel_height += (height +40);
         chat_panel.setPreferredSize(new Dimension(380,chat_panel_height));
         chat_panel.add(parent_panel);
         chat_list.add(parent_panel);
         /* 시간 추가 */
-        LocalTime time = LocalTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String currentTime = time.format(formatter);
-        String currentTime12;
-        if (Integer.parseInt(currentTime.substring(0, 2)) >= 13)
-            currentTime12 = "오후" + (Integer.parseInt(currentTime.substring(0, 2)) - 12) + ":" + currentTime.substring(3, 5);
-        else
-            currentTime12 = "오전" + currentTime;
 
-        JLabel timeLabel = new JLabel(currentTime12);
+        JLabel timeLabel = new JLabel(time);
         timeLabel.setBounds(0,5,50,50);
         timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 10));
         JPanel time_view = new JPanel();
@@ -918,21 +987,12 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
     }
 
 
-    public void printImage(ImageIcon img){
-        ImageIcon edit = img;
+    public void printImage(ImageIcon img, String time){
+        ImageIcon edit = EditImage(img,200);
         int height = edit.getIconHeight();
         JPanel chat_view = new JPanel();
 
-        LocalTime time = LocalTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String currentTime = time.format(formatter);
-        String currentTime12;
-        if (Integer.parseInt(currentTime.substring(0, 2)) >= 13)
-            currentTime12 = "오후" + (Integer.parseInt(currentTime.substring(0, 2)) - 12) + ":" + currentTime.substring(3, 5);
-        else
-            currentTime12 = "오전" + currentTime;
-
-        JLabel timeLabel = new JLabel(currentTime12);
+        JLabel timeLabel = new JLabel(time);
         timeLabel.setBounds(0, 5, 50, 50);
         timeLabel.setFont(new Font("나눔고딕", Font.PLAIN, 10));
         JPanel time_view = new JPanel();
@@ -960,7 +1020,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
             }
         });
         chat_view.add(label);
-        chat_panel_height += (height + 17);
+        chat_panel_height += (height + 25);
         chat_panel.setPreferredSize(new Dimension(380, chat_panel_height));
         chat_panel.add(chat_view);
 
@@ -1113,12 +1173,28 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
 			else if(e.getSource().equals(image_send)) {  //이미지 첨부 버튼을 누를 경우
 				try {
 					String path =ImageSeletor();   // 파일 선택해서 파일 위치를 저장
-					ImageIcon img = ImageSeletorByLink(path,200);  //가로 200 크기로 변환
-                    printImage(img);
-					Login_Frame.SendMessage("/501 " +room_number+" "+Login_Frame.userName);
-                    JScrollBar vertical = pane.getVerticalScrollBar();
-                    vertical.setValue( vertical.getMaximum() );
-					sendImage(path);
+                    if(path != null) {
+                        ImageIcon img = ImageSeletorByLink(path);  //가로 200 크기로 변환
+                        /* 현재시간 */
+                        LocalTime time = LocalTime.now();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                        String currentTime = time.format(formatter);
+                        String currentTime12;
+                        if (Integer.parseInt(currentTime.substring(0, 2)) >= 13)
+                            currentTime12 = "오후" + (Integer.parseInt(currentTime.substring(0, 2)) - 12) + ":" + currentTime.substring(3, 5);
+                        else
+                            currentTime12 = "오전" + currentTime;
+                        printImage(img, currentTime12);
+
+                        ImageIcon ic = ImageSeletorByLink(path);
+                        Message m = new Message("/img", Login_Frame.userName, currentTime12, ic);
+                        Login_Frame.ListenNetwork.getRoomInfoByRoomId(String.valueOf(room_number)).setMessages(m);
+
+                        Login_Frame.SendMessage("/501 " + room_number + " " + Login_Frame.userName);
+                        JScrollBar vertical = pane.getVerticalScrollBar();
+                        vertical.setValue(vertical.getMaximum());
+                        sendImage(path);
+                    }
 				} catch (IOException ex) {
 					throw new RuntimeException(ex);
 				}

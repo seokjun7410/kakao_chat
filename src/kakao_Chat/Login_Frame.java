@@ -533,7 +533,7 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         chattingListGUI.revalidate();
                         chattingListGUI.repaint();
                     }
-                    if (args[0].matches("/503")) { // RoomNum UserName
+                    if (args[0].matches("/503")) { // UserName RoomNum
                         System.out.println(msg);
                         System.out.println("/503");
                         int arrlen = dis.readInt();
@@ -543,12 +543,42 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
                         BufferedImage bufferedImage = ImageIO.read(inputStream);
                         System.out.println("파일 받음");
 
+                        RoomInfo roomInfoByRoomId = getRoomInfoByRoomId(String.valueOf(args[2]));
+
+                        LocalTime time = LocalTime.now();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                        String currentTime = time.format(formatter);
+                        String currentTime12;
+                        if (Integer.parseInt(currentTime.substring(0, 2)) >= 13)
+                            currentTime12 = "오후" + (Integer.parseInt(currentTime.substring(0, 2)) - 12) + ":" + currentTime.substring(3, 5);
+                        else
+                            currentTime12 = "오전" + currentTime;
+
+                        int index = Room_list.indexOf(getRoomInfoByRoomId(String.valueOf(roomInfoByRoomId.getRoomNum())));
+                        ArrayList<JPanel> chattingButtonList = chattingListGUI.getChattingButtonList();
+                        JPanel jPanel = chattingButtonList.get(index);
+                        Component[] components = jPanel.getComponents();
+                        for (Component component : components) {
+                            if (component instanceof JLabel) {
+                                try {
+                                    JLabel component1 = (JLabel) component;
+                                    if (component1.getToolTipText().equals("lastMessageLabel"))
+                                        component1.setText(roomInfoByRoomId.getLastMessage());
+                                    System.out.println(roomInfoByRoomId.getLastMessage());
+                                } catch (NullPointerException e) {
+
+                                }
+                            }
+                        }
 //                        ObjectInputStream ois = new ObjectInputStream(is);
                         ImageIcon img = new ImageIcon(bufferedImage);
 //                        while(img ==null){
 //                             img = (ImageIcon)ois.readObject();
 //                        }
-                        chatting.printImage_Left(img, args[1]);
+                        chat_Frame chatting = getChatFrameByRoomNum(args[2]);
+                        chatting.printImage_Left(img, args[1],currentTime12);
+                        Message m = new Message("/img", args[1], currentTime12,img);
+                        roomInfoByRoomId.setMessages(m);
                         JScrollBar vertical = chatting.pane.getVerticalScrollBar();
                         vertical.setValue(vertical.getMaximum());
 //                        ImageIcon img = (ImageIcon)ois.readObject();
@@ -560,6 +590,9 @@ public class Login_Frame extends JFrame implements MouseListener, MouseMotionLis
 //                            jf.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
 //                            jf.setVisible(true);
 //                        }
+                        chattingListGUI.getContentPane().revalidate();
+                        chattingListGUI.revalidate();
+                        chattingListGUI.repaint();
                     }
 
                     if (args[0].equals("/601")) { //프로필 변경지시msg: 601 id

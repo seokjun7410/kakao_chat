@@ -47,10 +47,11 @@ public class RoomInfo {
 	}
 	public void setMessages(Message message){
 		messages.add(message);
-		lastMessage = message.getBody();
+		if(message.getBody().equals("/img")) lastMessage="사진";
+		else lastMessage = message.getBody();
 
 		System.out.println("메시지 저장!");
-		System.out.println("message.getBody() = " + message.getBody());
+		System.out.println("message.getBody() = " + message.getBody() +" "+lastMessage);
 	}
 	public ArrayList<Message> getMessages(){
 		return (this.messages);

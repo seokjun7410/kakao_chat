@@ -440,7 +440,7 @@ public class JavaChatServer extends JFrame {
 //                             img = (ImageIcon)ois.readObject();
 //                        }
 
-                        String send_msg = "/503 " + args[2];
+                        String send_msg = "/503 " + args[2] + " "+args[1];
                         ArrayList<String> recvUsers = getRecvUser(args[1]);
                         ArrayList<String> recvUsers2 = getRecvUser(args[1]);
                         for (String recvUser : recvUsers) { // 이미지를 전송할거라는 메세지 먼저 전송
@@ -457,6 +457,7 @@ public class JavaChatServer extends JFrame {
                                 sendImage(recvUser, bytes);
                                 System.out.print(recvUser + ", ");
                             }
+                            else sendTo(recvUser, "/555 "+args[1]);
                         }
 
                     }
