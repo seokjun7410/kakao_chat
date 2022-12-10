@@ -2,6 +2,7 @@ package kakao_Chat.design.mini_profile.chatroom.profile;
 
 
 import kakao_Chat.design.RoundedButton;
+
 import kakao_Chat.design.mini_profile.chatroom.MiniProfileDesign_chatroom;
 import kakao_Chat.design.pictureEdit.PictureRound;
 
@@ -22,6 +23,7 @@ public class ThreePeople extends MiniProfileDesign_chatroom {
 	private JLabel profileButton;
 	//"img/defaultProfile50.png"
 
+	@Override
 	public JLabel getProfileButton1() {
 		return profileButton1;
 	}
@@ -35,7 +37,7 @@ public class ThreePeople extends MiniProfileDesign_chatroom {
 	public JLabel getProfileButton3() {
 		return null;
 	}
-
+	@Override
 	public JLabel getProfileButton() {
 		return profileButton;
 	}

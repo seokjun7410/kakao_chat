@@ -20,19 +20,19 @@ public class MoreThanFivePeople extends MiniProfileDesign_chatroom {
     private JLabel profileButton1;
     private JLabel profileButton3;
     private JLabel profileButton;
-
+    @Override
     public JLabel getProfileButton2() {
         return profileButton2;
     }
-
+    @Override
     public JLabel getProfileButton1() {
         return profileButton;
     }
-
+    @Override
     public JLabel getProfileButton3() {
         return profileButton3;
     }
-
+    @Override
     public JLabel getProfileButton() {
         return profileButton1;
     }

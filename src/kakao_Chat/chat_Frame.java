@@ -75,7 +75,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
     }
 
     private RoomInfo roomInfo;
-    private MiniProfileManager_chatroom manager;
+
     public chat_Frame(int roomNum, int numOfPeople, ArrayList<String> un, Socket s) {
 
         System.out.println("챗프레임이 생성되려고 합니다.");
@@ -134,7 +134,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
         Panel_1.setLayout(new BorderLayout());
 
         //상단 프로필 패널
-        JPanel Profile_panel = new JPanel();
+        Profile_panel = new JPanel();
         Profile_panel.setToolTipText("profile_panel");
         Profile_panel = new JPanel();
         Profile_panel.setPreferredSize(new Dimension(380, 50));
@@ -1127,6 +1127,7 @@ public class chat_Frame extends JFrame implements MouseListener, MouseMotionList
     }
 
     public void refreshTopProfile(){
+        manager = MiniProfileManager_chatroom.getInstance();
         manager.setMiniProfileDesign_Chat(members_array.size() + 1, imgNames);
         manager.makeMiniProfile(Profile_panel);
         revalidate();
